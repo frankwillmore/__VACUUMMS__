@@ -1,0 +1,16 @@
+#!/bin/bash
+
+pmdgpu-emu -box 29.27020 29.27020 29.27020 \
+           -N 4 \
+           -n 4 \
+           -config_directory /home/00479/willmore/materials/PDMS-WXY/gfg  \
+           -config_prefix PDMS_ \
+           -config_suffix .gfg \
+           -config_start 1 \
+           -target_time 50.0 \
+           -verlet_cutoff_sq 100.0 \
+           -verbose \
+           -resolution_t 5.0 \
+           -CO2 \
+           -individual_trajectories \
+           -T 308

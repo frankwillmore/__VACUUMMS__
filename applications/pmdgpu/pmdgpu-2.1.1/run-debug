@@ -1,0 +1,16 @@
+#!/bin/bash
+
+ddt ./pmdgpu -box 29.27020 29.27020 29.27020 \
+           -N 8 \
+           -n 8 \
+           -config_directory ~/sandbox/PDMS-WXY-gfg/ \
+           -config_prefix PDMS_ \
+           -config_suffix .gfg \
+           -config_start 1 \
+           -target_time 10.0 \
+           -verlet_cutoff_sq 100.0 \
+           -verbose \
+           -resolution_t 1.0 \
+           -CO2 \
+           -individual_trajectories \
+           -T 308

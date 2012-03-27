@@ -1,0 +1,77 @@
+#!/usr/bin/make
+
+INCLUDES=-I$(HOME)/usr/include -I.
+#LIBS=-L$(HOME)/lib -L/opt/apps/cuda/2.2/cuda/lib/
+#LIBS=-L/opt/apps/cuda/2.2/cuda/lib/
+CC=nvcc
+CFLAGS= -O2 -lpthread -lm -lcudart -D_REENTRANT 
+DEBUG_CFLAGS= -g -G -O0 -lpthread -lcudart -D_REENTRANT
+
+#-DNDEBUG if ignoring assertions
+
+MersenneTwister.o:	MersenneTwister.c pmdgpu.h
+	$(CC) $(CFLAGS) MersenneTwister.c -c $(INCLUDES) $(LIBS)
+
+ThreadMain.o:	ThreadMain.c pmdgpu.h
+	$(CC) $(CFLAGS) ThreadMain.c -c $(INCLUDES) $(LIBS)
+
+Configuration.o:	Configuration.c pmdgpu.h
+	$(CC) $(CFLAGS) Configuration.c -c $(INCLUDES) $(LIBS)
+
+CommandLineOptions.o:	CommandLineOptions.c pmdgpu.h
+	$(CC) $(CFLAGS) CommandLineOptions.c -c $(INCLUDES) $(LIBS)
+
+Verlet.o:	Verlet.c pmdgpu.h
+	$(CC) $(CFLAGS) Verlet.c -c $(INCLUDES) $(LIBS)
+
+Energy.o:	Energy.c pmdgpu.h
+	$(CC) $(CFLAGS) Energy.c -c $(INCLUDES) $(LIBS)
+
+Rotation.o:	Rotation.c pmdgpu.h
+	$(CC) $(CFLAGS) Rotation.c -c $(INCLUDES) $(LIBS)
+
+CUDAEnergy.o:	CUDAEnergy.cu pmdgpu.h
+	$(CC) $(CFLAGS) CUDAEnergy.cu -c $(INCLUDES) $(LIBS)
+
+pmdgpu:	pmdgpu.c pmdgpu.h MersenneTwister.o ThreadMain.o CommandLineOptions.o Configuration.o Verlet.o CUDAEnergy.o Energy.o Rotation.o
+	nvcc -g -O2 -lpthread -lcudart -D_REENTRANT pmdgpu.c CUDAEnergy.o Verlet.o Configuration.o CommandLineOptions.o ThreadMain.o MersenneTwister.o Energy.o Rotation.o -o pmdgpu $(INCLUDES) $(LIBS) 
+#	mpicc -O2 -lpthread -lcudart -lftw -D_REENTRANT pmdgpu.c CUDAEnergy.o Verlet.o Configuration.o CommandLineOptions.o ThreadMain.o MersenneTwister.o Energy.o Rotation.o -o pmdgpu $(INCLUDES) $(LIBS) 
+
+pmdgpu-emu:	pmdgpu.c pmdgpu.h MersenneTwister.o ThreadMain.o CommandLineOptions.o Configuration.o Verlet.o CUDAEnergy.cu Energy.o Rotation.o
+	rm CUDAEnergy.o
+	$(CC) -g -deviceemu -lpthread -lm -lcudart -D_REENTRANT CUDAEnergy.cu -c $(INCLUDES) $(LIBS)
+	mpicc -O2 -lpthread -lcudart -lftw -D_REENTRANT pmdgpu.c CUDAEnergy.o Verlet.o Configuration.o CommandLineOptions.o ThreadMain.o MersenneTwister.o Energy.o Rotation.o -o pmdgpu-emu $(INCLUDES) $(LIBS) 
+
+clean:
+	rm -f *.o 
+	rm -f *.linkinfo
+	rm -f pmdgpu
+	rm -f pmdgpu-emu
+	rm -f pmdgpu-debug
+
+install:	pmdgpu
+	cp pmdgpu $(SCRATCH)/bin/
+
+install-emu:	pmdgpu-emu
+	cp pmdgpu-emu $(SCRATCH)/bin/
+
+install-debug:	pmdgpu-debug
+	cp pmdgpu-debug $(SCRATCH)/bin/
+
+pmdgpu-debug:	pmdgpu.c pmdgpu.h MersenneTwister.c ThreadMain.c CommandLineOptions.c Configuration.c Verlet.c CUDAEnergy.cu Energy.c Rotation.c
+
+	$(CC) $(DEBUG_CFLAGS) -c MersenneTwister.c 
+	$(CC) $(DEBUG_CFLAGS) -c ThreadMain.c 
+	$(CC) $(DEBUG_CFLAGS) -c CommandLineOptions.c 
+	$(CC) $(DEBUG_CFLAGS) -c Configuration.c 
+	$(CC) $(DEBUG_CFLAGS) -c Verlet.c 
+	$(CC) $(DEBUG_CFLAGS) -c CUDAEnergy.cu 
+	$(CC) $(DEBUG_CFLAGS) -c Energy.c 
+	$(CC) $(DEBUG_CFLAGS) -c Rotation.c 
+
+	mpicc -L/opt/apps/cuda/3.0/cuda/lib64 $(DEBUG_CFLAGS) -I. pmdgpu.c MersenneTwister.o ThreadMain.o CommandLineOptions.o Configuration.o Verlet.o CUDAEnergy.o Energy.o Rotation.o -o pmdgpu-debug
+
+#/opt/apps/cuda/3.0/cuda/lib
+
+#-L/opt/apps/cuda/3.0/cuda/lib64
+

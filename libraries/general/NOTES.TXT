@@ -1,0 +1,23 @@
+As of today, 12 April 2004 
+
+I am proclaiming my infrastructure as follows for the random number generator:
+
+setCommandLineParameters(argc, argv);
+if (getFlagParam("-randomize")) randomize();
+else initializeRandomNumberGenerator();
+
+additional command line options can be grabbed with 
+double getDoubleParam("-whatever");
+int getIntParam("-int_param");
+
+don't forget 
+#include <ftw_param.h>
+#include <ftw_rng.h>
+and 
+#include <ftw_std.h> (I think...)
+
+
+I'm not going to go back and fix everything else, but what I write from here on out will be this way because it's what works.  
+
+-FTW
+

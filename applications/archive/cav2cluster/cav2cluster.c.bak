@@ -1,0 +1,206 @@
+/* cav2cluster.c */
+
+// Finds all clusters, from a given file of cavities. 
+// Remember to run uniq and scrub the input! 
+
+// In:  .cav
+// Out: .cluster  
+// Ouput format is:  ("%d\t%lf\t%lf\t%lf\t%lf\n", cluster_number, x, y, z, d)
+
+#define MAX_PAIRS 65536
+#define MAX_CAVITIES 6500
+#define MAX_CLUSTERS 16384
+
+#include <ftw_std.h>
+#include "cav2cluster.h"
+
+extern double box_x, box_y, box_z;
+extern int mirror_depth;
+extern FILE *instream;
+extern double sfactor;
+
+int number_of_clusters=0;
+int number_of_cavities=0;
+int number_of_pairs=0;
+double x[MAX_CAVITIES], y[MAX_CAVITIES], z[MAX_CAVITIES], d[MAX_CAVITIES];
+int clusters[MAX_CLUSTERS][MAX_CAVITIES];
+int cavities_in_cluster[MAX_CAVITIES];
+
+int cavityA[MAX_PAIRS], cavityB[MAX_PAIRS];
+
+int main(int argc, char* argv[])
+{
+  parseCommandLineOptions(argc, argv);
+  readInputStream();
+  findAllPairs();
+  turnPairsIntoClusters();
+  mergeClusters();
+  deleteEmptyClusters();
+  printClusters();
+}
+
+void printClusters()
+{
+  int i, j;
+  for (i=0; i<number_of_clusters; i++)
+    for (j=0; j<cavities_in_cluster[i]; j++)
+    { 
+      int cavity_number;
+      cavity_number = clusters[i][j];
+      printf("%d\t%05d\t%lf\t%lf\t%lf\t%lf\n", i, cavity_number, x[cavity_number], 
+             y[cavity_number], z[cavity_number], d[cavity_number]);
+    }
+}
+
+void deleteEmptyClusters()
+{
+  int index1, index2, index3;
+
+  for (index1 = 0; index1 < number_of_clusters; index1++)
+  {
+    if (cavities_in_cluster[index1] == 0) 
+    {
+      for (index2 = index1; index2 < number_of_clusters; index2++)
+      {
+        for (index3 = 0; index3<cavities_in_cluster[index2 + 1]; index3++)
+          clusters[index2][index3] = clusters[index2 + 1][index3];
+        cavities_in_cluster[index2] = cavities_in_cluster[index2 + 1];
+      }
+      number_of_clusters--;
+      index1 = 0;
+    }
+  }
+}
+
+void turnPairsIntoClusters()
+{
+  int i=0;
+  number_of_clusters = 0;
+
+  // add in the loners...
+  for (i=0; i<number_of_cavities; i++)
+  {
+    clusters[number_of_clusters][0] = i;
+    cavities_in_cluster[number_of_clusters] = 1;
+    number_of_clusters++;
+printf("%d clusters (loners)\n", number_of_clusters);
+  }
+  for(i=0; i<number_of_pairs; i++)
+  {
+    clusters[number_of_clusters][0] = cavityA[i];
+    clusters[number_of_clusters][1] = cavityB[i];
+    cavities_in_cluster[number_of_clusters] = 2;
+    number_of_clusters++;
+printf("%d clusters (pairs)\n", number_of_clusters);
+  }
+
+  V printf("%d clusters.\n", number_of_clusters);
+}
+
+void mergeClusters()
+{
+  int i, j1, j2, k1, k2;
+  for (i=0; i<number_of_cavities; i++)
+  {
+    for (j1=0; j1<MAX_CLUSTERS; j1++)
+    {
+      for (k1=0; k1<cavities_in_cluster[j1]; k1++)
+      if (clusters[j1][k1] == i)
+      {
+        for (j2=j1+1; j2<MAX_CLUSTERS; j2++)
+        {
+          for (k2=0; k2<cavities_in_cluster[j2]; k2++)
+          {
+            if(clusters[j2][k2] == i)
+            {
+              int index1, index2;
+              for (index2 = 0; index2 < cavities_in_cluster[j2]; index2++)
+              {
+                int found=FALSE;
+                for (index1 = 0; index1 < cavities_in_cluster[j1]; index1++)
+                {
+                  if (clusters[j1][index1] == clusters[j2][index2]) found=TRUE;
+                }
+                if (!found)
+                {
+                  clusters[j1][cavities_in_cluster[j1]++] = clusters[j2][index2];
+                }
+              }
+              cavities_in_cluster[j2] = 0;
+            } // end if
+          }
+        }
+      }
+    }
+  }
+}
+
+void findAllPairs()
+{
+  double shift_x, shift_y, shift_z;
+  double dx2, dy2, dz2;
+  int i, j, k;
+
+  for (i = 0; i < number_of_cavities - 1; i++)
+  for (j = i + 1; j < number_of_cavities; j++)
+  {
+    for (shift_x = (-box_x * mirror_depth); shift_x <= (box_x * mirror_depth); shift_x += box_x)
+    for (shift_y = (-box_y * mirror_depth); shift_y <= (box_y * mirror_depth); shift_y += box_y)
+    for (shift_z = (-box_z * mirror_depth); shift_z <= (box_z * mirror_depth); shift_z += box_z)
+    {
+      dx2 = (shift_x + x[i] - x[j]) * (shift_x + x[i] - x[j]);
+      dy2 = (shift_y + y[i] - y[j]) * (shift_y + y[i] - y[j]);
+      dz2 = (shift_z + z[i] - z[j]) * (shift_z + z[i] - z[j]);
+
+      if ((dx2 + dy2 + dz2) < ((d[i] + d[j]) * (d[i] + d[j]) * .25 * sfactor * sfactor))
+      {
+        int found = FALSE;
+        // make sure it isn't already listed...
+        for (k=0; k<number_of_pairs; k++)
+          if (((cavityA[k] == i) && (cavityB[k] == j)) || ((cavityA[k] == j) && (cavityB[k] == j)))
+            found = TRUE;
+        if (!found)
+        {
+          cavityA[number_of_pairs] = i;
+          cavityB[number_of_pairs] = j;
+          number_of_pairs++;
+        }
+      }
+    }
+  }
+
+  V printf("%d pairs.\n" , number_of_pairs);
+}
+
+void readInputStream()
+{
+  char line[80];
+  char *xs, *ys, *zs, *ds;
+
+  while (TRUE)
+  {
+    fgets(line, 80, instream);
+    if (feof(instream)) break;
+
+    xs = strtok(line, "\t");
+    ys = strtok(NULL, "\t");
+    zs = strtok(NULL, "\t");
+    ds = strtok(NULL, "\n");
+
+    x[number_of_cavities] = strtod(xs, NULL);
+    y[number_of_cavities] = strtod(ys, NULL);
+    z[number_of_cavities] = strtod(zs, NULL);
+    d[number_of_cavities] = strtod(ds, NULL);
+
+    number_of_cavities++;
+
+    if (number_of_cavities > MAX_CAVITIES)
+    {
+      printf("Too many cavities.");
+      exit(0);
+    }
+  }
+  
+  V printf("%d cavities.\n", number_of_cavities);
+}
+

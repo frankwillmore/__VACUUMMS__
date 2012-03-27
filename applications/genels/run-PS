@@ -1,0 +1,9 @@
+#!/bin/bash
+
+    cat ~/materials/polystyrene/gfg/1.gfg | ./genels \
+    -box_dimension 25.52520 \
+    -r_i 2.52 \
+    -epsilon_i 2.9 \
+    -concurrency 8 \
+    -verlet_cutoff_sq 100.0 \
+    -els_directory $SCRATCH/els 

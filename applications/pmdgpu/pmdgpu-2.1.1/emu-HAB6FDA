@@ -1,0 +1,33 @@
+#!/bin/bash
+
+## Execute this file using qsub command:  qsub run-HAB6FDA
+
+#$ -V                             # Inherit the submission environment
+#$ -cwd                           # Start job in submission dir
+#$ -N dirty                       # Job name
+## -j y                           # Combine stderr and stdout into stdout
+#$ -o $JOB_NAME-$JOB_ID.hst       # Name of the output file
+#$ -e $JOB_NAME-$JOB_ID.err       # Name of the stderr file
+#$ -pe 1way 32                    # 8 cores/node on Longhorn
+#$ -q normal                      # Queue name
+#$ -P gpgpu                       # project type
+## -A PMD-GPU                     # Account (defunct)
+#$ -A A-ccsc                      # Account
+#$ -l h_rt=4:00:00                # runtime (hh:mm:ss) - 6 hours max
+
+ibrun -n 2 -o 0 \
+    pmdgpu-emu  -box 32.1874 32.1874 32.1874 \
+                -N 8 \
+                -n 8 \
+                -config_directory /ranger/share/home/00479/willmore/materials/HAB-6FDA/gfg/ \
+                -config_prefix HAB_ \
+                -config_suffix .gfg \
+                -config_start 1 \
+                -target_time 1000.0 \
+                -verlet_cutoff_sq 64.0 \
+                -verbose \
+                -resolution_t 50.0 \
+                -Nitrogen \
+                -T 308 \
+                -individual_trajectories \
+                -use_mpi 

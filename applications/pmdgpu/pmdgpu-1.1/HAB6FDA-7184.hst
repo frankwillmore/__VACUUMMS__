@@ -1,0 +1,177 @@
+TACC: Setting memory limits for job 7184 to unlimited KB
+TACC: Dumping job script:
+--------------------------------------------------------------------------------
+#!/bin/bash
+
+#$ -V                             # Inherit the submission environment
+#$ -cwd                           # Start job in submission dir
+#$ -N HAB6FDA                     # Job name
+#$ -j y                           # Combine stderr and stdout into stdout
+#$ -o $JOB_NAME-$JOB_ID.hst       # Name of the output file
+#$ -pe 8way 64                    # 8 cores/node on Longhorn
+#$ -q normal                      # Queue name
+#$ -P gpgpu                       # project type
+#$ -A PMD-GPU                     # Account
+#$ -l h_rt=2:00:00                # runtime (hh:mm:ss) - 4 hours
+
+ibrun -n 8 -o 0 \
+    pmdgpu -box 32.1874 32.1874 32.1874 \
+           -N 8 \
+           -n 25 \
+           -config_directory /home/00479/willmore/HAB-6FDA/gfg1/ \
+           -config_prefix HAB_ \
+           -config_suffix .gfg \
+           -config_start 1 \
+           -target_time 10.0 \
+           -verlet_cutoff_sq 100.0 \
+           -resolution_t 1.0 \
+           -Helium \
+           -T 308 \
+           -use_mpi
+--------------------------------------------------------------------------------
+TACC: Done.
+c204-109.longhorn
+TACC: Starting up job 7184
+TACC: Setting up parallel environment for MVAPICH ssh-based mpirun.
+TACC: Setup complete. Running job script.
+TACC: starting parallel tasks...
+Loading Helium parameters...
+
+initializing MPI...
+Loading Helium parameters...
+
+initializing MPI...
+Loading Helium parameters...
+
+initializing MPI...
+Loading Helium parameters...
+
+initializing MPI...
+Loading Helium parameters...
+
+initializing MPI...
+Loading Helium parameters...
+
+initializing MPI...
+Loading Helium parameters...
+
+initializing MPI...
+Loading Helium parameters...
+
+initializing MPI...
+opening /home/00479/willmore/HAB-6FDA/gfg1//HAB_6.gfg for configuration input data...
+opening /home/00479/willmore/HAB-6FDA/gfg1//HAB_4.gfg for configuration input data...
+opening /home/00479/willmore/HAB-6FDA/gfg1//HAB_2.gfg for configuration input data...
+opening /home/00479/willmore/HAB-6FDA/gfg1//HAB_8.gfg for configuration input data...
+opening /home/00479/willmore/HAB-6FDA/gfg1//HAB_1.gfg for configuration input data...
+opening /home/00479/willmore/HAB-6FDA/gfg1//HAB_3.gfg for configuration input data...
+opening /home/00479/willmore/HAB-6FDA/gfg1//HAB_5.gfg for configuration input data...
+opening /home/00479/willmore/HAB-6FDA/gfg1//HAB_7.gfg for configuration input data...
+result for configuration 1:
+
+0.000000	7.077856
+1.000000	32.335701
+2.000000	55.446758
+3.000000	71.727287
+4.000000	116.139000
+5.000000	132.923355
+6.000000	145.939240
+7.000000	193.961380
+8.000000	224.995224
+9.000000	213.474579
+10.000000	282.874573
+result for configuration 2:
+
+0.000000	6.891034
+1.000000	20.799746
+2.000000	41.376492
+3.000000	49.843719
+4.000000	70.637550
+5.000000	76.453583
+6.000000	75.104538
+7.000000	116.803589
+8.000000	131.678604
+9.000000	130.180084
+10.000000	145.219620
+result for configuration 3:
+
+0.000000	10.955043
+1.000000	32.637520
+2.000000	50.954964
+3.000000	69.692322
+4.000000	96.775070
+5.000000	105.005692
+6.000000	105.366844
+7.000000	91.054199
+8.000000	174.104752
+9.000000	221.961151
+10.000000	210.482025
+result for configuration 4:
+
+0.000000	4.759136
+1.000000	22.694069
+2.000000	63.910652
+3.000000	73.983810
+4.000000	81.088379
+5.000000	102.428833
+6.000000	99.394333
+7.000000	109.328087
+8.000000	93.095795
+9.000000	118.675034
+10.000000	123.166222
+result for configuration 5:
+
+0.000000	6.265852
+1.000000	24.141317
+2.000000	40.943344
+3.000000	66.372597
+4.000000	85.790489
+5.000000	97.324509
+6.000000	105.672523
+7.000000	106.260674
+8.000000	129.641281
+9.000000	125.937569
+10.000000	138.267746
+result for configuration 6:
+
+0.000000	6.469743
+1.000000	29.007828
+2.000000	68.084709
+3.000000	96.564911
+4.000000	115.806519
+5.000000	116.335075
+6.000000	151.399979
+7.000000	126.892319
+8.000000	175.968643
+9.000000	174.921188
+10.000000	195.646500
+result for configuration 7:
+
+0.000000	8.937587
+1.000000	28.359955
+2.000000	46.579334
+3.000000	72.318726
+4.000000	119.743500
+5.000000	116.591347
+6.000000	182.034271
+7.000000	162.224350
+8.000000	217.920395
+9.000000	229.195526
+10.000000	258.192627
+result for configuration 8:
+
+0.000000	8.655679
+1.000000	38.061005
+2.000000	47.408516
+3.000000	107.430595
+4.000000	127.906487
+5.000000	126.386963
+6.000000	143.733536
+7.000000	148.414749
+8.000000	250.421509
+9.000000	293.290100
+10.000000	323.905182
+TACC: Shutting down parallel environment.
+TACC: Shutdown complete. Exiting.
+TACC: Cleaning up after job: 7184
+TACC: Done.

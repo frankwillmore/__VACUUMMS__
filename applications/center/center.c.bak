@@ -1,0 +1,174 @@
+/* center.c */
+
+// Takes a given cluster (as a set of cavities) and shifts it around until 
+// it's no longer hanging out of the sim box.
+// program does not check that all cavities are one cluster
+// only makes sure that no pair straddles a boundary
+
+// In:  .cav
+// Out: .cav  
+
+#define MAX_PAIRS 8192
+#define MAX_CAVITIES 16384
+#define MAX_CLUSTERS 8192
+
+#include <ftw_std.h>
+#include "center.h"
+
+extern double box_x, box_y, box_z;
+extern FILE *instream;
+extern double sfactor;
+
+int number_of_cavities=0;
+double x[MAX_CAVITIES], y[MAX_CAVITIES], z[MAX_CAVITIES], d[MAX_CAVITIES];
+
+double shift_resolution = .1;
+
+int main(int argc, char* argv[])
+{
+  double shift_x, shift_y, shift_z;
+  int x_shift_okay=0, y_shift_okay=0, z_shift_okay=0;
+  int i;
+
+  parseCommandLineOptions(argc, argv);
+  readInputStream();
+
+  for (shift_x=0; shift_x < box_x; shift_x += shift_resolution)
+  {
+V printf("shift_x = %lf\n", shift_x);
+    if ((getStraddleInfo() & 1) == 0) 
+    {  
+      x_shift_okay = 1;
+      break;
+    }
+
+    for (i=0; i<number_of_cavities; i++)
+    {
+       x[i] += shift_resolution;
+       if (x[i] > box_x) x[i] -= box_x;
+    }
+  }
+
+  for (shift_y=0; shift_y < box_y; shift_y += shift_resolution)
+  {
+V printf("shift_y = %lf\n", shift_y);
+    if ((getStraddleInfo() & 2) == 0) 
+    {  
+      y_shift_okay = 1;
+      break;
+    }
+
+    for (i=0; i<number_of_cavities; i++)
+    {
+      y[i] += shift_resolution;
+      if (y[i] > box_y) y[i] -= box_y;
+    }
+  }
+
+  for (shift_z=0; shift_z < box_z; shift_z += shift_resolution)
+  {
+V printf("shift_z = %lf\n", shift_z);
+    if ((getStraddleInfo() & 4) == 0) 
+    {  
+      z_shift_okay = 1;
+      break;
+    }
+
+    for (i=0; i<number_of_cavities; i++)
+    {
+      z[i] += shift_resolution;
+      if(z[i] > box_z) z[i] -= box_z;
+    }
+  }
+
+  if (z_shift_okay && y_shift_okay && x_shift_okay) 
+  {
+    printCavities();
+    exit(0);
+  }
+
+  if (!x_shift_okay) printf("percolation in x.\n");
+  if (!y_shift_okay) printf("percolation in y.\n");
+  if (!z_shift_okay) printf("percolation in z.\n");
+
+  exit(1);
+}
+
+void printCavities()
+{
+  int cavity_number;
+  for (cavity_number=0; cavity_number<number_of_cavities; cavity_number++)
+  printf("%lf\t%lf\t%lf\t%lf\n", x[cavity_number], y[cavity_number], z[cavity_number], d[cavity_number]);
+}
+
+int getStraddleInfo()
+{
+  double shift_x, shift_y, shift_z;
+  double dx2, dy2, dz2;
+  int i, j, k;
+  int mirror_depth = 1;
+  int mirror_mask = 0;
+  // if straddling x, 1 is set, y -> 2 is set, z -> 4 is set.
+
+  for (i = 0; i < number_of_cavities - 1; i++)
+  for (j = i + 1; j < number_of_cavities; j++)
+  {
+    for (shift_x = (-box_x * mirror_depth); shift_x <= (box_x * mirror_depth); shift_x += box_x)
+    for (shift_y = (-box_y * mirror_depth); shift_y <= (box_y * mirror_depth); shift_y += box_y)
+    for (shift_z = (-box_z * mirror_depth); shift_z <= (box_z * mirror_depth); shift_z += box_z)
+    {
+      dx2 = (shift_x + x[i] - x[j]) * (shift_x + x[i] - x[j]);
+      dy2 = (shift_y + y[i] - y[j]) * (shift_y + y[i] - y[j]);
+      dz2 = (shift_z + z[i] - z[j]) * (shift_z + z[i] - z[j]);
+
+      if ((dx2 + dy2 + dz2) < ((d[i] + d[j]) * (d[i] + d[j]) * .25 * sfactor * sfactor))
+      {
+        if (shift_x != 0) mirror_mask = mirror_mask | 1;
+        if (shift_y != 0) mirror_mask = mirror_mask | 2;
+        if (shift_z != 0) mirror_mask = mirror_mask | 4;
+      }
+    }
+  }
+
+  for (i=0; i<number_of_cavities; i++)
+  {
+    if ((x[i] + .5 * d[i] > box_x) || (x[i] < .5 * d[i])) mirror_mask |= 1;
+    if ((y[i] + .5 * d[i] > box_x) || (y[i] < .5 * d[i])) mirror_mask |= 2;
+    if ((z[i] + .5 * d[i] > box_x) || (z[i] < .5 * d[i])) mirror_mask |= 4;
+  }
+
+  return mirror_mask;
+}
+
+void readInputStream()
+{
+  char line[80];
+  char *xs, *ys, *zs, *ds;
+
+  while (TRUE)
+  {
+    fgets(line, 80, instream);
+    if (feof(instream)) break;
+
+    xs = strtok(line, "\t");
+    ys = strtok(NULL, "\t");
+    zs = strtok(NULL, "\t");
+    ds = strtok(NULL, "\n");
+
+    x[number_of_cavities] = strtod(xs, NULL);
+    y[number_of_cavities] = strtod(ys, NULL);
+    z[number_of_cavities] = strtod(zs, NULL);
+    d[number_of_cavities] = strtod(ds, NULL);
+
+    number_of_cavities++;
+
+    if (number_of_cavities > MAX_CAVITIES)
+    {
+      printf("Too many cavities.");
+      exit(0);
+    }
+  }
+  
+  V printf("%d cavities.\n", number_of_cavities);
+}
+

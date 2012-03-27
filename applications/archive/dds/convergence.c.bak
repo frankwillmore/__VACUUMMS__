@@ -1,0 +1,246 @@
+/* convergence.c */
+
+#include "convergence.h"
+
+#include <ftw_rng.h>
+#include <ftw_types.h>
+
+#include <stdio.h>
+
+extern double max_scale;
+extern double d_max_scale;
+extern double diameter_scale;
+extern double x[], y[], z[];
+extern double box_x, box_y, box_z;
+extern int number_of_molecules;
+
+double epsilon = 61.035;
+double sigma0 = 1.000;
+extern double c_convergence_ratio;
+extern double d_convergence_ratio;
+extern int number_of_samples;
+
+int n_trials = 1000;
+double d_step_size = .1;
+
+int mirror_depth = 1;
+int volume_sampling = 0;
+
+void sampleCavities()
+{
+  int i=0;
+  ftw_vector sample;
+  ftw_vector center;
+  double diameter;
+  double energy;
+
+  while (i<number_of_samples)
+  {
+    double dx, dy, dz;
+    double shift_x, shift_y, shift_z;
+    int valid = 0;
+
+    sample.x = box_x * rnd();
+    sample.y = box_y * rnd();
+    sample.z = box_z * rnd();
+    center = findCenter(sample);
+    diameter = findDiameter(center);
+    energy = getTotalInteraction(center.x, center.y, center.z, diameter);
+
+    if (volume_sampling==1)
+    {
+      valid = 0;
+      for (shift_x = -box_x; shift_x < box_x; shift_x += box_x)
+        for (shift_y = -box_y; shift_y < box_y; shift_y += box_y)
+          for (shift_z = -box_z; shift_z < box_z; shift_z += box_z)
+          {
+            dx = shift_x + sample.x - center.x;
+            dy = shift_y + sample.y - center.y;
+            dz = shift_z + sample.z - center.z;
+            if ((dx*dx + dy*dy + dz*dz) < (.25*diameter*diameter)) valid = 1;
+          }
+    }
+    else valid = 1;
+
+    if (valid)
+    {
+       printf("%lf\t%lf\t%lf\t%lf\n", center.x, center.y, center.z, diameter);
+       i++;
+    }
+  }
+}
+
+ftw_vector findCenter(ftw_vector sample)
+{
+  double new_x, new_y, new_z;
+  int trials = 0;
+  double scale = max_scale;
+  int more_trials = 0;
+
+  while (trials < n_trials) 
+  {
+    double dx, dy, dz;
+
+    dx = scale * (rnd() - .5);
+    dy = scale * (rnd() - .5);
+    dz = scale * (rnd() - .5);
+
+    new_x = sample.x + dx;
+    new_y = sample.y + dy;
+    new_z = sample.z + dz;
+    if (new_x >= box_x) new_x -= box_x;
+    if (new_x < 0) new_x += box_x;
+    if (new_y >= box_y) new_y -= box_y;
+    if (new_y < 0) new_y += box_y;
+    if (new_z >= box_z) new_z -= box_z;
+    if (new_z < 0) new_z += box_z;
+
+    if (getRepulsiveInteraction(new_x, new_y, new_z, 1) 
+      < getRepulsiveInteraction(sample.x, sample.y, sample.z, 1)) 
+    {
+      sample.x = new_x;
+      sample.y = new_y;
+      sample.z = new_z;
+      scale /= c_convergence_ratio;
+      if (scale > max_scale) scale = max_scale;
+    }
+    else 
+    {
+      scale *= c_convergence_ratio;
+    }
+    trials++;
+
+    if (scale < .001 * max_scale) break;
+    if ((trials = n_trials - 1) && (more_trials = 0))
+    {
+      trials = 0;
+      more_trials = 1;
+    }
+  }
+
+  if (scale > .01*max_scale) 
+  {
+    printf("not converging:  %lf\n", scale);
+  }
+
+  return sample;
+}
+
+int checkInclusion(ftw_vector center, double diameter)
+{
+  int included = 0;
+  double d_sq, diameter_sq;
+  double shift_x, shift_y, shift_z;
+  double dx, dy, dz;
+  int i;
+
+  diameter_sq = diameter*diameter/4;
+
+  for (shift_x = -box_x; shift_x < box_x; shift_x += box_x)
+    for (shift_y = -box_y; shift_y < box_y; shift_y += box_y)
+      for (shift_z = -box_z; shift_z < box_z; shift_z += box_z)
+        for (i=0; i< number_of_molecules; i++)
+        {
+          dx = shift_x + x[i] - center.x;
+          dy = shift_y + y[i] - center.y;
+          dz = shift_z + z[i] - center.z;
+          d_sq = dx*dx + dy*dy + dz*dz;
+          if (d_sq < diameter_sq) included++;
+        }
+
+  return included;
+}
+
+double findDiameter(ftw_vector sample)
+{
+  int trials = 0;
+  double d_min=0.0, d_mid, d_max;
+  double e_mid;
+
+  // initial guess for d_min
+  for(d_min = 0;;d_min += d_step_size)
+    if (getTotalInteraction(sample.x, sample.y, sample.z, d_min) < 
+        getTotalInteraction(sample.x, sample.y, sample.z, d_min + d_step_size))
+      break;
+
+  // initial guess for d_max
+  for(d_max = d_min;;d_max += d_step_size)
+    if (getTotalInteraction(sample.x, sample.y, sample.z, d_max) > 0) 
+      break;
+
+//  printf("d_min, max:  %lf, %lf\n", d_min, d_max);
+
+  for (trials=0; trials < n_trials; trials++)
+  {
+    d_mid = (d_min + d_max)/2;
+    e_mid = getTotalInteraction(sample.x, sample.y, sample.z, d_mid);
+    
+    if (e_mid > 0) d_max = d_mid;
+    else d_min = d_mid;
+  }
+
+  return d_mid;
+}
+
+double getTotalInteraction(double sample_x, double sample_y, double sample_z, double sample_d)
+{
+  return getRepulsiveInteraction(sample_x, sample_y, sample_z, sample_d) 
+  + getAttractiveInteraction(sample_x, sample_y, sample_z, sample_d);
+}
+
+double getRepulsiveInteraction(double sample_x, double sample_y, double sample_z, double sample_d)
+{
+  double interaction = 0;
+  double dx, dy, dz, d_sq;
+  double shift_x, shift_y, shift_z;
+  double sigmaij, sigma12;
+  int i;
+
+  sigmaij = (sigma0 + sample_d)/2.0;
+  sigma12 = sigmaij*sigmaij*sigmaij*sigmaij*sigmaij*sigmaij*sigmaij*sigmaij*sigmaij*sigmaij*sigmaij*sigmaij;
+
+  for (shift_x = -mirror_depth*box_x; shift_x <= mirror_depth*box_x; shift_x += box_x)
+    for (shift_y = -mirror_depth*box_y; shift_y <= mirror_depth*box_y; shift_y += box_y)
+      for (shift_z = -mirror_depth*box_z; shift_z <= mirror_depth*box_z; shift_z += box_z)
+        for (i=0; i< number_of_molecules; i++)
+        {
+          dx = shift_x + x[i] - sample_x;
+          dy = shift_y + y[i] - sample_y;
+          dz = shift_z + z[i] - sample_z;
+          d_sq = dx*dx + dy*dy + dz*dz;
+          interaction += sigma12/(d_sq*d_sq*d_sq*d_sq*d_sq*d_sq);
+        }
+
+  interaction *= (4*epsilon);
+
+  return interaction;
+}
+
+double getAttractiveInteraction(double sample_x, double sample_y, double sample_z, double sample_d)
+{
+  double interaction = 0;
+  double dx, dy, dz, d_sq;
+  double shift_x, shift_y, shift_z;
+  double sigmaij, sigma6;
+  int i;
+
+  sigmaij = (sigma0 + sample_d)/2.0;
+  sigma6 = sigmaij*sigmaij*sigmaij*sigmaij*sigmaij*sigmaij;
+
+  for (shift_x = -mirror_depth*box_x; shift_x <= mirror_depth*box_x; shift_x += box_x)
+    for (shift_y = -mirror_depth*box_y; shift_y <= mirror_depth*box_y; shift_y += box_y)
+      for (shift_z = -mirror_depth*box_z; shift_z <= mirror_depth*box_z; shift_z += box_z)
+        for (i=0; i< number_of_molecules; i++)
+        {
+          dx = shift_x + x[i] - sample_x;
+          dy = shift_y + y[i] - sample_y;
+          dz = shift_z + z[i] - sample_z;
+          d_sq = dx*dx + dy*dy + dz*dz;
+          interaction -= sigma6/(d_sq*d_sq*d_sq);
+        }
+
+  interaction *= (4*epsilon);
+
+  return interaction;
+}
+

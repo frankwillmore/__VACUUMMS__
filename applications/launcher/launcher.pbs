@@ -1,0 +1,103 @@
+#!/bin/csh
+#
+# Simple PBS script for submitting multiple serial
+# jobs (e.g. parametric studies) using an MPI wrapper
+# to launch the jobs.
+#
+# To use, build the launcher executable and your
+# serial application(s) and place them in your WORKDIR
+# directory.  Then, edit the CONTROL_FILE to specify 
+# each executable per process.
+#-------------------------------------------------------
+#-------------------------------------------------------
+# 
+#         <------ Setup Parameters ------>
+#
+#PBS -N Parametric
+#PBS -l nodes=2:ppn=2
+#PBS -l walltime=01:00:00
+#PBS -j oe 
+#
+setenv EXECUTABLE     launcher      
+setenv CONTROL_FILE   paramlist
+setenv NUM_NODES      2 
+setenv PROCS_PER_NODE 2 
+setenv WORKDIR        "YOURE_WORKING_DIR_HERE"
+#
+# 
+# Variable description:
+#
+#  EXECUTABLE     = name of the job launcher executable
+#  CONTROL_FILE   = text input file which specifies
+#                   executable for each MPI process
+#  NUM_NODES      = total number of nodes to request
+#  PROCS_PER_NODE = number of processors per node
+#         
+#  Note: total number of 
+#        MPI processes = NUM_NODES*PROCS_PER_NODE
+#        Please be sure that NUM_NODES and PROCS_PER_NODE
+#        are consistent with the "PBS -l nodes" directive
+#        above.
+#
+#      <------ End Setup Parameters ------>
+#--------------------------------------------------------
+#--------------------------------------------------------
+
+#----------------
+# Error Checking
+#----------------
+
+if ( ! -e $WORKDIR ) then
+	echo "\nError: unable to change to working directory."
+	echo "       ($WORKDIR)"
+	echo "\nJob not submitted."
+	exit
+endif
+
+if ( ! -f $WORKDIR/$EXECUTABLE ) then
+	echo "\nError: unable to find launcher executable ($EXECUTABLE)."
+	echo "\nJob not submitted."
+	exit
+endif
+
+if ( ! -f $WORKDIR/$CONTROL_FILE ) then
+	echo "\nError: unable to find input control file ($CONTROL_FILE)."
+	echo "\nJob not submitted."
+	exit
+endif
+
+cd $WORKDIR/
+
+set TOTAL=$NUM_NODES
+@ TOTAL *= $PROCS_PER_NODE
+echo "\nTotal MPI processes requested = "$TOTAL"\n"
+
+set icnt=1
+
+while ($icnt <= $TOTAL) 
+    setenv TMP `cat $CONTROL_FILE | awk 'NR=='$icnt | awk '{print $1}'`
+    if ( $TMP == "") then
+	echo "\nError: Not enough processes specified in control file"
+	echo "       (executable not defined for process $icnt of $TOTAL)"
+	echo "\nJob not submitted."
+	exit
+    endif
+    if ( ! -f $TMP ) then
+	echo "\nError: Executable not found for process $icnt of $TOTAL"
+	echo "\nJob not submitted."
+	echo "       
+	exit
+    endif
+    @ icnt++
+end
+
+#----------------
+# Job Submission
+#----------------
+
+echo "MASTER HOST:   $PBS_O_HOST is the master host"
+echo "NODEFILE:      $PBS_NODEFILE is the nodefile"
+echo "WORKING DIR:   $WORKDIR/"
+
+mpirun -np $TOTAL ./$EXECUTABLE $CONTROL_FILE
+

@@ -1,0 +1,19 @@
+
+utils is for pipes, programs which have main()
+these are typically smaller than applications, which also have main()
+libraries are for routines that are called, do not have main()
+
+
+April 21, 2011:  added cull2.c, moved from ddx collection.  
+		I don't know what it does or how its different from cull.c 
+		And I haven't explored it.  But I'm saving it, just in case.
+
+FORMAT CONVERTERS:  
+
+FORMATS ARE:  	
+pov		povray input file
+gfg		generalized configuration file:  x\ty\tz\t\sigma\tepsilon\t
+gfgc		gfg plus one additional column for color (used for drawing the positive matter)
+fvi		free volume intensity:  x\ty\tz\tintensity
+
+

@@ -1,0 +1,56 @@
+/* command_line_parser.c */
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include "command_line_parser.h"
+#include <ftw_rng.h>
+
+int verbose;
+extern double box_x, box_y, box_z;
+double c_convergence_ratio = .92;
+int number_of_samples;
+extern int n_trials;
+extern int d_step_size;
+extern int mirror_depth;
+extern int volume_sampling;
+extern FILE *instream;
+
+void parseCommandLineOptions(int argc, char *argv[])
+{
+  int i=0;
+
+  randinit(6305);
+  instream = stdin;
+
+  if (argc < 2) printUsage();
+
+  while (++i<argc)
+  {
+    if ((*argv[i]) != '-') instream = fopen(argv[i], "r");
+    else if (!strcmp(argv[i], "-usage")) printUsage();
+    else if (!strcmp(argv[i], "-v")) verbose = 1;
+    else if (!strcmp(argv[i], "-randomize")) randomize();
+    else if (!strcmp(argv[i], "-box_x")) box_x = strtod(argv[++i], NULL);
+    else if (!strcmp(argv[i], "-box_y")) box_y = strtod(argv[++i], NULL);
+    else if (!strcmp(argv[i], "-box_z")) box_z = strtod(argv[++i], NULL);
+    else if (!strcmp(argv[i], "-box"))
+    {
+      box_x = strtod(argv[++i], NULL);
+      box_y = strtod(argv[++i], NULL);
+      box_z = strtod(argv[++i], NULL);
+    }
+    else if (!strcmp(argv[i], "-c_convergence_ratio")) c_convergence_ratio = strtod(argv[++i], NULL);
+    else if (!strcmp(argv[i], "-d_step_size")) d_step_size = strtod(argv[++i], NULL);
+    else if (!strcmp(argv[i], "-n")) number_of_samples = strtol(argv[++i], NULL, 10);
+    else if (!strcmp(argv[i], "-n_trials")) n_trials = strtol(argv[++i], NULL, 10);
+    else if (!strcmp(argv[i], "-volume_sampling")) volume_sampling = 1;
+    else if (!strcmp(argv[i], "-mirror_depth")) mirror_depth = strtol(argv[++i], NULL, 10);
+  }
+} 
+
+void printUsage()
+{
+  printf("usage:  dds [-options]\n");
+  exit(0);
+}

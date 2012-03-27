@@ -1,0 +1,119 @@
+#@ shell = /bin/csh
+#
+# Simple POE script for submitting multiple serial
+# jobs (e.g. parametric studies) using an MPI wrapper
+# to launch the jobs.
+#
+# To use, build the launcher executable and your
+# serial application(s) and place them in your WORKDIR 
+# directory.  Then, edit the CONTROL_FILE to specify 
+# each executable per process.
+#-------------------------------------------------------
+#-------------------------------------------------------
+# 
+#         <------ Setup Parameters ------>
+
+#@ class            = normal
+#@ wall_clock_limit = 0:30:00
+#@ notify_user      = YOURE_EMAIL_HERE
+#@ tasks            = 4
+#@ memory           = 512
+
+setenv EXECUTABLE     launcher      
+setenv CONTROL_FILE   paramlist
+setenv NUM_PROCS      4 
+setenv WORKDIR        "YOURE_WORKING_DIR_HERE"
+
+# Variable description:
+#
+#  EXECUTABLE     = name of the job launcher executable
+#  CONTROL_FILE   = text input file which specifies
+#                   executable for each MPI process
+#  NUM_PROCS      = total number of desired MPI processes
+#
+#  Note: Please be sure that NUM_PROCS is consistent
+#        with the "#@ tasks" directive above. 
+#
+#      <------ End Setup Parameters ------>
+#--------------------------------------------------------
+#--------------------------------------------------------
+
+#----------------
+# Error Checking
+#----------------
+
+if ( ! -e $WORKDIR ) then
+	echo " "
+	echo "Error: unable to change to working directory."
+	echo "       ($PBS_O_WORKDIR)"
+	echo " "
+	echo "Job not submitted."
+	exit
+endif
+
+if ( ! -f $WORKDIR/$EXECUTABLE ) then
+	echo " "
+	echo "Error: unable to find launcher executable ($EXECUTABLE)."
+	echo " "
+	echo "Job not submitted."
+	exit
+endif
+
+if ( ! -f $WORKDIR/$CONTROL_FILE ) then
+	echo " "
+	echo "Error: unable to find input control file ($CONTROL_FILE)."
+	echo " "
+	echo "Job not submitted."
+	exit
+endif
+
+cd $WORKDIR/
+
+set TOTAL=$NUM_PROCS
+echo " "
+echo "Total MPI processes requested = "$TOTAL
+echo " "
+
+set icnt=1
+
+while ($icnt <= $TOTAL) 
+    setenv TMP `cat $CONTROL_FILE | awk 'NR=='$icnt | awk '{print $1}'`
+    if ( $TMP == "") then
+	echo " "
+	echo "Error: Not enough processes specified in control file"
+	echo "       (executable not defined for process $icnt of $TOTAL)"
+	echo " "
+	echo "Job not submitted."
+	exit
+    endif
+    if ( ! -f $TMP ) then
+	echo " "
+	echo "Error: Executable not found for process $icnt of $TOTAL"
+	echo " "       
+	echo "Job not submitted."
+	exit
+    endif
+    @ icnt++
+end
+
+#----------------
+# Job Submission
+#----------------
+
+setenv MASTER `echo $LOADL_PROCESSOR_LIST | awk '{print $1}'`
+echo "MASTER HOST:   $MASTER is the master host"
+echo "WORKING DIR:   $WORKDIR/"
+echo " "
+
+#@ job_name         = Parametric
+#@ output           = $(job_name).o$(jobid)
+#@ error            = $(job_name).o$(jobid)
+#@ job_type         = parallel
+#@ environment      = COPY_ALL; MP_SHARED_MEMORY=yes;
+#@ queue
+
+$EXECUTABLE $CONTROL_FILE
+
+
+
+

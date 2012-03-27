@@ -1,0 +1,4 @@
+box size is 8.48528
+
+lnd uses random sampling of the box, sea uses grid sampling
+
