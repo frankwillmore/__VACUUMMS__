@@ -14,6 +14,6 @@ FORMATS ARE:
 pov		povray input file
 gfg		generalized configuration file:  x\ty\tz\t\sigma\tepsilon\t
 gfgc		gfg plus one additional column for color (used for drawing the positive matter)
-fvi		free volume intensity:  x\ty\tz\tintensity
+fvi		free volume index:  x\ty\tz\tindex
 
 

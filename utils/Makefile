@@ -2,173 +2,190 @@
 
 # I keep my libs on a branch off of $HOME
 
-HOME=/home1/00479/willmore/
+HOME:=/home1/00479/willmore/
 
-INCLUDE_DIR=$(HOME)/usr/include
-INSTALL_DIR=$(HOME)/usr/bin
-LIBRARY_DIR=$(HOME)/usr/lib
+INCLUDE_DIR:=$(HOME)/usr/include
+INSTALL_DIR:=$(HOME)/usr/bin
+LIBRARY_DIR:=$(HOME)/usr/lib
 
-CC=gcc
+CC:=gcc
+CFLAGS=-L$(LIBRARY_DIR) -I$(INCLUDE_DIR) -lftw -lftw_pov -ltiff -lftw_tiff -lm 
 
+UTILS:=vis2pov cav2vis cfg2vis add dst2hst uniq avg a2b clustercat smooth normalize cfg2gfg nsplit fvi2tiff loge log10 exp sum pow sq ck cram wdst2hst max min miss std sew povheader gfg2pov gfgc2pov fvi2pov cav2pov stack_tiffs expr_add expr_multiply dwf sqrt stream2slice truncate stream_multiply
 
-stack_tiffs:	stack_tiffs.c
-	$(CC) stack_tiffs.c -L$(LIBRARY_DIR) -I$(INCLUDE_DIR) -lftw -ltiff -lftw_tiff -lm -o stack_tiffs 
+# need to fix:  replicate 
 
-readtiff:	readtiff.c
-	$(CC) readtiff.c -L$(LIBRARY_DIR) -I$(INCLUDE_DIR) -lftw -ltiff -lftw_tiff -lm -o readtiff 
+CUDA_UTILS:=replicate_gfg gfg2fvi ftw_cuda
 
-sum:	sum.c
-	$(CC) sum.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o sum
+#stack_tiffs:	stack_tiffs.c
+#	$(CC) stack_tiffs.c -L$(LIBRARY_DIR) -I$(INCLUDE_DIR) -lftw -ltiff -lftw_tiff -lm -o stack_tiffs 
 
-pow:	pow.c
-	$(CC) pow.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o pow
+#readtiff:	readtiff.c
+#	$(CC) readtiff.c -L$(LIBRARY_DIR) -I$(INCLUDE_DIR) -lftw -ltiff -lftw_tiff -lm -o readtiff 
 
-sq:	sq.c
-	$(CC) sq.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o sq
+#sum:	sum.c
+#	$(CC) sum.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o sum
 
-ck:	ck.c
-	$(CC) ck.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o ck
+#pow:	pow.c
+#	$(CC) pow.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o pow
 
-cram:	cram.c
-	$(CC) cram.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o cram
+#sq:	sq.c
+#	$(CC) sq.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o sq
 
-cfg2gfg:	cfg2gfg.c
-	$(CC) cfg2gfg.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o cfg2gfg
+#ck:	ck.c
+#	$(CC) ck.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o ck
 
-vis2pov:	vis2pov.c
-	$(CC) vis2pov.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o vis2pov
+#cram:	cram.c
+#	$(CC) cram.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o cram
 
-cav2vis:	cav2vis.c
-	$(CC) cav2vis.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o cav2vis
+#cfg2gfg:	cfg2gfg.c
+#	$(CC) cfg2gfg.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o cfg2gfg
 
-cfg2vis:	cfg2vis.c
-	$(CC) cfg2vis.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o cfg2vis
+#vis2pov:	vis2pov.c
+#	$(CC) vis2pov.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o vis2pov
 
-gfg2pov:	gfg2pov.c
-	$(CC) gfg2pov.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -Wall -lftw_pov -lftw -lm -o gfg2pov
+#cav2vis:	cav2vis.c
+#	$(CC) cav2vis.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o cav2vis
 
-add:	add.c
-	$(CC) add.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o add
+#cfg2vis:	cfg2vis.c
+#	$(CC) cfg2vis.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o cfg2vis
 
-wdst2hst:        wdst2hst.c
-	$(CC) wdst2hst.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o wdst2hst 
+#gfg2pov:	gfg2pov.c
+#	$(CC) gfg2pov.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -Wall -lftw_pov -lftw -lm -o gfg2pov
 
-dst2hst:        dst2hst.c
-	$(CC) dst2hst.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o dst2hst 
+#add:	add.c
+#	$(CC) add.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o add
 
-fvi2tiff:  fvi2tiff.c
-	$(CC) fvi2tiff.c -L$(LIBRARY_DIR) -I$(INCLUDE_DIR) -lftw -ltiff -lftw_tiff -lm -o fvi2tiff 
+#wdst2hst:        wdst2hst.c
+#	$(CC) wdst2hst.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o wdst2hst 
 
-uniq:        uniq.c
-	$(CC) uniq.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o uniq 
+#dst2hst:        dst2hst.c
+#	$(CC) dst2hst.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o dst2hst 
 
-max:	max.c
-	$(CC) max.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o max 
+#fvi2tiff:  fvi2tiff.c
+#	$(CC) fvi2tiff.c -L$(LIBRARY_DIR) -I$(INCLUDE_DIR) -lftw -ltiff -lftw_tiff -lm -o fvi2tiff 
 
-min:	min.c
-	$(CC) min.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o min 
+#uniq:        uniq.c
+#	$(CC) uniq.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o uniq 
 
-miss:	miss.c
-	$(CC) miss.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o miss 
+#max:	max.c
+#	$(CC) max.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o max 
 
-std:	std.c
-	$(CC) std.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o std 
+#min:	min.c
+#	$(CC) min.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o min 
 
-nsplit:	nsplit.c
-	$(CC) nsplit.c -Wall -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o nsplit 
+#miss:	miss.c
+#	$(CC) miss.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o miss 
 
-avg:	avg.c
-	$(CC) avg.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o avg 
+#std:	std.c
+#	$(CC) std.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o std 
 
-loge:	loge.c
-	$(CC) loge.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o loge 
+#nsplit:	nsplit.c
+#	$(CC) nsplit.c -Wall -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o nsplit 
 
-log10:	log10.c
-	$(CC) log10.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o log10 
+#avg:	avg.c
+#	$(CC) avg.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o avg 
 
-exp:	exp.c
-	$(CC) exp.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o exp 
+#loge:	loge.c
+#	$(CC) loge.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o loge 
 
-replicate:        replicate.c
-	$(CC) replicate.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o replicate 
+#log10:	log10.c
+#	$(CC) log10.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o log10 
 
-a2b:	a2b.c
-	$(CC) a2b.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o a2b
+#exp:	exp.c
+#	$(CC) exp.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o exp 
 
-clustercat:	clustercat.c
-	$(CC) clustercat.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o clustercat
+#replicate:        replicate.c
+#	$(CC) replicate.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o replicate 
 
-smooth:	smooth.c
-	$(CC) smooth.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o smooth
+#a2b:	a2b.c
+#	$(CC) a2b.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o a2b
 
-normalize:	normalize.c
-	$(CC) normalize.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o normalize
+#clustercat:	clustercat.c
+#	$(CC) clustercat.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o clustercat
 
-sew:	sew.c
-	$(CC) sew.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o sew
+#smooth:	smooth.c
+#	$(CC) smooth.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o smooth
 
-gfgc2pov: gfgc2pov.c
-	$(CC) gfgc2pov.c -Wall -lftw_pov -lm -lftw -L${LIBRARY_DIR} -I${INCLUDE_DIR} -o gfgc2pov
+#normalize:	normalize.c
+#	$(CC) normalize.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o normalize
 
-povheader: povheader.c
-	$(CC) povheader.c -lm -lftw -L${LIBRARY_DIR} -I${INCLUDE_DIR} -o povheader
+#sew:	sew.c
+#	$(CC) sew.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o sew
 
-cav2pov:	cav2pov.c
-	$(CC) cav2pov.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -lftw_pov -o cav2pov
+#gfgc2pov: gfgc2pov.c
+#	$(CC) gfgc2pov.c -Wall -lftw_pov -lm -lftw -L${LIBRARY_DIR} -I${INCLUDE_DIR} -o gfgc2pov
 
-fvi2pov: fvi2pov.c
-	$(CC) fvi2pov.c -Wall -lftw_pov -lm -lftw -L${LIBRARY_DIR} -I${INCLUDE_DIR} -o fvi2pov
+#povheader: povheader.c
+#	$(CC) povheader.c -lm -lftw -L${LIBRARY_DIR} -I${INCLUDE_DIR} -o povheader
 
-expr_add:	expr_add.c
-	$(CC) expr_add.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o expr_add
+#cav2pov:	cav2pov.c
+#	$(CC) cav2pov.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -lftw_pov -o cav2pov
 
-expr_multiply:	expr_multiply.c
-	$(CC) expr_multiply.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o expr_multiply
+#fvi2pov: fvi2pov.c
+#	$(CC) fvi2pov.c -Wall -lftw_pov -lm -lftw -L${LIBRARY_DIR} -I${INCLUDE_DIR} -o fvi2pov
 
-dwf:	dwf.c
-	$(CC) dwf.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o dwf
+#expr_add:	expr_add.c
+#	$(CC) expr_add.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o expr_add
 
-sqrt:	sqrt.c
-	$(CC) sqrt.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o sqrt 
+#expr_multiply:	expr_multiply.c
+#	$(CC) expr_multiply.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o expr_multiply
 
-stream2slice:	stream2slice.c
-	$(CC) stream2slice.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o stream2slice 
+#dwf:	dwf.c
+#	$(CC) dwf.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o dwf
 
-truncate:	truncate.c
-	$(CC) truncate.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o truncate 
+#sqrt:	sqrt.c
+#	$(CC) sqrt.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o sqrt 
 
-stream_multiply:	stream_multiply.c
-	$(CC) stream_multiply.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o stream_multiply 
+#stream2slice:	stream2slice.c
+#	$(CC) stream2slice.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o stream2slice 
+
+#truncate:	truncate.c
+#	$(CC) truncate.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o truncate 
+
+#stream_multiply:	stream_multiply.c
+#	$(CC) stream_multiply.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -o stream_multiply 
 
 # CUDA utils
 
-test.o: test.cu
-	nvcc test.cu -c -I$(INCLUDE_DIR) 
+#test.o: test.cu
+#	nvcc test.cu -c -I$(INCLUDE_DIR) 
 
-maltest:	maltest.cu
-	nvcc maltest.cu -L$(LIBRARY_DIR) -lm -lftw -I$(INCLUDE_DIR) -o maltest -lcudart
+#maltest:	maltest.cu
+#	nvcc maltest.cu -L$(LIBRARY_DIR) -lm -lftw -I$(INCLUDE_DIR) -o maltest -lcudart
 
-test:	test.o test.c
-	nvcc test.c test.o -L$(LIBRARY_DIR) -lm -lftw -lftw_cuda -I$(INCLUDE_DIR) -o test -lcudart
+#test:	test.o test.c
+#	nvcc test.c test.o -L$(LIBRARY_DIR) -lm -lftw -lftw_cuda -I$(INCLUDE_DIR) -o test -lcudart
 
-gfg2fvi: gfg2fvi.c
-	$(CC) gfg2fvi.c -lm -lftw -lftw_cuda -L$(LIBRARY_DIR) -I$(INCLUDE_DIR) -o gfg2fvi 
+#gfg2fvi: gfg2fvi.c
+#	$(CC) gfg2fvi.c -lm -lftw -lftw_cuda -L$(LIBRARY_DIR) -I$(INCLUDE_DIR) -o gfg2fvi 
 
-replicate_gfg:        replicate_gfg.c
-	$(CC) replicate_gfg.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -lftw_cuda -o replicate_gfg 
+#replicate_gfg:        replicate_gfg.c
+#	$(CC) replicate_gfg.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm -lftw_cuda -o replicate_gfg 
 
-ftw_cuda:        ftw_cuda.c 
-	$(CC) ftw_cuda.c -o ftw_cuda -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lftw_cuda -lm
+#ftw_cuda:        ftw_cuda.c 
+#	$(CC) ftw_cuda.c -o ftw_cuda -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lftw_cuda -lm
+
+%: %.cu
+
+%: %.c
+	$(CC) $(CFLAGS) $< -o $@
 
 # dependencies and such
+.PHONY: utils cuda-utils install install-cuda 
 
-all:	vis2pov cav2vis cfg2vis add dst2hst uniq avg replicate a2b clustercat smooth normalize cfg2gfg gfg2pov nsplit fvi2tiff loge log10 exp sum pow sq ck cram wdst2hst max min miss std sew gfgc2pov povheader fvi2pov cav2pov stack_tiffs expr_add expr_multiply dwf sqrt stream2slice truncate stream_multiply
+utils: $(UTILS)
 
-cuda-utils:	replicate_gfg gfg2fvi ftw_cuda
+cuda-utils: $(CUDA_UTILS)
 
-install: all
-	mv vis2pov cav2vis cfg2vis add dst2hst uniq avg a2b clustercat smooth normalize cfg2gfg gfg2pov nsplit fvi2tiff loge log10 exp sum pow sq ck cram wdst2hst max min miss std sew gfgc2pov povheader fvi2pov cav2pov stack_tiffs expr_add expr_multiply dwf sqrt stream2slice truncate stream_multiply $(INSTALL_DIR)
+install: utils
+	mv $(UTILS) $(INSTALL_DIR)
 
 install-cuda:	cuda-utils
-	mv replicate_gfg gfg2fvi ftw_cuda $(INSTALL_DIR)
+	@echo installing cuda utils...
+	mv $(CUDA_UTILS) $(INSTALL_DIR)
+
+clean:  
+	rm -f $(UTILS) 
+	rm -f $(CUDA_UTILS)
 
