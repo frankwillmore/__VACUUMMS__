@@ -27,6 +27,7 @@ command_line_parser.o:	command_line_parser.c command_line_parser.h
 
 install: vis
 	mv vis $(INSTALL_DIR)
+	make clean
 
 clean:
 	rm -f *.o
