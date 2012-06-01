@@ -1,0 +1,5 @@
+#!/bin/cat
+
+vis is a primitive utility for drawing a configuration in a rudimentary X-window.
+It is suitable as a teaching example for quick-and-dirty rendering of e.g. a Lennard-Jones fluid.
+

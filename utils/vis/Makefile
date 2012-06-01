@@ -5,11 +5,9 @@
 
 HOME_DIR:=$$HOME
 
-INCLUDES:=-I. -I$(HOME_DIR)/usr/include
+INSTALL_DIR:=$(HOME_DIR)/usr/bin
 
-echo:
-	@echo $(HOME_DIR)
-	@echo $(INCLUDES)
+INCLUDES:=-I. -I$(HOME_DIR)/usr/include
 
 CFLAGS:=-O2 -Wall
 CC:=gcc
@@ -28,10 +26,11 @@ command_line_parser.o:	command_line_parser.c command_line_parser.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c command_line_parser.c
 
 install: vis
-	mv vis $(HOME_DIR)/bin
+	mv vis $(INSTALL_DIR)
 
 clean:
 	rm -f *.o
+	rm -f vis
 
 cav2vis:	cav2vis.c
 	gcc cav2vis.c -o cav2vis
