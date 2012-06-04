@@ -1,13 +1,14 @@
-#!/usr/bin/make
+#!/bin/make
 
 #  Note that library routines are packaged in source files prefixed with ftw_
 
-HOME=/home1/00479/willmore
+#  Default install location is off of home
 
-LIBRARY_DIR=$(HOME)/usr/lib
-INCLUDE_DIR=$(HOME)/usr/include
-INSTALL_DIR=$(HOME)/usr/bin
+HOME_DIR:=$$HOME
 
+LIBRARY_DIR:=$(HOME_DIR)/usr/lib
+INCLUDE_DIR:=$(HOME_DIR)/usr/include
+INSTALL_DIR:=$(HOME_DIR)/usr/bin
 
 # Not using these... going to let the cuda modules do the work.
 #INCLUDES=-I$(INCLUDE_DIR) 
@@ -17,11 +18,10 @@ INSTALL_DIR=$(HOME)/usr/bin
 # On building an .so with CUDA
 # NOTE:  To specify -fPIC, first specify -Xcompiler
 
-NVCC=nvcc
-NVCCFLAGS= -lm -lcudart 
-#NVCCFLAGS= -G -g -lm -lcudart 
+NVCC:=nvcc
+NVCCFLAGS:= -lm -lcudart 
 
-CC=gcc
+CC:=gcc
 
 # This is just some junk/utils for cuda apps
 ftw_cuda_utils.o:	ftw_cuda_utils.cu ftw_cuda_utils.h
@@ -51,4 +51,6 @@ clean:
 	rm -f *.o 
 	rm -f *.linkinfo
 	rm -f libftw_cuda.so
+
+.PHONY:	install install-headers install-lib clean
 
