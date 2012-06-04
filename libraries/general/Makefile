@@ -4,10 +4,10 @@
 
 # Default install is to user home
 
-HOME_DIR:=/home1/00479/willmore/
+HOME_DIR:=$$HOME
 INCLUDE_DIR:=$(HOME_DIR)/usr/include
 LIBRARY_DIR:=$(HOME_DIR)/usr/lib
-INSTALL_DIR:=$(HOME_DIR)/usr/lib
+INSTALL_DIR:=$(HOME_DIR)/usr/bin
 
 CC:=gcc
 CFLAGS:=-O2 -Wall -fPIC
@@ -48,7 +48,7 @@ libftw.so: ftw_types.h ftw_rng.o ftw_std.o ftw_param.o ftw_rng2.o ftw_cav_parser
 install:	install-headers install-lib
 
 install-lib:    libftw.so 
-	mv libftw.so $(INSTALL_DIR)
+	mv libftw.so $(LIBRARY_DIR)
 
 clean:
 	rm -f *.o libftw.so
