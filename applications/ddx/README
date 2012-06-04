@@ -1,5 +1,0 @@
-//	7April2011	Adding dddx for searching cavities from grid points 
-
-NOTE:  dddx REQUIRES CUDA!  TO BUILD IT AND TO RUN IT!
-
-// ?  box size is 8.48528
