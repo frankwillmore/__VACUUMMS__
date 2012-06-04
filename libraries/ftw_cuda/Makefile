@@ -23,10 +23,6 @@ NVCCFLAGS= -lm -lcudart
 
 CC=gcc
 
-
-
-# The components first... each has its own header, too.
-
 # This is just some junk/utils for cuda apps
 ftw_cuda_utils.o:	ftw_cuda_utils.cu ftw_cuda_utils.h
 	$(NVCC) $(NVCCFLAGS) -Xcompiler -fPIC -c ftw_cuda_utils.cu -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm 
@@ -35,16 +31,11 @@ ftw_cuda_utils.o:	ftw_cuda_utils.cu ftw_cuda_utils.h
 ftw_gfg2fvi.o:	ftw_gfg2fvi.cu ftw_gfg2fvi.h
 	$(NVCC) $(NVCCFLAGS) -Xcompiler -fPIC -c ftw_gfg2fvi.cu -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm
 
-
-
-
 # Then the library...
 
 libftw_cuda.so:       ftw_cuda_utils.o ftw_gfg2fvi.o
 	$(NVCC) $(NVCCFLAGS) -Xcompiler -fPIC -shared -o libftw_cuda.so ftw_cuda_utils.o ftw_gfg2fvi.o -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -lm 
-
-
-
+	rm -f ftw_cuda_utils.o ftw_gfg2fvi.o
 
 # Installation instructions
 
@@ -55,10 +46,6 @@ install-headers:	ftw_gfg2fvi.h ftw_cuda_utils.h
 	cp ftw_gfg2fvi.h ftw_cuda_utils.h $(INCLUDE_DIR)
 
 install:	install-headers install-lib 
-
-
-
-# What a mess.
 
 clean:
 	rm -f *.o 
