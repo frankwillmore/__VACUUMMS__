@@ -26,6 +26,9 @@ ftw_rng.o:	ftw_rng.c ftw_rng.h ftw_types.h
 ftw_rng2.o:	ftw_rng2.c ftw_rng2.h ftw_types.h
 	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c ftw_rng2.c
 
+ftw_prng.o:	ftw_prng.c ftw_prng.h 
+	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c ftw_prng.c
+
 ftw_std.o:	ftw_std.c ftw_std.h ftw_types.h
 	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c ftw_std.c
 
@@ -42,7 +45,7 @@ ftw_cav_parser.o:	ftw_cav_parser.c ftw_cav_parser.h ftw_types.h
 # Originally written as command_line_parser, I'm leaving it in the build tree until I clean up usage.
 # Any instances won't be able to find the original name, but it's the same API
 
-libftw.so: ftw_types.h ftw_rng.o ftw_std.o ftw_param.o ftw_rng2.o ftw_cav_parser.o ftw_config_parser.o
+libftw.so: ftw_types.h ftw_rng.o ftw_prng.o ftw_std.o ftw_param.o ftw_rng2.o ftw_cav_parser.o ftw_config_parser.o
 	$(CC) $(CFLAGS) -shared -o libftw.so *.o 
 
 install:	install-headers install-lib
@@ -53,6 +56,8 @@ install-lib:    libftw.so
 clean:
 	rm -f *.o libftw.so
 
-install-headers: ftw_types.h ftw_command_line_parser.h ftw_rng.h ftw_rng2.h ftw_std.h ftw_param.h ftw_config_parser.h ftw_cav_parser.h 
-	cp ftw_types.h ftw_command_line_parser.h ftw_rng.h ftw_rng2.h ftw_std.h ftw_param.h ftw_config_parser.h ftw_cav_parser.h $(INCLUDE_DIR)
+install-headers: ftw_types.h ftw_command_line_parser.h ftw_rng.h ftw_rng2.h ftw_prng.h ftw_std.h ftw_param.h ftw_config_parser.h ftw_cav_parser.h 
+	cp ftw_types.h ftw_command_line_parser.h ftw_rng.h ftw_rng2.h ftw_prng.h ftw_std.h ftw_param.h ftw_config_parser.h ftw_cav_parser.h $(INCLUDE_DIR)
 
+test:	test.c
+	$(CC) $(CFLAGS) -lm -lftw -pthread -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) test.c

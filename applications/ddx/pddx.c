@@ -1,4 +1,59 @@
-/* ddx.c */
+/* pddx.c */
+//  This is shmem/pthread version of ddx 
+// test.c
+
+#include <ftw_types.h>
+#include <stdio.h>
+#include <pthread.h>
+#include <stdlib.h>
+#include <assert.h>
+
+#include "ftw_prng.h"
+
+struct MersenneTwister *rng;
+
+void *ThreadMain(void *arg)
+{ 
+  int j;
+  int tid=*((int*)arg);
+
+  MersenneInitialize(&rng[tid], tid);
+  printf("thread #%d\t", tid);
+  for (j=0; j<10; j++) printf("%lf\t", prnd(&rng[tid]));
+  printf("\n");
+  return NULL;
+}
+
+int main()
+{
+  int num_threads;
+  scanf ("%d", &num_threads);
+
+  pthread_t threads[num_threads];
+  int thread_args[num_threads];
+  int rc, i;
+ 
+  rng = (struct MersenneTwister *)malloc(sizeof(struct MersenneTwister) * num_threads);
+
+  /* create all threads */
+  for (i=0; i<num_threads; ++i) {
+    thread_args[i] = i;
+    printf("In main: creating thread %d\n", i);
+    rc = pthread_create(&threads[i], NULL, ThreadMain, (void *) &thread_args[i]);
+    assert(0 == rc);
+  }
+ 
+  /* wait for all threads to complete */
+  for (i=0; i<num_threads; ++i) {
+    rc = pthread_join(threads[i], NULL);
+    assert(0 == rc);
+  }
+
+  free(rng);
+  return 0;
+}
+
+///////////end test code
 
 #include "ddx.h"
 #include "io_setup.h"
@@ -10,12 +65,14 @@
 #define MAX_NUM_MOLECULES 65536
 #define MAX_CLOSE 65536
 
+// Accessible to all threads
 double x[MAX_NUM_MOLECULES];
 double y[MAX_NUM_MOLECULES];
 double z[MAX_NUM_MOLECULES];
 double sigma[MAX_NUM_MOLECULES];
 double epsilon[MAX_NUM_MOLECULES];
 
+// Should be per-thread
 double close_x[MAX_CLOSE], close_y[MAX_CLOSE], close_z[MAX_CLOSE];
 double close_sigma[MAX_CLOSE];
 double close_sigma6[MAX_CLOSE];
@@ -25,7 +82,6 @@ double close_epsilon[MAX_CLOSE];
 double box_x=6, box_y=6, box_z=6;
 double verlet_cutoff=100.0;
 
-//double step_size_factor = 1.0;
 int n_steps = 1000;
 
 int number_of_samples = 1;
@@ -51,6 +107,14 @@ FILE *instream;
 
 int main(int argc, char *argv[])
 {
+/*
+   pthread stuff
+   const int *p_nthreads;
+   int five=NUM_THREADS;
+   scanf("%d", &five);
+   p_nthreads = &five;
+*/
+
   double sq_distance_from_initial_pt;
 
   setCommandLineParameters(argc, argv);
