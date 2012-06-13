@@ -16,7 +16,8 @@
 struct MersenneTwister	*rng; 		// one for each thread... pointer to an array to be malloc'ed
 pthread_t 		*threads;	// the threads
 sem_t			semaphore;	// semaphore to restrict number of threads running
-int 			*thread_args; 	// 
+//int 			*thread_args; 	// 
+pthread_mutex_t 	mutex;
 
 // Accessible to all threads
 double 	x[MAX_NUM_MOLECULES];
@@ -46,7 +47,7 @@ void* 	ThreadMain(void *threadID);
 int main(int argc, char **argv)
 {
 // handling as thread local...  
-Trajectory *trajectories;  // will store data for all trajectories
+// Trajectory *trajectories;  // will store data for all trajectories
 //  long *passvals;
   int n_threads = 1;
 
@@ -88,43 +89,35 @@ Trajectory *trajectories;  // will store data for all trajectories
 
   // make and verify all the threads and resources
   assert(threads = (pthread_t*)malloc(sizeof(pthread_t) * n_samples));
-  assert(trajectories = (Trajectory *)malloc(sizeof(Trajectory) * n_samples));
+
+  // set stack size for threads
+  pthread_attr_t thread_attr;
+  size_t stacksize = sizeof(Trajectory) + (size_t)1048576;
+  pthread_attr_init(&thread_attr);
+  pthread_attr_setstacksize(&thread_attr, stacksize);
 
   // initialize the semaphore
   assert(0 == sem_init(&semaphore, 0, n_threads));
 
-  /* create all threads */
-//assert(passvals = (long *)malloc(sizeof(long) * n_samples));
-
-  long i;
+  int i;
   for (i=0; i<n_samples; ++i) {
-    trajectories[i].thread_id = i;
-    assert(0 == pthread_create(&threads[i], NULL, ThreadMain, (void *) &trajectories[i]));
-//    passvals[i] = i;
-//    assert(0 == pthread_create(&threads[i], NULL, ThreadMain, (void *)&passvals[i])); // pass i as seed value
+    //trajectories[i].thread_id = i;
+    sem_wait(&semaphore); // thread waits to become eligible
+    assert(0 == pthread_create(&threads[i], &thread_attr, ThreadMain, (void *)(long)i)); // pass i as seed value
   }
  
   /* wait for all threads to complete */
   for (i=0; i<n_samples; ++i) assert(0 == pthread_join(threads[i], NULL));
 
   free(threads);
-//free(passvals);
-  free(trajectories);
   return 0;
 } // end main()
 
 void *ThreadMain(void *passval) { 
-//printf("%ld", (long)passval);
-//printf("%ld", *(long*)passval);
-//return NULL;
-  sem_wait(&semaphore); // thread waits to become eligible
-
-//  Trajectory traj;
 //  Trajectory *p_traj = &traj;
-//  traj.thread_id = *(long*)passval; 
-
-//  assert(trajectories = (Trajectory *)malloc(sizeof(Trajectory) * n_samples));
-  Trajectory *p_traj = (Trajectory *)passval;
+  Trajectory *p_traj = (Trajectory *)malloc(sizeof(Trajectory));
+  
+  p_traj->thread_id = (int)(long)passval; 
 
   MersenneInitialize(&(p_traj->rng), p_traj->thread_id);
 
@@ -149,10 +142,12 @@ void *ThreadMain(void *passval) {
       while (p_traj->test_z >= box_z) 	p_traj->test_z -= box_z;
       while (p_traj->test_z < 0) 	p_traj->test_z += box_z;
 
+pthread_mutex_lock(&mutex);
       printf("%lf\t%lf\t%lf\t%lf", p_traj->test_x, p_traj->test_y, p_traj->test_z, p_traj->diameter);
       if (include_center_energy) printf("\t%lf", calculateEnergy(p_traj, p_traj->diameter));
       if (show_steps) printf("\t%d", p_traj->attempts);
       printf("\n");
+pthread_mutex_unlock(&mutex);
     }
   }
 
