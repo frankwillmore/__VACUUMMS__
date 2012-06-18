@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <semaphore.h>
+#include <unistd.h>
 
 #include "ftw_param.h"
 #include "ftw_prng.h"
@@ -13,9 +14,10 @@
 
 #include "pddx.h"
 
-struct MersenneTwister	*rng; 		// one for each thread... pointer to an array to be malloc'ed
+//struct MersenneTwister	*rng; 		// one for each thread... pointer to an array to be malloc'ed
 pthread_t 		*threads;	// the threads
 sem_t			semaphore;	// semaphore to restrict number of threads running
+sem_t			completion_semaphore;	// semaphore to count # of completed threads
 //int 			*thread_args; 	// 
 pthread_mutex_t 	mutex;
 
@@ -27,7 +29,7 @@ double 	sigma[MAX_NUM_MOLECULES];
 double 	epsilon[MAX_NUM_MOLECULES];
 double 	box_x=6, box_y=6, box_z=6;
 double 	verlet_cutoff=100.0;
-int 	n_steps = 1000;
+int 	n_steps = 1000000;
 int 	n_samples = 1;
 int 	volume_sampling = 0;
 int 	include_center_energy = 0;
@@ -37,7 +39,7 @@ int 	number_of_molecules = 0;
 double 	min_diameter = 0.0;
 double 	characteristic_length = 1.0;
 double 	characteristic_energy = 1.0;
-double 	precision_parameter = 0.001; // decimal 
+//double 	precision_parameter = 0.001; // decimal 
 int 	seed = 1;
 
 // prototypes...
@@ -50,14 +52,13 @@ int main(int argc, char **argv)
 // Trajectory *trajectories;  // will store data for all trajectories
 //  long *passvals;
   int n_threads = 1;
-
   setCommandLineParameters(argc, argv);
   getIntParam("-seed", &seed);
   getIntParam("-n_threads", &n_threads);
   getVectorParam("-box", &box_x, &box_y, &box_z);
   getDoubleParam("-characteristic_length", &characteristic_length);
   getDoubleParam("-characteristic_energy", &characteristic_energy);
-  getDoubleParam("-precision_parameter", &precision_parameter);
+//  getDoubleParam("-precision_parameter", &precision_parameter);
   getDoubleParam("-verlet_cutoff", &verlet_cutoff);
   getIntParam("-n_samples", &n_samples);
   getIntParam("-n_steps", &n_steps);
@@ -70,17 +71,17 @@ int main(int argc, char **argv)
   {
     printf("\nusage:\t-box [ 6.0 6.0 6.0 ]\n");
     printf("\t\t-seed [ 1 ]\n");
-    printf("\t\t-characteristic_length [ 1.0 ]\n");
-    printf("\t\t-characteristic_energy [ 1.0 ]\n");
-    printf("\t\t-precision_parameter [ 0.001 ]\n");
-    printf("\t\t-n_steps [ 1000 ] (roughly reciprocal of precision parameter)\n");
+    printf("\t\t-characteristic_length [ 1.0 ] if in doubt, use largest sigma/diameter\n");
+    printf("\t\t-characteristic_energy [ 1.0 ] if in doubt, use largest energy/epsilon\n");
+//    printf("\t\t-precision_parameter [ 0.001 ]\n");
+    printf("\t\t-n_steps [ 1000000 ] maximum before giving up\n");
     printf("\t\t-n_threads [ 1 ] n");
     printf("\t\t-show_steps (includes steps taken as final column)\n");
     printf("\t\t-verlet_cutoff [ 100.0 ]\n");
     printf("\t\t-n_samples [ 1 ]\n");
     printf("\t\t-volume_sampling \n");
     printf("\t\t-include_center_energy \n");
-    printf("\t\t-min_diameter [ 0.0 ]");
+    printf("\t\t-min_diameter [ 0.0 ] 0.0 will give all ");
     printf("\n");
     exit(0);
   }
@@ -92,9 +93,11 @@ int main(int argc, char **argv)
 
   // set stack size for threads
   pthread_attr_t thread_attr;
-  size_t stacksize = sizeof(Trajectory) + (size_t)1048576;
+  //size_t stacksize = sizeof(Trajectory) + (size_t)1048576;
+  size_t stacksize = (size_t)2048;
   pthread_attr_init(&thread_attr);
   pthread_attr_setstacksize(&thread_attr, stacksize);
+  pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_DETACHED);
 
   // initialize the semaphore
   assert(0 == sem_init(&semaphore, 0, n_threads));
@@ -103,28 +106,39 @@ int main(int argc, char **argv)
   for (i=0; i<n_samples; ++i) {
     //trajectories[i].thread_id = i;
     sem_wait(&semaphore); // thread waits to become eligible
-    assert(0 == pthread_create(&threads[i], &thread_attr, ThreadMain, (void *)(long)i)); // pass i as seed value
+    // pass i as seed value
+    int rc;
+    for(rc = pthread_create(&threads[i], &thread_attr, ThreadMain, (void *)(long)i);
+        rc != 0; 
+        rc = pthread_create(&threads[i], &thread_attr, ThreadMain, (void *)(long)i)) sleep(1); // sleep 'til it works
+    //assert(0 == pthread_create(&threads[i], &thread_attr, ThreadMain, (void *)(long)i)); // pass i as seed value
   }
  
   /* wait for all threads to complete */
-  for (i=0; i<n_samples; ++i) assert(0 == pthread_join(threads[i], NULL));
+
+//  for (i=0; i<n_samples; ++i) assert(0 == pthread_join(threads[i], NULL));
+  int complete = 0;
+  while(complete < n_samples) {
+    sem_getvalue(&completion_semaphore, &complete);
+  //`  sleep(1); // poor man's thread join...
+  }
 
   free(threads);
+
   return 0;
 } // end main()
 
 void *ThreadMain(void *passval) { 
-//  Trajectory *p_traj = &traj;
   Trajectory *p_traj = (Trajectory *)malloc(sizeof(Trajectory));
-  
   p_traj->thread_id = (int)(long)passval; 
-
-  MersenneInitialize(&(p_traj->rng), p_traj->thread_id);
+  MersenneInitialize(&(p_traj->rng), seed + p_traj->thread_id);
 
   generateTestPoint(p_traj);
 
+  // guarantee insertion point not be located in a valley whose bottom is > 0 energy... otherwise cannot size with real value
   while (calculateEnergy(p_traj, 0.0) > 0) generateTestPoint(p_traj);
    
+  // now find energy minimum point
   findEnergyMinimum(p_traj);
    
   p_traj->sq_distance_from_initial_pt 	= (p_traj->test_x-p_traj->test_x0)*(p_traj->test_x-p_traj->test_x0) 
@@ -142,16 +156,19 @@ void *ThreadMain(void *passval) {
       while (p_traj->test_z >= box_z) 	p_traj->test_z -= box_z;
       while (p_traj->test_z < 0) 	p_traj->test_z += box_z;
 
-pthread_mutex_lock(&mutex);
+      pthread_mutex_lock(&mutex);
       printf("%lf\t%lf\t%lf\t%lf", p_traj->test_x, p_traj->test_y, p_traj->test_z, p_traj->diameter);
       if (include_center_energy) printf("\t%lf", calculateEnergy(p_traj, p_traj->diameter));
       if (show_steps) printf("\t%d", p_traj->attempts);
       printf("\n");
-pthread_mutex_unlock(&mutex);
+      pthread_mutex_unlock(&mutex);
     }
   }
 
+  free(p_traj);
   sem_post(&semaphore);
+  sem_post(&completion_semaphore);
+  pthread_exit(NULL);
   return NULL;
 }
 
@@ -255,37 +272,57 @@ void findEnergyMinimum(Trajectory *p_traj)
       grad_z += dz * factor;
     }
 
-    // normalize the gradient
     double grad_sq = grad_x * grad_x + grad_y * grad_y + grad_z * grad_z;
-    double grad_modulus = sqrt(grad_sq);
-    grad_x /= grad_modulus;
-    grad_y /= grad_modulus;
-    grad_z /= grad_modulus;
+//printf("attempts = %d\tgrad_sq = %g\n", attempts, grad_sq);
+    if (grad_sq < 1.0e-12) break; // If the gradient reaches zero, not going anywhere...
+    // if modulus of gradient is > characteristic_energy/characteristic_length, normalize the gradient (too big means unstable)
+    if (grad_sq * characteristic_length * characteristic_length > characteristic_energy * characteristic_energy){
+      double grad_modulus = sqrt(grad_sq);
+      grad_x /= grad_modulus;
+      grad_y /= grad_modulus;
+      grad_z /= grad_modulus;
+    }
+    // so now gradient modulus is guaranteed <= characteristic_energy / characteristic_length
+
+
+// should be two reasons to break loop... either the gradient is zero -or- some tolerance test -or- number of steps exceeded.
 
     old_energy = calculateRepulsion(p_traj);
-//printf("xyz:: %12lf\t%12lf\t%12lf ::%12lf::\t  %12lf\t%12lf\t%12lf\n", test_x, test_y, test_z, old_energy, grad_x, grad_y, grad_z);
-
-    step_x = grad_x * characteristic_energy * characteristic_length; while (step_x * step_x > characteristic_length * characteristic_length * precision_parameter * precision_parameter) {step_x *=.5;}
-    step_y = grad_y * characteristic_energy * characteristic_length; while (step_y * step_y > characteristic_length * characteristic_length * precision_parameter * precision_parameter) {step_y *=.5;}
-    step_z = grad_z * characteristic_energy * characteristic_length; while (step_z * step_z > characteristic_length * characteristic_length * precision_parameter * precision_parameter) {step_z *=.5;}
-
-//    removed this criteria for assessing minima.... step size no longer shrinks because gradient is now normalized
-//    step_sq = step_x * step_x + step_y * step_y + step_z * step_z;
-//    if (step_sq < (characteristic_length * characteristic_length * precision_parameter * precision_parameter)) break;  // close enough, exit loop
-
+    step_x = grad_x * characteristic_length;
+    step_y = grad_y * characteristic_length;
+    step_z = grad_z * characteristic_length;   
     p_traj->test_x += step_x;
     p_traj->test_y += step_y;
     p_traj->test_z += step_z;
+
+
+    // if new point has higher energy, keep working back midway to a new point with lower energy
+    double step_size_factor = 0.5;
+    for(new_energy = calculateRepulsion(p_traj); new_energy > old_energy; step_size_factor *= 0.5) {
+      p_traj->test_x -= step_size_factor * step_x;
+      p_traj->test_y -= step_size_factor * step_y;
+      p_traj->test_z -= step_size_factor * step_z;
+      new_energy = calculateRepulsion(p_traj);
+//printf("step_size_factor + %g\tdff in energy=%g\n", step_size_factor, old_energy-new_energy);
+      if (step_size_factor == 0) break;
+    }
+
+
+
+    // step_x = grad_x * characteristic_energy * characteristic_length; while (step_x * step_x > characteristic_length * characteristic_length * precision_parameter * precision_parameter) {step_x *=.5;}
+    // step_y = grad_y * characteristic_energy * characteristic_length; while (step_y * step_y > characteristic_length * characteristic_length * precision_parameter * precision_parameter) {step_y *=.5;}
+    // step_z = grad_z * characteristic_energy * characteristic_length; while (step_z * step_z > characteristic_length * characteristic_length * precision_parameter * precision_parameter) {step_z *=.5;}
+
+    // p_traj->test_x += step_x;
+    // p_traj->test_y += step_y;
+    // p_traj->test_z += step_z;
  
     // check repulsion at new location
-    new_energy = calculateRepulsion(p_traj);
+//    new_energy = calculateRepulsion(p_traj);
     // if the energy fluctuates up by a fraction of the characteristic energy, call it
-    if (new_energy - old_energy > precision_parameter * characteristic_energy)
-    {
-//      printf("exiting from energy increase %lf\n", new_energy);
-      break;
-    }
-  }
+//    if (new_energy - old_energy > precision_parameter * characteristic_energy) break;
+  } // end for atempts
+//printf("attempts = %d\n", attempts);
 }
 
 double calculateRepulsion(Trajectory *p_traj)
