@@ -4,10 +4,13 @@
 
 public: 
 	mkdir -p .public
-	cp -R utils .public
-	cp -R libraries .public
-	cp -R applications/ddx .public/applications
-	cp -R applications/rattle .public/rattle
+
+fvt:
+	mkdir -p .public/fvt
+	cp -R utils .public/fvt
+	cp -R libraries .public/fvt
+	cp -R applications/ddx .public/fvt/applications
+	cp -R applications/rattle .public/fvt/rattle
 
 clean:
 	rm -rf .public
