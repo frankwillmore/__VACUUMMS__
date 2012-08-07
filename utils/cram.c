@@ -80,5 +80,7 @@ int main(int argc, char* argv[])
     if (sobrante == NULL) printf("\n");
     else printf("\t%s\n", sobrante);
   }
+
+  return 0;
 }
 
