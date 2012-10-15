@@ -22,7 +22,7 @@ main(int argc, char *argv[])
   if (getFlagParam("-usage"))
   {
     printf("usage:     sgfg2fvi       -box [10.0 10.0 10.0]\n");
-    printf("                          -potential [69] \n");
+    printf("                          -potential [612] \n");
     printf("                          -resolution [0.1] \n");
     printf("                          -temperature [1.0] \n");
     printf("                          -preexponential [1.0] \n");
