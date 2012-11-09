@@ -42,8 +42,8 @@ libftw_cuda.so:       ftw_cuda_utils.o ftw_gfg2fvi.o
 install-lib:        libftw_cuda.so
 	mv libftw_cuda.so $(LIBRARY_DIR)
 
-install-headers:	ftw_gfg2fvi.h ftw_cuda_utils.h
-	cp ftw_gfg2fvi.h ftw_cuda_utils.h $(INCLUDE_DIR)
+install-headers:	ftw_gfg2fvi.h ftw_cuda_utils.h ftw_cuda.h
+	cp ftw_gfg2fvi.h ftw_cuda_utils.h ftw_cuda.h $(INCLUDE_DIR)
 
 install:	install-headers install-lib 
 
