@@ -3,6 +3,7 @@
 #  Codes are packaged to install to user home by default
 
 HOME_DIR:=$$HOME
+TIFF_INCLUDE:=/usr/include
 
 LIBRARY_DIR:=$(HOME_DIR)/usr/lib
 INCLUDE_DIR:=$(HOME_DIR)/usr/include
