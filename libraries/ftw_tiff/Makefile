@@ -12,7 +12,7 @@ INCLUDES:=-I$(INCLUDE_DIR)
 LIBS:=-L$(LIBRARY_DIR) 
 
 CC:=gcc
-CFLAGS=-O2
+CFLAGS=-O2 -I$(TIFF_INCLUDE)
 
 echo:	
 	@echo "Please specify a target, e.g. 'make install'"
