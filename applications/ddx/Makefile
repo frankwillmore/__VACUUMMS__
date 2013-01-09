@@ -8,8 +8,8 @@ INSTALL_DIR:=$(HOME_DIR)/usr/bin
 LIBRARY_DIR:=$(HOME_DIR)/usr/lib
 INCLUDE_DIR:=$(HOME_DIR)/usr/include
 
-CC:=gcc
-CFLAGS:=-Wall -O2 -lftw -lm
+CC:=icc
+CFLAGS:=-Wall -O2 -lftw
 
 ddx:	ddx.h ddx.c io_setup.o 
 	$(CC) $(CFLAGS) io_setup.o ddx.c -o ddx -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) 

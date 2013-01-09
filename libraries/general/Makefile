@@ -9,8 +9,8 @@ INCLUDE_DIR:=$(HOME_DIR)/usr/include
 LIBRARY_DIR:=$(HOME_DIR)/usr/lib
 INSTALL_DIR:=$(HOME_DIR)/usr/bin
 
-CC:=gcc
-CFLAGS:=-O2 -Wall -fPIC
+CC:=icc
+CFLAGS:= -O2 -Wall -fPIC
 
 # The header files here contain definitions of ftw-kernel codes
 # And the c files are their implementation
@@ -19,6 +19,9 @@ CFLAGS:=-O2 -Wall -fPIC
 #
 # The ftw_types.h is maintained here, as well.
 # All library routines here are prefixed with ftw_
+
+libftw.so: ftw_types.h ftw_rng.o ftw_prng.o ftw_std.o ftw_param.o ftw_rng2.o ftw_cav_parser.o ftw_config_parser.o
+	$(CC) $(CFLAGS) -shared -o libftw.so *.o 
 
 ftw_rng.o:	ftw_rng.c ftw_rng.h ftw_types.h
 	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c ftw_rng.c
@@ -44,9 +47,6 @@ ftw_cav_parser.o:	ftw_cav_parser.c ftw_cav_parser.h ftw_types.h
 # ftw_command_line_parser is deprecated in favor of ftw_param (as of March 24, 2011...)
 # Originally written as command_line_parser, I'm leaving it in the build tree until I clean up usage.
 # Any instances won't be able to find the original name, but it's the same API
-
-libftw.so: ftw_types.h ftw_rng.o ftw_prng.o ftw_std.o ftw_param.o ftw_rng2.o ftw_cav_parser.o ftw_config_parser.o
-	$(CC) $(CFLAGS) -shared -o libftw.so *.o 
 
 install:	install-headers install-lib
 
