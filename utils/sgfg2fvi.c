@@ -89,7 +89,7 @@ main(int argc, char *argv[])
     // attraction *= 3;
     // total = repulsion - attraction;
     attraction *= 4.0;
-    repulstion *= 4.0;
+    repulsion *= 4.0;
     total = repulsion - attraction;
 
     printf("%f\t%f\t%f\t%f\n", test_x, test_y, test_z, preexponential * exp( - repulsion / temperature ) ); 
