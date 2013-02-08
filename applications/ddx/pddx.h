@@ -1,7 +1,7 @@
 /* pddx.h */
 
 #define MAX_NUM_MOLECULES 65536
-#define MAX_CLOSE 4096
+#define MAX_CLOSE 16384
 
 typedef struct {
   int				thread_id;
