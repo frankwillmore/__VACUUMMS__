@@ -73,8 +73,10 @@ main(int argc, char *argv[])
       dd = dx*dx + dy*dy + dz*dz; 
       alpha = configuration->atom[i].sigma * configuration->atom[i].sigma / dd;
       alpha6 = alpha * alpha * alpha;
-      attraction += alpha6;
-      repulsion += alpha6 * alpha6;
+      //      attraction += alpha6;
+      attraction += configuration->atom[i].epsilon * alpha6;
+      //      repulsion += alpha6 * alpha6;
+      repulsion += configuration->atom[i].epsilon * alpha6 * alpha6;
       //  For 6-9 potential
       //      d = sqrt(dd);
       //      alpha = pow(configuration->atom[i].sigma, 3) / (d * dd);   
@@ -86,7 +88,9 @@ main(int argc, char *argv[])
     // repulsion *= 2;
     // attraction *= 3;
     // total = repulsion - attraction;
-    total = 4 * (repulsion - attraction);
+    attraction *= 4.0;
+    repulsion *= 4.0;
+    total = repulsion - attraction;
 
     printf("%f\t%f\t%f\t%f\n", test_x, test_y, test_z, preexponential * exp( - repulsion / temperature ) ); 
   }

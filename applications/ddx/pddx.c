@@ -75,13 +75,13 @@ int main(int argc, char **argv)
     printf("\t\t-characteristic_energy [ 1.0 ] if in doubt, use largest energy/epsilon\n");
 //    printf("\t\t-precision_parameter [ 0.001 ]\n");
     printf("\t\t-n_steps [ 1000000 ] maximum before giving up\n");
-    printf("\t\t-n_threads [ 1 ] n");
+    printf("\t\t-n_threads [ 1 ] \n");
     printf("\t\t-show_steps (includes steps taken as final column)\n");
     printf("\t\t-verlet_cutoff [ 100.0 ]\n");
     printf("\t\t-n_samples [ 1 ]\n");
     printf("\t\t-volume_sampling \n");
     printf("\t\t-include_center_energy \n");
-    printf("\t\t-min_diameter [ 0.0 ] 0.0 will give all ");
+    printf("\t\t-min_diameter [ 0.0 ] 0.0 will give all \n");
     printf("\n");
     exit(0);
   }
@@ -238,12 +238,12 @@ void findEnergyMinimum(Trajectory *p_traj)
   double step_x, step_y, step_z;
   int i;
   double drift_sq;
-  int attempts;
+  //int attempts;
 
   makeVerletList(p_traj);
 
   // begin loop to iterate until minimum found
-  for (attempts=0; attempts<n_steps; attempts++)
+  for (p_traj->attempts=0; p_traj->attempts<n_steps; p_traj->attempts++)
   {
     drift_sq = (p_traj->test_x-p_traj->verlet_center_x)*(p_traj->test_x-p_traj->verlet_center_x) 
              + (p_traj->test_y-p_traj->verlet_center_y)*(p_traj->test_y-p_traj->verlet_center_y) 
