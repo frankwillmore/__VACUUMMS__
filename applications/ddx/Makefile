@@ -1,5 +1,8 @@
 #!/usr/bin/make
 
+# Set MAX_NUM_MOLECULES to override default of 64k, e.g. 4M:
+DEFINES:=-DMAX_NUM_MOLECULES=4194304
+
 # Defualt install is to user home
 
 HOME_DIR:=$$HOME
@@ -15,7 +18,7 @@ ddx:	ddx.h ddx.c io_setup.o
 	$(CC) $(CFLAGS) io_setup.o ddx.c -o ddx -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) 
 
 pddx:	ddx.h pddx.c 
-	$(CC) $(CFLAGS) -pthread pddx.c -o pddx -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) 
+	$(CC) $(CFLAGS) -pthread pddx.c -o pddx -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) $(DEFINES)
 
 # trace_ddx outlines the path followed from insertion to minimum
 trace_ddx:	ddx.h trace_ddx.c io_setup.o 
@@ -28,5 +31,5 @@ install:	ddx pddx trace_ddx
 	mv ddx pddx trace_ddx $(INSTALL_DIR) 
 
 clean:
-	rm -f *.o ddx dddx trace_ddx cull 
+	rm -f *.o pddx ddx dddx trace_ddx cull 
 

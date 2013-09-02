@@ -1,6 +1,9 @@
 /* pddx.h */
 
+#ifndef MAX_NUM_MOLECULES
 #define MAX_NUM_MOLECULES 65536
+#endif
+
 #define MAX_CLOSE 16384
 
 typedef struct {
