@@ -14,7 +14,7 @@
 #include "cav2cluster.h"
 
 double box_x, box_y, box_z;
-double sfactor;
+double sfactor = 1;
 
 int number_of_clusters=0;
 int number_of_cavities=0;
@@ -137,6 +137,7 @@ void findAllPairs()
         cavityA[number_of_pairs] = i;
         cavityB[number_of_pairs] = j;
         number_of_pairs++;
+printf("numberofpairs=%d\n",number_of_pairs);
       }
     }
   }
