@@ -1,10 +1,16 @@
 /* pddx.h */
 
+// setting defaults for ~640MB bss for 16M MOLECULES
+
 #ifndef MAX_NUM_MOLECULES
-#define MAX_NUM_MOLECULES 65536
+#define MAX_NUM_MOLECULES 16777216
 #endif
 
-#define MAX_CLOSE 16384
+// setting defaults for 60MB of heap/thread for Verlet list of 1M
+
+#ifndef MAX_CLOSE
+#define MAX_CLOSE 1048576
+#endif
 
 typedef struct {
   int				thread_id;
@@ -29,4 +35,7 @@ void generateTestPoint(Trajectory*);
 void findEnergyMinimum(Trajectory*);
 void makeVerletList(Trajectory*);
 void expandTestParticle(Trajectory*);
+void readConfiguration(FILE *instream);
+void* ThreadMain(void *threadID);
+
 
