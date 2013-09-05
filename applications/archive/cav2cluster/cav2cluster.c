@@ -137,7 +137,6 @@ void findAllPairs()
         cavityA[number_of_pairs] = i;
         cavityB[number_of_pairs] = j;
         number_of_pairs++;
-printf("numberofpairs=%d\n",number_of_pairs);
       }
     }
   }
