@@ -10,11 +10,12 @@
 
 #define MAX_CAVITIES 1310720
 
+#include <stdio.h>
 #include <ftw_std.h>
 #include "center.h"
 
-extern double box_x, box_y, box_z;
-extern FILE *instream;
+double box_x, box_y, box_z;
+FILE *instream;
 
 int number_of_cavities=0;
 double x[MAX_CAVITIES], y[MAX_CAVITIES], z[MAX_CAVITIES], r[MAX_CAVITIES];
@@ -23,11 +24,27 @@ double shift_resolution = .1;
 
 int main(int argc, char* argv[])
 {
+  instream=stdin;
   double shift_x, shift_y, shift_z;
   int x_shift_okay=0, y_shift_okay=0, z_shift_okay=0;
   int i;
 
-  parseCommandLineOptions(argc, argv);
+  setCommandLineParameters(argc, argv);
+  if (getFlagParam("-usage"))
+  {
+    printf("center     \t-box [ 10 10 10 ]\n");
+    printf(" Takes a given cluster (as a set of cavities) and shifts it around until \n");
+    printf(" it's no longer hanging out of the sim box.\n");
+    printf(" program does not check that all cavities are one cluster\n");
+    printf(" only makes sure that no pair straddles a boundary\n");
+    printf(" \n");
+    printf(" In:  .cav  \n");
+    printf(" Out: .cav  \n");
+    printf(" \n");
+
+    exit(0);
+  }
+  getVectorParam("-box", &box_x, &box_y, &box_z);
 
   readInputStream();
 

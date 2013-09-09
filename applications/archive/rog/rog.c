@@ -39,7 +39,20 @@ int main(int argc, char* argv[])
   instream=stdin;
 
   setCommandLineParameters(argc, argv);
-  getVectorParam("-box", &box_x, &box_y, &box_z);
+  if (getFlagParam("-usage")) {
+    printf(" Reads a centered cluster and determines the radius of gyration\n");
+    printf(" Will deliver an erroneous result if cluster is not centered or percolates.\n");
+    printf("\n");
+    printf(" Mechanism:  Samples points in space to see if they are part of cluster\n");
+    printf("             If they are, they are added to a set of points used in\n");
+    printf("             determining the radius of gyration.\n");
+    printf("\n");
+    printf(" In:  .cav \n");
+    printf(" Out: .dst (reports one value)\n");
+    printf("\n");
+    exit(0);
+  }
+
   if (getFlagParam("-randomize")) initializeRandomNumberGenerator2(-1);
   else initializeRandomNumberGenerator2(0);
 

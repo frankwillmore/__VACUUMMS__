@@ -17,9 +17,8 @@
 // In:  one cluster; 1 or more records in .cav format 
 // Out: .dst (reports one value of volume) 
 
-extern double box_x, box_y, box_z;
+double box_x, box_y, box_z;
 FILE *instream;
-extern double sfactor;
 
 int number_of_cavities=0;
 double x[MAX_CAVITIES], y[MAX_CAVITIES], z[MAX_CAVITIES], d[MAX_CAVITIES];
@@ -36,6 +35,14 @@ int main(int argc, char* argv[])
   {
     printf("usage:  cv [ -randomize ]\n\n");
     printf("        will return MC volume of list of spheres entered, box size determined automatically.\n");
+    printf("\n");
+    printf("// Reads a centered cluster and determines the volume of it.\n");
+    printf("// Will deliver an erroneous result if cluster is not centered or percolates.\n");
+    printf("\n");
+    printf("// More generally, it will give the volume of all the cavities, whether clustered or not.\n");
+    printf("\n");
+    printf("// In:  one cluster; 1 or more records in .cav format \n");
+    printf("// Out: .dst (reports one value of volume) \n");
     exit(1);
   }
   if (getFlagParam("-randomize")) initializeRandomNumberGenerator2(-1);

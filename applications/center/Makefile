@@ -1,9 +1,14 @@
 #!/usr/bin/make
 
-HOME_DIR=/home/willmore
+HOME=/home1/00479/willmore
+
+INSTALL_DIR=$(HOME)/usr/bin
+LIBRARY_DIR=$(HOME)/usr/lib
+INCLUDE_DIR=$(HOME)/usr/include
+
+
 
 center:	center.c
-	gcc center.c -I$(HOME_DIR)/usr/include -L$(HOME_DIR)/lib -lftw -o center
-
+	gcc center.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lftw -o center
 install:	center
-	mv center $(HOME_DIR)/bin
+	mv center $(INSTALL_DIR)

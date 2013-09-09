@@ -1,9 +1,16 @@
 #!/usr/bin/make
 
-HOME_DIR=/home/willmore
+HOME=/home1/00479/willmore
+
+INSTALL_DIR=$(HOME)/usr/bin
+LIBRARY_DIR=$(HOME)/usr/lib
+INCLUDE_DIR=$(HOME)/usr/include
+
+CC=icc
+
 
 end2end:	end2end.c
-	gcc end2end.c -I/home/willmore/usr/include -L/home/willmore/lib -lm -lftw -o end2end
+	$(CC) end2end.c -I$(INCLUDE_DIR) -L$(LIBRARY_DIR) -lm -lftw -o end2end
 
 install:	end2end
-	mv end2end $(HOME_DIR)/bin
+	mv end2end $(INSTALL_DIR)

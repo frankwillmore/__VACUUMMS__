@@ -3,7 +3,7 @@
 #define MAX_CAVITIES 1310720
 #define N_SAMPLES 10000
 
-#define PI 3.141592653589796264
+#define PI 3.14159265358979323846264
 
 #include <ftw_std.h>
 #include <ftw_rng2.h>
@@ -18,7 +18,7 @@
 // In:  one cluster; 1 or more records in .cav format 
 // Out: .dst (reports one value of surface area) 
 
-extern FILE *instream;
+FILE *instream;
 
 int number_of_cavities=0;
 double x[MAX_CAVITIES], y[MAX_CAVITIES], z[MAX_CAVITIES], d[MAX_CAVITIES];
@@ -38,6 +38,16 @@ int main(int argc, char* argv[])
   setCommandLineParameters(argc, argv);
   if (getFlagParam("-randomize")) initializeRandomNumberGenerator2(-1);
   else initializeRandomNumberGenerator2(0);
+  if (getFlagParam("-usage")){
+    printf(" Reads a centered cluster and determines the surface area of it.\n");
+    printf(" Will deliver an erroneous result if cluster is not centered or percolates.\n");
+    printf("\n");
+    printf(" More generally, it will give the surface area of all the cavities, whether clustered or not.\n");
+    printf("\n");
+    printf(" In:  one cluster; 1 or more records in .cav format \n");
+    printf(" Out: .dst (reports one value of surface area) \n");
+    exit(0);
+  }
 
   readInputStream();
 

@@ -2,6 +2,7 @@
 
 #define MAX_CAVITIES 131072
 
+#include <stdio.h>
 #include <ftw_std.h>
 #include "end2end.h"
 
@@ -11,9 +12,9 @@
 // In:  .cav 
 // Out: .dst (reports one value)
 
-extern double box_x, box_y, box_z;
-extern FILE *instream;
-extern double sfactor;
+//double box_x, box_y, box_z;
+//extern FILE *instream;
+FILE *instream;
 
 int number_of_cavities=0;
 double x[MAX_CAVITIES], y[MAX_CAVITIES], z[MAX_CAVITIES], d[MAX_CAVITIES];
@@ -25,7 +26,23 @@ int main(int argc, char* argv[])
   double distance;
   double max_distance = 0;
 
-  parseCommandLineOptions(argc, argv);
+  setCommandLineParameters(argc, argv);
+  if (getFlagParam("-usage"))
+  {
+    //printf("end2end    \t-box [ xx.xxx yy.yyy zz.zzz ]\n");
+    printf("end2end < cluster.cav  \n");
+    printf("Reads a centered cluster and determines the end-to-end distance (span) of it.\n");
+    printf("Will deliver an erroneous result if cluster is not centered or percolates.\n");
+    printf("\n");
+    printf("In:  .cav \n");
+    printf("Out: .dst (reports one value)\n");
+    printf("\n");
+    printf("\n");
+    exit(0);
+  }
+//  getVectorParam("-box", &box_x, &box_y, &box_z);
+  instream=stdin;
+
   readInputStream();
 
   for (i=0; i<number_of_cavities; i++) if (d[i] > max_distance) max_distance = d[i];
@@ -49,12 +66,12 @@ int main(int argc, char* argv[])
 
 void readInputStream()
 {
-  char line[80];
+  char line[256];
   char *xs, *ys, *zs, *ds;
 
   while (TRUE)
   {
-    fgets(line, 80, instream);
+    fgets(line, 256, instream);
     if (feof(instream)) break;
 
     xs = strtok(line, "\t");
