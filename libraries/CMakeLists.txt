@@ -32,3 +32,23 @@ set_target_properties(general PROPERTIES
 target_include_directories(general PUBLIC
                            "${PROJECT_SOURCE_DIR}/include"
                            )
+
+add_library(ftw_pov SHARED
+      ${PROJECT_SOURCE_DIR}/libraries/ftw_pov/ftw_povheader.c
+)
+
+# optional libs
+
+if (BUILD_TIFF_UTILS)
+add_library(ftw_tiff SHARED
+      ${PROJECT_SOURCE_DIR}/libraries/ftw_tiff/ftw_makeTIFF.c
+)
+endif()
+
+if (BUILD_CUDA_UTILS)
+   add_library(ftw_cuda SHARED
+      ${PROJECT_SOURCE_DIR}/libraries/ftw_cuda/ftw_cuda_utils.cu
+      ${PROJECT_SOURCE_DIR}/libraries/ftw_cuda/ftw_gfg2fvi.cu
+   )
+endif()
+
