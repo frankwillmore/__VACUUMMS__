@@ -34,15 +34,25 @@ target_include_directories(general PUBLIC
                            )
 
 add_library(ftw_pov SHARED
-      ${PROJECT_SOURCE_DIR}/libraries/ftw_pov/ftw_povheader.c
+    ${PROJECT_SOURCE_DIR}/libraries/ftw_pov/ftw_povheader.c
+)
+target_include_directories(ftw_pov PUBLIC
+    "${PROJECT_SOURCE_DIR}/include"
 )
 
 # optional libs
 
 if (BUILD_TIFF_UTILS)
-add_library(ftw_tiff SHARED
-      ${PROJECT_SOURCE_DIR}/libraries/ftw_tiff/ftw_makeTIFF.c
-)
+    find_package(TIFF)
+    add_library(ftw_tiff SHARED
+        ${PROJECT_SOURCE_DIR}/libraries/ftw_tiff/ftw_makeTIFF.c
+    )
+    target_include_directories(ftw_tiff PUBLIC
+                           "${TIFF_INCLUDE_DIRS}"
+                           )
+    target_include_directories(ftw_tiff PUBLIC
+                           "${PROJECT_SOURCE_DIR}/include"
+                           )
 endif()
 
 if (BUILD_CUDA_UTILS)
