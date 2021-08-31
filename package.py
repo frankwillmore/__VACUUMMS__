@@ -40,7 +40,7 @@ class Vacuumms(CMakePackage):
 
     depends_on('libtiff')
 
-    def install(self, spec, prefix):
+#    def install(self, spec, prefix):
         # FIXME: Unknown build system
-        cmake()
-        install()
+#        cmake()
+#        install()
