@@ -11,4 +11,4 @@ option(BUILD_TIFF_UTILS "FVI utils require cuda" ON)
 
 add_subdirectory(libraries)
 add_subdirectory(utils)
-add_subdirectory(applications)
+#add_subdirectory(applications)
