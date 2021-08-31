@@ -62,7 +62,7 @@ if (BUILD_CUDA_UTILS)
    )
 endif()
 
-install(TARGETS general ftw_pov ftw_tiff ftw_cuda 
+install(TARGETS general ftw_pov ftw_tiff 
         CONFIGURATIONS Release 
         RUNTIME DESTINATION Release/lib)
 
