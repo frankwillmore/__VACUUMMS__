@@ -27,11 +27,11 @@ target_include_directories(fv PUBLIC "${PROJECT_SOURCE_DIR}/include")
 add_executable(mfp "${PROJECT_SOURCE_DIR}/applications/mfp.c")
 target_include_directories(mfp PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
-add_executable( "${PROJECT_SOURCE_DIR}/applications/.c")
-target_include_directories( PUBLIC "${PROJECT_SOURCE_DIR}/include")
+#add_executable( "${PROJECT_SOURCE_DIR}/applications/.c")
+#target_include_directories( PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
-add_executable( "${PROJECT_SOURCE_DIR}/applications/.c")
-target_include_directories( PUBLIC "${PROJECT_SOURCE_DIR}/include")
+#add_executable( "${PROJECT_SOURCE_DIR}/applications/.c")
+#target_include_directories( PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
 
 

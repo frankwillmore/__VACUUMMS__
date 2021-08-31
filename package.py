@@ -43,5 +43,4 @@ class Vacuumms(CMakePackage):
     def install(self, spec, prefix):
         # FIXME: Unknown build system
         cmake()
-        build()
         install()
