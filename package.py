@@ -3,44 +3,22 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-# ----------------------------------------------------------------------------
-# If you submit this package back to Spack as a pull request,
-# please first remove this boilerplate and all FIXME comments.
-#
-# This is a template package file for Spack.  We've put "FIXME"
-# next to all the things you'll want to change. Once you've handled
-# them, you can save this file and test your package like this:
-#
-#     spack install vacuumms
-#
-# You can edit this file again by typing:
-#
-#     spack edit vacuumms
-#
-# See the Spack documentation for more information on packaging.
-# ----------------------------------------------------------------------------
 
 from spack import *
 
 
 class Vacuumms(CMakePackage):
-    """FIXME: Put a proper description of your package here."""
+    """VACUUMMS: (Void Analysis Codes and Unix Utilities for Molecular Modeling and Simulation) is a collection of research codes for the compuational analysis of free volume in molecular structures, including the generation of code for the production of high quality ray-traced images and videos."""
 
-    # FIXME: Add a proper url for your package's homepage here.
-    homepage = "https://www.example.com"
+
+    homepage = "https://github.com/frankwillmore/VACUUMMS"
     url      = "https://github.com/frankwillmore/VACUUMMS"
     git      = "https://github.com/frankwillmore/VACUUMMS.git"
 
     maintainers = ['frankwillmore']
 
-    # FIXME: Add proper versions and checksums here.
-    # version('1.2.3', '0123456789abcdef0123456789abcdef')
-    version('cmake-setup', branch='cmake-setup')
-
+    version('master', branch='master')
+    version('1.0.0', '08cc1cb8b8e84e7d39078fc89a4530f7')
 
     depends_on('libtiff')
 
-#    def install(self, spec, prefix):
-        # FIXME: Unknown build system
-#        cmake()
-#        install()
