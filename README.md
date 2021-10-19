@@ -1,11 +1,12 @@
-####################################################################
+---
 # VACUUMMS
+---
 
   VACUUMMS (Void Analysis Codes and Unix Utilities for Molecular 
   Modeling and Simulation) is a collection of codes developed over the course
   of a research career, specifically for analyzing Free Volume in materials.
-
-  Copyright (C) 2003-2012 Frank T Willmore
+---
+  Copyright (C) 2003-2021 Frank T Willmore
 
   Permission is hereby granted, free of charge, to any person obtaining a 
   copy of this software and associated documentation files (the "Software"), 
@@ -24,7 +25,7 @@
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
   DEALINGS IN THE SOFTWARE.
-
+---
   Please reference the following publication/doi in citing this work:
 
   A toolkit for the analysis and visualization of free volume in materials
@@ -39,4 +40,4 @@
  Summary slides: https://www.xsede.org/documents/234989/378230/XSEDE12-willmore.pdf
  Videos: https://www.youtube.com/playlist?list=PLb1z5T_SBfZgV0-0qzXOeYTgL8NkGST2w
 
-####################################################################
+---
