@@ -2,7 +2,7 @@
 # VACUUMMS
 ---
 
-VACUUMMS (Void Analysis Codes and Unix Utilities for Molecular Modeling and Simulation) is a collection of codes developed over the course of a research career, specifically for analyzing Free Volume in materials.
+**VACUUMMS (Void Analysis Codes and Unix Utilities for Molecular Modeling and Simulation) is a collection of codes developed over the course of a research career, specifically for analyzing Free Volume in materials.**
 
 ---
 
@@ -61,6 +61,7 @@ VACUUMMS (Void Analysis Codes and Unix Utilities for Molecular Modeling and Simu
 ### Installation
 
 `$ git clone https://github.com/spack/spack`
+
 `$ spack install vacuumms target=x86_64`
 
 See individual commands for usage info, e.g.:
