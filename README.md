@@ -6,6 +6,8 @@ VACUUMMS (Void Analysis Codes and Unix Utilities for Molecular Modeling and Simu
 
 ---
 
+## LICENSE
+
   Copyright (C) 2003-2021 Frank T Willmore
 
   Permission is hereby granted, free of charge, to any person obtaining a 
@@ -28,6 +30,8 @@ VACUUMMS (Void Analysis Codes and Unix Utilities for Molecular Modeling and Simu
 
 ---
 
+## CITATION
+
   Please reference the following publication/doi in citing this work:
 
   A toolkit for the analysis and visualization of free volume in materials
@@ -42,6 +46,8 @@ VACUUMMS (Void Analysis Codes and Unix Utilities for Molecular Modeling and Simu
 
 --- 
 
+## ADDITIONAL REFERENCE
+
  Context: https://repositories.lib.utexas.edu/handle/2152/3515
 
  Summary slides: https://www.xsede.org/documents/234989/378230/XSEDE12-willmore.pdf
@@ -49,3 +55,16 @@ VACUUMMS (Void Analysis Codes and Unix Utilities for Molecular Modeling and Simu
  Videos: https://www.youtube.com/playlist?list=PLb1z5T_SBfZgV0-0qzXOeYTgL8NkGST2w
 
 ---
+
+## QUICK START GUIDE
+
+### Installation
+
+`$ git clone https://github.com/spack/spack`
+`$ spack install vacuumms target=x86_64`
+
+See individual commands for usage info, e.g.:
+
+`$ ddx -usage`
+
+
