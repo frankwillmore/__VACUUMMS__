@@ -60,9 +60,14 @@
 
 ### Installation
 
+Get spack:
 `$ git clone https://github.com/spack/spack`
 
+Install:
 `$ spack install vacuumms target=x86_64`
+
+Load into the user environment:
+`$ spack load vacuumms target=x86_64`
 
 See individual commands for usage info, e.g.:
 
