@@ -25,7 +25,9 @@ VACUUMMS (Void Analysis Codes and Unix Utilities for Molecular Modeling and Simu
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
   DEALINGS IN THE SOFTWARE.
+
 ---
+
   Please reference the following publication/doi in citing this work:
 
   A toolkit for the analysis and visualization of free volume in materials
