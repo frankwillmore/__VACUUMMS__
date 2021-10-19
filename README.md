@@ -35,11 +35,17 @@ VACUUMMS (Void Analysis Codes and Unix Utilities for Molecular Modeling and Simu
   Proceedings of the 1st Conference of the Extreme Science and Engineering 
     Discovery Environment: Bridging from the eXtreme to the campus and beyond
   Article No. 30 
+
   ISBN: 978-1-4503-1602-6 doi:10.1145/2335755.2335826
+
   https://dl.acm.org/doi/abs/10.1145/2335755.2335826
 
+--- 
+
  Context: https://repositories.lib.utexas.edu/handle/2152/3515
+
  Summary slides: https://www.xsede.org/documents/234989/378230/XSEDE12-willmore.pdf
+
  Videos: https://www.youtube.com/playlist?list=PLb1z5T_SBfZgV0-0qzXOeYTgL8NkGST2w
 
 ---
