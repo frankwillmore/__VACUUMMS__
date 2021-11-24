@@ -10,26 +10,28 @@ option(BUILD_SHARED_LIBS "shared libs " ON)
 option(BUILD_STATIC_LIBS "static libs " OFF)
 
 
-add_library(general SHARED
-      ${PROJECT_SOURCE_DIR}/libraries/general/ftw_prng.c
-      ${PROJECT_SOURCE_DIR}/libraries/general/ftw_cav_parser.c
-      ${PROJECT_SOURCE_DIR}/libraries/general/ftw_cav_parser.c
-      ${PROJECT_SOURCE_DIR}/libraries/general/ftw_rng2.c
-      ${PROJECT_SOURCE_DIR}/libraries/general/ftw_cav_parser.c
-      ${PROJECT_SOURCE_DIR}/libraries/general/ftw_rng2.c
-      ${PROJECT_SOURCE_DIR}/libraries/general/ftw_command_line_parser.c  
-      ${PROJECT_SOURCE_DIR}/libraries/general/ftw_rng.c
-      ${PROJECT_SOURCE_DIR}/libraries/general/ftw_config_parser.c
-      ${PROJECT_SOURCE_DIR}/libraries/general/ftw_std.c
-      ${PROJECT_SOURCE_DIR}/libraries/general/ftw_param.c
-      ${PROJECT_SOURCE_DIR}/libraries/general/test.c
+add_library(ftw_general SHARED
+      ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_prng.c
+      ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_cav_parser.c
+      ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_cav_parser.c
+      ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_rng2.c
+      ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_cav_parser.c
+      ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_rng2.c
+      ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_command_line_parser.c  
+      ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_rng.c
+      ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_config_parser.c
+      ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_std.c
+      ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_param.c
+      ${PROJECT_SOURCE_DIR}/libraries/ftw_general/test.c
 )
 
-set_target_properties(general PROPERTIES
+list(APPEND EXTRA_LIBS ftw_general)
+
+set_target_properties(ftw_general PROPERTIES
                       POSITION_INDEPENDENT_CODE ${BUILD_SHARED_LIBS}
                       )
 
-target_include_directories(general PUBLIC
+target_include_directories(ftw_general PUBLIC
                            "${PROJECT_SOURCE_DIR}/include"
                            )
 
@@ -62,10 +64,10 @@ if (BUILD_CUDA_UTILS)
    )
 endif()
 
-#install(TARGETS general ftw_pov ftw_tiff 
+#install(TARGETS ftw_general ftw_pov ftw_tiff 
 #        CONFIGURATIONS Release 
 #        RUNTIME DESTINATION Release/lib)
 
-install(TARGETS general ftw_pov ftw_tiff 
+install(TARGETS ftw_general ftw_pov ftw_tiff 
         DESTINATION lib)
 

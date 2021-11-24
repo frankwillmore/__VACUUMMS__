@@ -10,7 +10,8 @@ option(BUILD_CUDA_UTILS "FVI utils require cuda" OFF)
 option(BUILD_TIFF_UTILS "FVI utils require cuda" ON)
 
 add_subdirectory(libraries)
+list(APPEND EXTRA_lIBS ftw_general)
 add_subdirectory(utils)
-#add_subdirectory(applications)
+add_subdirectory(applications)
 
 

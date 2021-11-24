@@ -12,8 +12,10 @@ option(BUILD_STATIC_LIBS "static libs " OFF)
 #add_executable(rattle "${PROJECT_SOURCE_DIR}/applications/rattle.c")
 #target_include_directories(rattle PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
-add_executable(ddx "${PROJECT_SOURCE_DIR}/applications/ddx.c")
+add_executable(ddx "${PROJECT_SOURCE_DIR}/applications/ddx/ddx.c" "${PROJECT_SOURCE_DIR}/applications/ddx/io_setup.c" )
 target_include_directories(ddx PUBLIC "${PROJECT_SOURCE_DIR}/include")
+target_link_libraries(ddx PUBLIC ftw_general m pthread)
+
 
 #add_executable(ljx "${PROJECT_SOURCE_DIR}/applications/ljx.c")
 #target_include_directories(ljx PUBLIC "${PROJECT_SOURCE_DIR}/include")
