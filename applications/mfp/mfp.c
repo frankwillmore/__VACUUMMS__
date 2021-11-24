@@ -7,6 +7,7 @@
 #include <math.h>
 #include <ftw_std.h>
 #include <ftw_param.h>
+#include <ftw_rng.h>
 
 #define MAX_NUM_MOLECULES 16384
 #define MAX_CLOSE 2048
@@ -133,7 +134,7 @@ int main(int argc, char *argv[])
   return 0;
 }
 
-generateTestPoint()
+void generateTestPoint()
 {
   test_x = test_x0 = rand() * rand_step * box_x;
   test_y = test_y0 = rand() * rand_step * box_y;
@@ -151,7 +152,7 @@ generateTestPoint()
   }
 }
 
-makeVerletList()
+void makeVerletList()
 {
   int i;
   double dx, dy, dz, dd;
