@@ -25,10 +25,11 @@ add_executable(center "${PROJECT_SOURCE_DIR}/applications/center/center.c")
 target_include_directories(center PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(center PUBLIC ftw_general m pthread)
 
-# Needs CUDA
-#add_executable(fv "${PROJECT_SOURCE_DIR}/applications/fv/fv.cu")
-#target_include_directories(fv PUBLIC "${PROJECT_SOURCE_DIR}/include")
-#target_link_libraries(fv PUBLIC ftw_general m pthread)
+if(BUILD_CUDA_COMPONENTS)
+    add_executable(fv "${PROJECT_SOURCE_DIR}/applications/fv/fv.cu")
+    target_include_directories(fv PUBLIC "${PROJECT_SOURCE_DIR}/include")
+    target_link_libraries(fv PUBLIC ftw_general m pthread)
+endif()
 
 add_executable(mfp
     "${PROJECT_SOURCE_DIR}/applications/mfp/mfp.c"
