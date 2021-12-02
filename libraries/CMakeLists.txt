@@ -72,6 +72,6 @@ endif()
 #        CONFIGURATIONS Release 
 #        RUNTIME DESTINATION Release/lib)
 
-install(TARGETS ftw_general ftw_pov ftw_tiff 
+install(TARGETS ftw_general ftw_pov ftw_tiff ftw_cuda
         DESTINATION lib)
 
