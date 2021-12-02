@@ -26,9 +26,10 @@ target_include_directories(center PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(center PUBLIC ftw_general m pthread)
 
 if(BUILD_CUDA_COMPONENTS)
-    add_executable(fv "${PROJECT_SOURCE_DIR}/applications/fv/fv.cu")
-    target_include_directories(fv PUBLIC "${PROJECT_SOURCE_DIR}/include")
-    target_link_libraries(fv PUBLIC ftw_general m pthread)
+#    This is a non-working code, headers were lost
+#    cuda_add_executable(fv "${PROJECT_SOURCE_DIR}/applications/fv/fv.cu")
+#    target_include_directories(fv PUBLIC "${PROJECT_SOURCE_DIR}/include")
+#    target_link_libraries(fv PUBLIC ftw_general m pthread)
 endif()
 
 add_executable(mfp
