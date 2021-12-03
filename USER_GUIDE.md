@@ -13,19 +13,19 @@ Locates, then sizes cavities according to provided configuration and parameters.
 
 #### Options
 
-  -box [ 6.0 6.0 6.0 ]            
-  -seed [ 1 ]
-  -randomize 
-  -characteristic_length [ 1.0 ]
-  -characteristic_energy [ 1.0 ]
-  -precision_parameter [ 0.001 ]
-  -n_steps [ 1000 ] (roughly reciprocal of precision parameter)
-  -show_steps (includes steps taken as final column)
-  -verlet_cutoff [ 100.0 ]
-  -n [ 1 ]
-  -volume_sampling 
-  -include_center_energy 
-  -min_diameter [ 0.0 ]
+    -box [ 6.0 6.0 6.0 ]            
+    -seed [ 1 ]
+    -randomize 
+    -characteristic_length [ 1.0 ]
+    -characteristic_energy [ 1.0 ]
+    -precision_parameter [ 0.001 ]
+    -n_steps [ 1000 ] (roughly reciprocal of precision parameter)
+    -show_steps (includes steps taken as final column)
+    -verlet_cutoff [ 100.0 ]
+    -n [ 1 ]
+    -volume_sampling 
+    -include_center_energy 
+    -min_diameter [ 0.0 ]
 
 ### ljx
 Lennard-Jones fluid.
