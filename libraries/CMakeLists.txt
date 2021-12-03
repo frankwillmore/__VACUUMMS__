@@ -72,6 +72,22 @@ endif()
 #        CONFIGURATIONS Release 
 #        RUNTIME DESTINATION Release/lib)
 
-install(TARGETS ftw_general ftw_pov ftw_tiff ftw_cuda
+#install(TARGETS ftw_general ftw_pov ftw_tiff ftw_cuda
+#        DESTINATION lib)
+
+install(TARGETS ftw_general ftw_pov
         DESTINATION lib)
 
+if (BUILD_TIFF_UTILS)
+    install(TARGETS ftw_tiff 
+        DESTINATION lib)
+endif()
+
+# ? how do i do this?
+if (BUILD_CUDA_COMPONENTS)
+    install(TARGETS ftw_cuda
+        DESTINATION lib)
+endif()
+
+#cuda_install(TARGETS ftw_cuda
+#        DESTINATION lib)
