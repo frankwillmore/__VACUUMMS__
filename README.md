@@ -74,6 +74,4 @@ See individual commands for usage info, e.g.:
 `$ ddx -usage`
 
 ## User Guide
-[User Guide](https://github.com/frankwillmore/vacuumms/USER_GUIDE.md)
-
-[${WORKING_DIR}/spack.yaml](https://github.com/frankwillmore/VACUUMMS/blob/master/USER_GUIDE.md)
+[User Guide](https://github.com/frankwillmore/VACUUMMS/blob/master/USER_GUIDE.md)
