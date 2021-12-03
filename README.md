@@ -73,4 +73,6 @@ See individual commands for usage info, e.g.:
 
 `$ ddx -usage`
 
+## User Guide
+[User Guide](https://github.com/frankwillmore/vacuumms/USER_GUIDE.md)
 
