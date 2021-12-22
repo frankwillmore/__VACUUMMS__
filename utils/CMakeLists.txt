@@ -55,7 +55,7 @@ target_include_directories(nsplit PUBLIC "${PROJECT_SOURCE_DIR}/include")
 # vis2pov cav2vis cfg2vis add dst2hst uniq avg a2b clustercat smooth normalize cfg2gfg nsplit fvi2tiff loge log10 exp sum pow sq ck cram wdst2hst max min miss std sew povheader gfg2pov gfgc2pov fvi2pov cav2pov stack_tiffs expr_add expr_multiply dwf sqrt stream2slice truncate stream_multiply replicate_gfg replicate_cav sgfg2fvi
 
 
-install(TARGETS avg vis2pov cav2vis
+install(TARGETS avg vis2pov cav2vis cfg2vis add dst2hst uniq a2b clustercat smooth normalize cfg2gfg nsplit
         CONFIGURATIONS Release
         RUNTIME DESTINATION Release/bin)
  
