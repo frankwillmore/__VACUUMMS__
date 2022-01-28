@@ -59,6 +59,11 @@ add_executable(nsplit "${PROJECT_SOURCE_DIR}/utils/nsplit.c")
 target_include_directories(nsplit PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(nsplit PUBLIC ftw_general m pthread)
 
+add_executable(cram "${PROJECT_SOURCE_DIR}/utils/cram.c")
+target_include_directories(cram PUBLIC "${PROJECT_SOURCE_DIR}/include")
+target_link_libraries(nsplit PUBLIC ftw_general m pthread)
+
+# vacuumms executable simply returns the version number for the version in play
 add_executable(vacuumms "${PROJECT_SOURCE_DIR}/utils/vacuumms.c")
 
 ##fvi2tiff loge log10 exp sum pow sq ck cram wdst2hst max min miss std sew povheader gfg2pov gfgc2pov fvi2pov cav2pov stack_tiffs expr_add expr_multiply dwf sqrt stream2slice truncate stream_multiply replicate_gfg replicate_cav sgfg2fvi
