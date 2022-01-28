@@ -61,7 +61,7 @@ target_link_libraries(nsplit PUBLIC ftw_general m pthread)
 
 add_executable(cram "${PROJECT_SOURCE_DIR}/utils/cram.c")
 target_include_directories(cram PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(nsplit PUBLIC ftw_general m pthread)
+target_link_libraries(cram PUBLIC ftw_general m pthread)
 
 # vacuumms executable simply returns the version number for the version in play
 add_executable(vacuumms "${PROJECT_SOURCE_DIR}/utils/vacuumms.c")
@@ -74,6 +74,7 @@ add_executable(vacuumms "${PROJECT_SOURCE_DIR}/utils/vacuumms.c")
 #install(TARGETS avg vis2pov cav2vis cfg2vis add dst2hst uniq a2b clustercat smooth normalize cfg2gfg nsplit
 install(TARGETS avg vis2pov cav2vis cfg2vis add dst2hst 
         uniq a2b clustercat smooth normalize cfg2gfg nsplit
+	cram
         vacuumms
         DESTINATION bin)
  
