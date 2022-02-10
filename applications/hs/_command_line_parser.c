@@ -46,8 +46,10 @@ void parseCommandLineOptions(int argc, char *argv[])
   for (i = 0; i<argc; i++)
   {
     if (!strcmp(argv[i], "-usage")) printUsage();
+    if (!strcmp(argv[i], "--help")) printUsage();
     if (!strcmp(argv[i], "-v")) verbose = 1;
-    if (!strcmp(argv[i], "-ng")) graphics = 0;
+    if (!strcmp(argv[i], "-g")) graphics = 0;
+    if (!strcmp(argv[i], "+g")) graphics = 1;
     if (!strcmp(argv[i], "-no_side")) {side_view = 0; graphics = 1;}
     if (!strcmp(argv[i], "-T")) temperature = strtod(argv[++i], NULL);
     if (!strcmp(argv[i], "-initial_spacing")) initial_spacing = strtod(argv[++i], NULL);

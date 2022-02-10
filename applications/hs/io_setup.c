@@ -175,13 +175,19 @@ void readEnvironmentVariables()
 {
   gethostname(hostname, 50);
   log_path = getenv("LOG_PATH");
-  log_file_name = strcat(log_path, "/");
-  log_file_name = strcat(log_file_name, hostname);
-  log_file_name = strcat(log_file_name, "-hs.log");
+  if (log_path != NULL) 
+  {
+    log_file_name = strcat(log_path, "/");
+    log_file_name = strcat(log_file_name, hostname);
+    log_file_name = strcat(log_file_name, "-hs.log");
+  }
   results_path = getenv("RESULTS_PATH");
-  output_file_name = strcat(results_path, "/");
-  output_file_name = strcat(output_file_name, simulation_unique_identifier);
-  output_file_name = strcat(output_file_name, "-hs.out");
+  if (results_path != NULL) 
+  {
+    output_file_name = strcat(results_path, "/");
+    output_file_name = strcat(output_file_name, simulation_unique_identifier);
+    output_file_name = strcat(output_file_name, "-hs.out");
+  }
 }
 
 /* display headers on output */

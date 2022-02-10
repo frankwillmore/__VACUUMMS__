@@ -28,12 +28,14 @@ add_library(ftw_general SHARED
 list(APPEND EXTRA_LIBS ftw_general)
 
 set_target_properties(ftw_general PROPERTIES
-                      POSITION_INDEPENDENT_CODE ${BUILD_SHARED_LIBS}
-                      )
+    POSITION_INDEPENDENT_CODE ${BUILD_SHARED_LIBS}
+    )
 
 target_include_directories(ftw_general PUBLIC
-                           "${PROJECT_SOURCE_DIR}/include"
-                           )
+    "${PROJECT_SOURCE_DIR}/include"
+    )
+
+# ftw_pov
 
 add_library(ftw_pov SHARED
     ${PROJECT_SOURCE_DIR}/libraries/ftw_pov/ftw_povheader.c
@@ -44,18 +46,25 @@ target_include_directories(ftw_pov PUBLIC
 
 # optional libs
 
-if (BUILD_TIFF_UTILS)
+#if (BUILD_TIFF_UTILS)
     find_package(TIFF)
     add_library(ftw_tiff SHARED
         ${PROJECT_SOURCE_DIR}/libraries/ftw_tiff/ftw_makeTIFF.c
     )
+    list(APPEND EXTRA_LIBS ftw_tiff)
+
+    set_target_properties(ftw_tiff PROPERTIES
+        POSITION_INDEPENDENT_CODE ${BUILD_SHARED_LIBS}
+        )
     target_include_directories(ftw_tiff PUBLIC
-                           "${TIFF_INCLUDE_DIRS}"
-                           )
+        "${TIFF_INCLUDE_DIRS}"
+        )
     target_include_directories(ftw_tiff PUBLIC
-                           "${PROJECT_SOURCE_DIR}/include"
-                           )
-endif()
+        "${PROJECT_SOURCE_DIR}/include"
+        )
+#endif()
+# BUILD_TIFF_UTILS
+
 
 if (BUILD_CUDA_COMPONENTS)
    find_package(CUDA)
