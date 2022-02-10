@@ -9,6 +9,7 @@ These are the notes.
 In general, VACUUMMS I/O is built on UNIX pipes, records, and tab-separated columns. The most common formats are:
 
 .cfg - 'configuration' or a simple set of x,y,z coordinates for a homogenous fluid, e.g. monodisperse hard-spheres or Lennard-Jones particles. E.g., for centers arranged in a FCC crystal:
+
     0.000000    0.000000    0.000000
     0.707107    0.707107    0.000000
     0.000000    0.707107    0.707107
@@ -21,6 +22,7 @@ In general, VACUUMMS I/O is built on UNIX pipes, records, and tab-separated colu
     0.707107    0.707107    2.828427
 
 .gfg - 'generalized configuration' extends the .cfg format by appending columns for Lennard-Jones sigma and epsilon values:
+
     0.000000    0.000000    0.000000    1.000   1.000
     0.707107    0.707107    0.000000    1.000   1.000
     0.000000    0.707107    0.707107    1.000   1.000
