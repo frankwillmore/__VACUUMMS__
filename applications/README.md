@@ -14,14 +14,15 @@
 Two-point correlation code. 
 
 IN: list of x,y,z positions, box dims specified at CL.
+
 OUT: Tabulated radial distribution function.
 
 ### **center**
 
-Takes as input a clustered set of cavities and shifts it around until it's no longer hanging out of the simulation box.
-Program does not perform validation check (all cavities are one cluster) only makes sure that no cavity pair straddles a boundary.
+Takes as input a clustered set of cavities and shifts it around until it's no longer hanging out of the simulation box. Does not perform validation check (all cavities are one cluster) only makes sure that no cavity pair straddles a boundary.
 
 IN:  .cav
+
 OUT: .cav  
 
 ### **csd**
