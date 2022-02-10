@@ -6,9 +6,9 @@ These are the notes.
 
 ## IO formats
 
-In general, VACUUMMS I/O is built on UNIX pipes, records, and tab-separated columns. The most common formats are:
+In general, VACUUMMS I/O uses non-binary representation of data. Human-readable text is sifted, stripped, sorted, etc. using POSIX pipes, records, and tab-separated columns. The most common formats are:
 
-.cfg - 'configuration' or a simple set of x,y,z coordinates for a homogenous fluid, e.g. monodisperse hard-spheres or Lennard-Jones particles. E.g., for centers arranged in a FCC crystal:
+.cfg - 'configuration' or a simple set of x,y,z coordinates, ostensibly for a homogenous fluid, e.g. monodisperse hard-spheres or Lennard-Jones particles. E.g., for centers arranged in a FCC crystal:
 
     0.000000    0.000000    0.000000
     0.707107    0.707107    0.000000
@@ -33,6 +33,8 @@ In general, VACUUMMS I/O is built on UNIX pipes, records, and tab-separated colu
     0.707107    0.000000    2.121320    1.000   1.000
     0.000000    0.000000    2.828427    1.000   1.000
     0.707107    0.707107    2.828427    1.000   1.000
+
+This five-column .gfg format is the most commonly used VACUUMMS input format and the starting point for working in VACUUMMS. Pre-processing your data to get it to this format will take some effort, but once rendered in this format, VACUUMMS is most elegant. 
 
 .cav - Cavities generated using the CESA algorithm (implemented in ddx/pddx) as x,y,z,d (cavity diameter)
  
