@@ -11,7 +11,9 @@
 #include "io_setup.h"
 #include "hs_main.h"
 
-extern char simulation_unique_identifier[];
+//extern char simulation_unique_identifier[32];
+//extern char *simulation_unique_identifier;
+extern char *p_simulation_unique_identifier;
 extern double temperature;
 extern int number_of_molecules;
 extern int energy_report_frequency;
@@ -167,8 +169,7 @@ void loadConfiguration()
 void generateUniqueId()
 {
   int i;
-  if (!strcmp(simulation_unique_identifier, "################"))
-    for (i=0; i<16; i++) *(simulation_unique_identifier + i) = (char)(rnd() * 26 + 65);
+  for (i=0; i<16; i++) *(p_simulation_unique_identifier + i) = (char)(rnd() * 26 + 65);
 }
 
 void readEnvironmentVariables()
@@ -185,7 +186,7 @@ void readEnvironmentVariables()
   if (results_path != NULL) 
   {
     output_file_name = strcat(results_path, "/");
-    output_file_name = strcat(output_file_name, simulation_unique_identifier);
+    output_file_name = strcat(output_file_name, p_simulation_unique_identifier);
     output_file_name = strcat(output_file_name, "-hs.out");
   }
 }
@@ -197,7 +198,7 @@ void initializeOutput()
 
   if (verbose)
   {
-    printf("#HT simulation %s started on %s:  %s", simulation_unique_identifier, hostname, ctime(&now));
+    printf("#HT simulation %s started on %s:  %s", p_simulation_unique_identifier, hostname, ctime(&now));
     printf("#HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH\n");
     printf("#H N=%d\n", number_of_molecules);
     printf("#H box dimensions:  \t%lf x %lf x %lf = %lf\n", box_x, box_y, box_z, box_x*box_y*box_z);
@@ -212,11 +213,11 @@ void initializeOutput()
   }
 
   log_file = fopen(log_file_name, "a");
-  fprintf(log_file, "simulation %s launched on %s:  %s", simulation_unique_identifier, hostname, ctime(&now));
+  fprintf(log_file, "simulation %s launched on %s:  %s", p_simulation_unique_identifier, hostname, ctime(&now));
   fclose(log_file);
 
   output_file = fopen(output_file_name, "w");
-  fprintf(output_file, "#HT simulation %s started on %s:  %s", simulation_unique_identifier, hostname, ctime(&now));
+  fprintf(output_file, "#HT simulation %s started on %s:  %s", p_simulation_unique_identifier, hostname, ctime(&now));
   fprintf(output_file, "#HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH\n");
   fprintf(output_file, "#H N=%d\n", number_of_molecules);
   fprintf(output_file, "#H box dimensions:  \t%lf x %lf x %lf = %lf\n", box_x, box_y, box_z, box_x*box_y*box_z);
@@ -234,12 +235,12 @@ void initializeOutput()
 void finalizeOutput()
 {
   now = time(NULL);
-  if (verbose) printf("#HT simulation %s finished on %s:  %s", simulation_unique_identifier, hostname, ctime(&now));
-  fprintf(output_file, "#HT simulation %s finished on %s:  %s", simulation_unique_identifier, hostname, ctime(&now));
+  if (verbose) printf("#HT simulation %s finished on %s:  %s", p_simulation_unique_identifier, hostname, ctime(&now));
+  fprintf(output_file, "#HT simulation %s finished on %s:  %s", p_simulation_unique_identifier, hostname, ctime(&now));
   fclose(output_file);
 
   log_file = fopen(log_file_name, "a");
-  fprintf(log_file, "simulation %s finished on %s:  %s", simulation_unique_identifier, hostname, ctime(&now));
+  fprintf(log_file, "simulation %s finished on %s:  %s", p_simulation_unique_identifier, hostname, ctime(&now));
   fclose(log_file);
 }
 
@@ -252,7 +253,7 @@ void generateOutput()
     now = time(NULL);
     log_file = fopen(log_file_name, "a");
     fprintf(log_file, "dumping configuration for %s on %s at %d steps:  %s", hostname, \
-            simulation_unique_identifier, monte_carlo_steps, ctime(&now));
+            p_simulation_unique_identifier, monte_carlo_steps, ctime(&now));
     fclose(log_file);
 
     if (verbose)

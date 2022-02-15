@@ -50,7 +50,8 @@ int configuration_frequency = 1000;
 char *output_file_name = "hs.out";
 char *input_file_name;
 char *log_file_name = "hs.log";
-char *simulation_unique_identifier = "################";
+char simulation_unique_identifier[32] = "################";
+char* p_simulation_unique_identifier = simulation_unique_identifier;
 char hostname[50] = "";
 double target_acceptance_ratio = .15;
 extern double initial_spacing;
@@ -74,17 +75,16 @@ int main(int argc, char *argv[])
   getIntParam("-min_color", &min_color);
   getIntParam("-rng_seed", &rng_seed);
   if (getFlagParam("-randomize")) rng_seed = getRandomSeed();
+  initializeRandomNumberGeneratorTo(rng_seed);
   getIntParam("-end_mcs", &end_mcs);
   getIntParam("-energy_report_frequency", &energy_report_frequency);
   getIntParam("-configuration_threshold", &configuration_threshold);
   getIntParam("-configuration_frequency", &configuration_frequency);
   getStringParam("-log_file_name", &log_file_name);
   getStringParam("-input_file_name", &input_file_name);
-  getStringParam("-simulation_unique_identifier", &simulation_unique_identifier);
+  if (!getStringParam("-simulation_unique_identifier", &p_simulation_unique_identifier)) generateUniqueId();
   getDoubleParam("-target_acceptance_ratio", &target_acceptance_ratio);
   getDoubleParam("-initial_spacing", &initial_spacing);
-
-  initializeRandomNumberGeneratorTo(rng_seed);
 
   readEnvironmentVariables();
   initializeOutput();

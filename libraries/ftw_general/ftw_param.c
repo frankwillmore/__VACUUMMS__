@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdio.h>
 
-//#include "getParameter.h"
 #include <ftw_param.h>
 
 void setCommandLineParameters(int argc, char **argv)
@@ -13,26 +12,30 @@ void setCommandLineParameters(int argc, char **argv)
 
 // usage:       char *test;
 //              getStringParam("-test", &test);
-void getStringParam(char *param_name, char **parameter)
+int getStringParam(char *param_name, char **parameter)
 {
   int i=0;
+  int retval = 0;
  
   while (++i<command_line_argc)
   if (strcmp(command_line_argv[i], param_name) == 0) 
   {
     if (i+1>=command_line_argc) 
     {
-      printf("no value specified for %s\n", param_name);
+      printf("reached EOL with no value specified for %s\n", param_name);
       exit(1);
     }
-
+    // parameter = &command_line_argv[++i];
     *parameter = command_line_argv[++i];
+    retval = 1;
   }
+  return retval;
 }
 
-void getIntParam(char *param_name, int *parameter)
+int getIntParam(char *param_name, int *parameter)
 {
   int i=0;
+  int retval = 0;
  
   while (++i<command_line_argc)
   if (strcmp(command_line_argv[i], param_name) == 0) 
@@ -44,12 +47,15 @@ void getIntParam(char *param_name, int *parameter)
     }
 
     *parameter = (strtol(command_line_argv[++i], NULL, 10));
+    retval = 1;
   }
+  return retval;
 }
 
-void getLongParam(char *param_name, long *parameter)
+int getLongParam(char *param_name, long *parameter)
 {
   int i=0;
+  int retval = 0;
  
   while (++i<command_line_argc)
   if (strcmp(command_line_argv[i], param_name) == 0) 
@@ -61,12 +67,15 @@ void getLongParam(char *param_name, long *parameter)
     }
 
     *parameter = (strtol(command_line_argv[++i], NULL, 10));
+    retval = 1;
   }
+  return retval;
 }
 
-void getFloatParam(char *param_name, float *parameter)
+int getFloatParam(char *param_name, float *parameter)
 {
   int i=0;
+  int retval = 0;
  
   while (++i<command_line_argc)
   if (strcmp(command_line_argv[i], param_name) == 0) 
@@ -78,12 +87,15 @@ void getFloatParam(char *param_name, float *parameter)
     }
 
     *parameter = (float)strtod(command_line_argv[++i], NULL);
+    retval = 1;
   }
+  return retval;
 }
 
-void getDoubleParam(char *param_name, double *parameter)
+int getDoubleParam(char *param_name, double *parameter)
 {
   int i=0;
+  int retval = 0;
  
   while (++i<command_line_argc)
   if (strcmp(command_line_argv[i], param_name) == 0) 
@@ -95,12 +107,15 @@ void getDoubleParam(char *param_name, double *parameter)
     }
 
     *parameter = (strtod(command_line_argv[++i], NULL));
+    retval = 1;
   }
+  return retval;
 }
 
-void getVectorParam(char *param_name, double *parameter1,  double *parameter2, double *parameter3)
+int getVectorParam(char *param_name, double *parameter1,  double *parameter2, double *parameter3)
 {
   int i=0;
+  int retval = 0;
  
   while (++i<command_line_argc)
   if (strcmp(command_line_argv[i], param_name) == 0) 
@@ -114,12 +129,15 @@ void getVectorParam(char *param_name, double *parameter1,  double *parameter2, d
     *parameter1 = (strtod(command_line_argv[++i], NULL));
     *parameter2 = (strtod(command_line_argv[++i], NULL));
     *parameter3 = (strtod(command_line_argv[++i], NULL));
+    retval = 1;
   }
+  return retval;
 }
 
-void getVectorStringParam(char *param_name, char **parameter1,  char **parameter2, char **parameter3)
+int getVectorStringParam(char *param_name, char **parameter1,  char **parameter2, char **parameter3)
 {
   int i=0;
+  int retval = 0;
  
   while (++i<command_line_argc)
   if (strcmp(command_line_argv[i], param_name) == 0) 
@@ -133,7 +151,9 @@ void getVectorStringParam(char *param_name, char **parameter1,  char **parameter
     *parameter1 = command_line_argv[++i];
     *parameter2 = command_line_argv[++i];
     *parameter3 = command_line_argv[++i];
+    retval = 1;
   }
+  return retval;
 }
 
 int getFlagParam(char *param_name)
