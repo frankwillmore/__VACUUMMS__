@@ -59,7 +59,6 @@ add_executable(cram "${PROJECT_SOURCE_DIR}/utils/cram.c")
 target_include_directories(cram PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(cram PUBLIC ftw_general m pthread)
 
-<<<<<<< HEAD
 add_executable(loge "${PROJECT_SOURCE_DIR}/utils/loge.c")
 target_include_directories(loge PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(loge PUBLIC ftw_general m pthread)
@@ -230,21 +229,5 @@ install(TARGETS
         replicate_gfg 
         replicate_cav 
         sgfg2fvi
-=======
-# vacuumms executable simply returns the version number for the version in play
-add_executable(vacuumms "${PROJECT_SOURCE_DIR}/utils/vacuumms.c")
-
-# not yet added to cmake
-##fvi2tiff loge log10 exp sum pow sq ck cram wdst2hst max min miss std sew povheader gfg2pov gfgc2pov fvi2pov cav2pov stack_tiffs expr_add expr_multiply dwf sqrt stream2slice truncate stream_multiply replicate_gfg replicate_cav sgfg2fvi
-
-# original list of utils
-# vis2pov cav2vis cfg2vis add dst2hst uniq avg a2b clustercat smooth normalize cfg2gfg nsplit fvi2tiff loge log10 exp sum pow sq ck cram wdst2hst max min miss std sew povheader gfg2pov gfgc2pov fvi2pov cav2pov stack_tiffs expr_add expr_multiply dwf sqrt stream2slice truncate stream_multiply replicate_gfg replicate_cav sgfg2fvi
-
-#install(TARGETS avg vis2pov cav2vis cfg2vis add dst2hst uniq a2b clustercat smooth normalize cfg2gfg nsplit
-install(TARGETS avg vis2pov cav2vis cfg2vis add dst2hst 
-        uniq a2b clustercat smooth normalize cfg2gfg nsplit
-	cram
-        min max
->>>>>>> e056336ebf97cceb6f7dabcf199dd040e43a65fd
         vacuumms
         DESTINATION bin)

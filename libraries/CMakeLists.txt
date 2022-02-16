@@ -22,7 +22,7 @@ add_library(ftw_general SHARED
       ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_config_parser.c
       ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_std.c
       ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_param.c
-      ${PROJECT_SOURCE_DIR}/libraries/ftw_general/test.c
+#      ${PROJECT_SOURCE_DIR}/libraries/ftw_general/test.c
 )
 
 list(APPEND EXTRA_LIBS ftw_general)
