@@ -95,6 +95,16 @@ add_executable(end2end
 target_include_directories(end2end PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(end2end PUBLIC ftw_general m pthread)
 
+add_executable(vis 
+    "${PROJECT_SOURCE_DIR}/applications/vis/vis.c" 
+    "${PROJECT_SOURCE_DIR}/applications/vis/command_line_parser.c"
+    "${PROJECT_SOURCE_DIR}/applications/vis/io_setup.c" 
+    "${PROJECT_SOURCE_DIR}/applications/vis/graphics.c" 
+)
+target_include_directories(vis PUBLIC "${PROJECT_SOURCE_DIR}/include")
+target_link_libraries(vis PUBLIC ftw_general m pthread X11)
+
+
 # Cuda codes needing work (prolly just with CUDA): pmd pmdgpu fv/essence
 # Unknown status: eg size
 # sv - looks to have surface/volume utils, but needs another look
@@ -113,4 +123,5 @@ install(TARGETS
         cav2cluster
         sdhs
         end2end
+        vis
         DESTINATION bin)
