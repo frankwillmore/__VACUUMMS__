@@ -1,4 +1,4 @@
-#2pc
+# 2pc
 
 Two-point correlation
 

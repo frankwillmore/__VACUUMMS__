@@ -52,12 +52,8 @@ add_executable(pddx "${PROJECT_SOURCE_DIR}/applications/ddx/ddx.c" "${PROJECT_SO
 target_include_directories(pddx PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(pddx PUBLIC ftw_general m pthread)
 
-# needs work
-#/usr/bin/ld: CMakeFiles/2pc.dir/2pc/io_setup.c.o: in function `loadConfiguration':
-#io_setup.c:(.text+0x1c): undefined reference to `number_of_molecules'
 add_executable(2pc 
     "${PROJECT_SOURCE_DIR}/applications/2pc/2pc.c" 
-#    "${PROJECT_SOURCE_DIR}/applications/2pc/io_setup.c" 
 )
 target_include_directories(2pc PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(2pc PUBLIC ftw_general m )

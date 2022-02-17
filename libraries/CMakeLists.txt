@@ -1,14 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
-# set the project name
-#project(VACUUMMS)
-#project(utils)
-#project(avg)
-
-#option(USE_MYJUNK "Use junk provided" ON)
 option(BUILD_SHARED_LIBS "shared libs " ON)
 option(BUILD_STATIC_LIBS "static libs " OFF)
-
 
 add_library(ftw_general SHARED
       ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_prng.c
@@ -22,7 +15,6 @@ add_library(ftw_general SHARED
       ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_config_parser.c
       ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_std.c
       ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_param.c
-#      ${PROJECT_SOURCE_DIR}/libraries/ftw_general/test.c
 )
 
 list(APPEND EXTRA_LIBS ftw_general)
@@ -46,12 +38,14 @@ target_include_directories(ftw_pov PUBLIC
 
 # optional libs
 
-#if (BUILD_TIFF_UTILS)
-    find_package(TIFF)
+if (BUILD_TIFF_UTILS)
+
     add_library(ftw_tiff SHARED
         ${PROJECT_SOURCE_DIR}/libraries/ftw_tiff/ftw_makeTIFF.c
     )
     list(APPEND EXTRA_LIBS ftw_tiff)
+
+    target_link_libraries(ftw_tiff PUBLIC tiff)
 
     set_target_properties(ftw_tiff PROPERTIES
         POSITION_INDEPENDENT_CODE ${BUILD_SHARED_LIBS}
@@ -62,8 +56,7 @@ target_include_directories(ftw_pov PUBLIC
     target_include_directories(ftw_tiff PUBLIC
         "${PROJECT_SOURCE_DIR}/include"
         )
-#endif()
-# BUILD_TIFF_UTILS
+endif() # BUILD_TIFF_UTILS
 
 
 if (BUILD_CUDA_COMPONENTS)
@@ -77,13 +70,6 @@ if (BUILD_CUDA_COMPONENTS)
    )
 endif()
 
-#install(TARGETS ftw_general ftw_pov ftw_tiff 
-#        CONFIGURATIONS Release 
-#        RUNTIME DESTINATION Release/lib)
-
-#install(TARGETS ftw_general ftw_pov ftw_tiff ftw_cuda
-#        DESTINATION lib)
-
 install(TARGETS ftw_general ftw_pov
         DESTINATION lib)
 
@@ -92,11 +78,8 @@ if (BUILD_TIFF_UTILS)
         DESTINATION lib)
 endif()
 
-# ? how do i do this?
 if (BUILD_CUDA_COMPONENTS)
     install(TARGETS ftw_cuda
         DESTINATION lib)
 endif()
 
-#cuda_install(TARGETS ftw_cuda
-#        DESTINATION lib)
