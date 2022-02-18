@@ -187,11 +187,11 @@ target_link_libraries(replicate_cav PUBLIC ftw_general m pthread)
 
 add_executable(sgfg2fvi "${PROJECT_SOURCE_DIR}/utils/sgfg2fvi.c")
 target_include_directories(sgfg2fvi PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(sgfg2fvi PUBLIC ftw_general m pthread)
+target_link_libraries(sgfg2fvi PUBLIC ftw_general m ftw_cuda)
 
 add_executable(gfg2fvi "${PROJECT_SOURCE_DIR}/utils/gfg2fvi.c")
 target_include_directories(gfg2fvi PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(gfg2fvi PUBLIC ftw_general m pthread)
+target_link_libraries(gfg2fvi PUBLIC ftw_general m ftw_cuda)
 
 #add_executable(fvi2tiff "${PROJECT_SOURCE_DIR}/utils/fvi2tiff.c")
 #target_include_directories(fvi2tiff PUBLIC "${PROJECT_SOURCE_DIR}/include")
