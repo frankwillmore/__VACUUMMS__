@@ -9,80 +9,83 @@ target_include_directories(avg PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
 add_executable(vis2pov "${PROJECT_SOURCE_DIR}/utils/vis2pov.c")
 target_include_directories(vis2pov PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(vis2pov PUBLIC ftw_general m pthread)
+target_link_libraries(vis2pov PUBLIC ftw_general m )
 
 add_executable(cav2vis "${PROJECT_SOURCE_DIR}/utils/cav2vis.c")
 target_include_directories(cav2vis PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(cav2vis PUBLIC ftw_general m pthread)
+target_link_libraries(cav2vis PUBLIC ftw_general m )
 
 add_executable(cfg2vis "${PROJECT_SOURCE_DIR}/utils/cfg2vis.c")
 target_include_directories(cfg2vis PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(cfg2vis PUBLIC ftw_general m pthread)
+target_link_libraries(cfg2vis PUBLIC ftw_general m )
 
 add_executable(add "${PROJECT_SOURCE_DIR}/utils/add.c")
 target_include_directories(add PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(add PUBLIC ftw_general m pthread)
+target_link_libraries(add PUBLIC ftw_general m )
 
 add_executable(dst2hst "${PROJECT_SOURCE_DIR}/utils/dst2hst.c")
 target_include_directories(dst2hst PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(dst2hst PUBLIC ftw_general m pthread)
+target_link_libraries(dst2hst PUBLIC ftw_general m )
 
 add_executable(uniq "${PROJECT_SOURCE_DIR}/utils/uniq.c")
 target_include_directories(uniq PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(uniq PUBLIC ftw_general m pthread)
+target_link_libraries(uniq PUBLIC ftw_general m )
 
 add_executable(a2b "${PROJECT_SOURCE_DIR}/utils/a2b.c")
 target_include_directories(a2b PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(a2b PUBLIC ftw_general m pthread)
+target_link_libraries(a2b PUBLIC ftw_general m )
 
 add_executable(clustercat "${PROJECT_SOURCE_DIR}/utils/clustercat.c")
 target_include_directories(clustercat PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(clustercat PUBLIC ftw_general m pthread)
+target_link_libraries(clustercat PUBLIC ftw_general m )
 
 add_executable(smooth "${PROJECT_SOURCE_DIR}/utils/smooth.c")
 target_include_directories(smooth PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(smooth PUBLIC ftw_general m pthread)
+target_link_libraries(smooth PUBLIC ftw_general m )
 
 add_executable(normalize "${PROJECT_SOURCE_DIR}/utils/normalize.c")
 target_include_directories(normalize PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(normalize PUBLIC ftw_general m pthread)
+target_link_libraries(normalize PUBLIC ftw_general m )
 
 add_executable(cfg2gfg "${PROJECT_SOURCE_DIR}/utils/cfg2gfg.c")
 target_include_directories(cfg2gfg PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(cfg2gfg PUBLIC ftw_general m pthread)
+target_link_libraries(cfg2gfg PUBLIC ftw_general m )
 
 add_executable(nsplit "${PROJECT_SOURCE_DIR}/utils/nsplit.c")
 target_include_directories(nsplit PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(nsplit PUBLIC ftw_general m pthread)
+target_link_libraries(nsplit PUBLIC ftw_general m )
 
 add_executable(cram "${PROJECT_SOURCE_DIR}/utils/cram.c")
 target_include_directories(cram PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(cram PUBLIC ftw_general m pthread)
+target_link_libraries(cram PUBLIC ftw_general m )
 
-<<<<<<< HEAD
 add_executable(loge "${PROJECT_SOURCE_DIR}/utils/loge.c")
 target_include_directories(loge PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(loge PUBLIC ftw_general m pthread)
+target_link_libraries(loge PUBLIC ftw_general m )
 
 add_executable(log10 "${PROJECT_SOURCE_DIR}/utils/log10.c")
 target_include_directories(log10 PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(log10 PUBLIC ftw_general m pthread)
+target_link_libraries(log10 PUBLIC ftw_general m )
 
 add_executable(exp "${PROJECT_SOURCE_DIR}/utils/exp.c")
 target_include_directories(exp PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(exp PUBLIC ftw_general m pthread)
+target_link_libraries(exp PUBLIC ftw_general m )
 
 add_executable(pow "${PROJECT_SOURCE_DIR}/utils/pow.c")
 target_include_directories(pow PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(pow PUBLIC ftw_general m pthread)
+target_link_libraries(pow PUBLIC ftw_general m )
 
 add_executable(sum "${PROJECT_SOURCE_DIR}/utils/sum.c")
 target_include_directories(sum PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(sum PUBLIC ftw_general m pthread)
+target_link_libraries(sum PUBLIC ftw_general m )
 
 add_executable(sq "${PROJECT_SOURCE_DIR}/utils/sq.c")
 target_include_directories(sq PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(sq PUBLIC ftw_general m pthread)
+target_link_libraries(sq PUBLIC ftw_general m )
+
+add_executable(recip "${PROJECT_SOURCE_DIR}/utils/recip.c")
+target_include_directories(recip PUBLIC "${PROJECT_SOURCE_DIR}/include")
+target_link_libraries(recip PUBLIC ftw_general m )
 
 add_executable(ck "${PROJECT_SOURCE_DIR}/utils/ck.c")
 target_include_directories(ck PUBLIC "${PROJECT_SOURCE_DIR}/include")
@@ -132,25 +135,38 @@ add_executable(cav2pov "${PROJECT_SOURCE_DIR}/utils/cav2pov.c")
 target_include_directories(cav2pov PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(cav2pov PUBLIC ftw_general ftw_pov m pthread)
 
-#add_executable(stack_tiffs "${PROJECT_SOURCE_DIR}/utils/stack_tiffs.c")
-#target_include_directories(stack_tiffs PUBLIC "${PROJECT_SOURCE_DIR}/include")
-#target_link_libraries(stack_tiffs PUBLIC ftw_general m pthread)
+if (BUILD_TIFF_UTILS)
+    add_executable(stack_tiffs "${PROJECT_SOURCE_DIR}/utils/stack_tiffs.c")
+    target_include_directories(stack_tiffs PUBLIC "${PROJECT_SOURCE_DIR}/include")
+    target_include_directories(stack_tiffs PUBLIC "${TIFF_INCLUDE_DIRS}")
+    target_link_libraries(stack_tiffs PUBLIC ftw_general m ftw_tiff tiff)
+
+    add_executable(readtiff "${PROJECT_SOURCE_DIR}/utils/readtiff.c")
+    target_include_directories(readtiff PUBLIC "${PROJECT_SOURCE_DIR}/include")
+    target_include_directories(readtiff PUBLIC "${TIFF_INCLUDE_DIRS}")
+    target_link_libraries(readtiff PUBLIC ftw_general m ftw_tiff tiff)
+
+    add_executable(fvi2tiff "${PROJECT_SOURCE_DIR}/utils/fvi2tiff.c")
+    target_include_directories(fvi2tiff PUBLIC "${PROJECT_SOURCE_DIR}/include")
+    target_include_directories(fvi2tiff PUBLIC "${TIFF_INCLUDE_DIRS}")
+    target_link_libraries(fvi2tiff PUBLIC ftw_general m ftw_tiff tiff)
+endif()
 
 add_executable(expr_add "${PROJECT_SOURCE_DIR}/utils/expr_add.c")
 target_include_directories(expr_add PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(expr_add PUBLIC ftw_general m pthread)
+target_link_libraries(expr_add PUBLIC ftw_general m )
 
 add_executable(expr_multiply "${PROJECT_SOURCE_DIR}/utils/expr_multiply.c")
 target_include_directories(expr_multiply PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(expr_multiply PUBLIC ftw_general m pthread)
+target_link_libraries(expr_multiply PUBLIC ftw_general m )
 
 add_executable(dwf "${PROJECT_SOURCE_DIR}/utils/dwf.c")
 target_include_directories(dwf PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(dwf PUBLIC ftw_general m pthread)
+target_link_libraries(dwf PUBLIC ftw_general m )
 
 add_executable(sqrt "${PROJECT_SOURCE_DIR}/utils/sqrt.c")
 target_include_directories(sqrt PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(sqrt PUBLIC ftw_general m pthread)
+target_link_libraries(sqrt PUBLIC ftw_general m )
 
 add_executable(stream2slice "${PROJECT_SOURCE_DIR}/utils/stream2slice.c")
 target_include_directories(stream2slice PUBLIC "${PROJECT_SOURCE_DIR}/include")
@@ -172,9 +188,15 @@ add_executable(replicate_cav "${PROJECT_SOURCE_DIR}/utils/replicate_cav.c")
 target_include_directories(replicate_cav PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(replicate_cav PUBLIC ftw_general m pthread)
 
-add_executable(sgfg2fvi "${PROJECT_SOURCE_DIR}/utils/sgfg2fvi.c")
-target_include_directories(sgfg2fvi PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(sgfg2fvi PUBLIC ftw_general m pthread)
+if (BUILD_CUDA_COMPONENTS)
+    add_executable(sgfg2fvi "${PROJECT_SOURCE_DIR}/utils/sgfg2fvi.c")
+    target_include_directories(sgfg2fvi PUBLIC "${PROJECT_SOURCE_DIR}/include")
+    target_link_libraries(sgfg2fvi PUBLIC ftw_general m ftw_cuda)
+
+    add_executable(gfg2fvi "${PROJECT_SOURCE_DIR}/utils/gfg2fvi.c")
+    target_include_directories(gfg2fvi PUBLIC "${PROJECT_SOURCE_DIR}/include")
+    target_link_libraries(gfg2fvi PUBLIC ftw_general m ftw_cuda)
+endif()
 
 #add_executable(fvi2tiff "${PROJECT_SOURCE_DIR}/utils/fvi2tiff.c")
 #target_include_directories(fvi2tiff PUBLIC "${PROJECT_SOURCE_DIR}/include")
@@ -213,38 +235,34 @@ install(TARGETS
         miss
         std
         sew
+        pow
         povheader
         gfg2pov
         gfgc2pov
         fvi2pov
         cav2pov
-#        stack_tiffs
         expr_add
         expr_multiply
         dwf
         sqrt
         stream2slice
         truncate
-#        fvi2tiff 
         stream_multiply 
         replicate_gfg 
         replicate_cav 
-        sgfg2fvi
-=======
-# vacuumms executable simply returns the version number for the version in play
-add_executable(vacuumms "${PROJECT_SOURCE_DIR}/utils/vacuumms.c")
-
-# not yet added to cmake
-##fvi2tiff loge log10 exp sum pow sq ck cram wdst2hst max min miss std sew povheader gfg2pov gfgc2pov fvi2pov cav2pov stack_tiffs expr_add expr_multiply dwf sqrt stream2slice truncate stream_multiply replicate_gfg replicate_cav sgfg2fvi
-
-# original list of utils
-# vis2pov cav2vis cfg2vis add dst2hst uniq avg a2b clustercat smooth normalize cfg2gfg nsplit fvi2tiff loge log10 exp sum pow sq ck cram wdst2hst max min miss std sew povheader gfg2pov gfgc2pov fvi2pov cav2pov stack_tiffs expr_add expr_multiply dwf sqrt stream2slice truncate stream_multiply replicate_gfg replicate_cav sgfg2fvi
-
-#install(TARGETS avg vis2pov cav2vis cfg2vis add dst2hst uniq a2b clustercat smooth normalize cfg2gfg nsplit
-install(TARGETS avg vis2pov cav2vis cfg2vis add dst2hst 
-        uniq a2b clustercat smooth normalize cfg2gfg nsplit
-	cram
-        min max
->>>>>>> e056336ebf97cceb6f7dabcf199dd040e43a65fd
         vacuumms
         DESTINATION bin)
+
+if (BUILD_TIFF_UTILS)
+    install(TARGETS
+            stack_tiffs
+            fvi2tiff
+            DESTINATION bin)
+endif()
+
+if (BUILD_CUDA_COMPONENTS)
+    install(TARGETS
+            sgfg2fvi
+            gfg2fvi
+            DESTINATION bin)
+endif()

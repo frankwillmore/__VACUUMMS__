@@ -75,3 +75,5 @@ See individual commands for usage info, e.g.:
 
 ## User Guide
 [User Guide](https://github.com/frankwillmore/VACUUMMS/blob/master/USER_GUIDE.md)
+
+[Developer Guide](DEVELOPER_GUIDE.md)

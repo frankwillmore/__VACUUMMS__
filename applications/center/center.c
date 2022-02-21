@@ -12,6 +12,7 @@
 
 #include <stdio.h>
 #include <ftw_std.h>
+#include <ftw_param.h>
 #include "center.h"
 
 double box_x, box_y, box_z;
