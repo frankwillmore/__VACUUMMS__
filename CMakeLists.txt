@@ -20,8 +20,6 @@ endif()
 
 if (BUILD_CUDA_COMPONENTS)
     find_package(CUDA)
-    add_library(cuda SHARED IMPORTED)
-    set_target_properties(cuda PROPERTIES IMPORTED_LOCATION ${CUDA_LIBRARIES})
 endif()
 
 add_subdirectory(libraries)
