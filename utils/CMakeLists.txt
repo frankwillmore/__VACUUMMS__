@@ -135,19 +135,22 @@ add_executable(cav2pov "${PROJECT_SOURCE_DIR}/utils/cav2pov.c")
 target_include_directories(cav2pov PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(cav2pov PUBLIC ftw_general ftw_pov m pthread)
 
-# TIFF
-find_package(TIFF)
+if (BUILD_TIFF_UTILS)
+    add_executable(stack_tiffs "${PROJECT_SOURCE_DIR}/utils/stack_tiffs.c")
+    target_include_directories(stack_tiffs PUBLIC "${PROJECT_SOURCE_DIR}/include")
+    target_include_directories(stack_tiffs PUBLIC "${TIFF_INCLUDE_DIRS}")
+    target_link_libraries(stack_tiffs PUBLIC ftw_general m ftw_tiff tiff)
 
-add_executable(stack_tiffs "${PROJECT_SOURCE_DIR}/utils/stack_tiffs.c")
-target_include_directories(stack_tiffs PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_include_directories(stack_tiffs PUBLIC "${TIFF_INCLUDE_DIRS}")
-target_link_libraries(stack_tiffs PUBLIC ftw_general m ftw_tiff tiff)
+    add_executable(readtiff "${PROJECT_SOURCE_DIR}/utils/readtiff.c")
+    target_include_directories(readtiff PUBLIC "${PROJECT_SOURCE_DIR}/include")
+    target_include_directories(readtiff PUBLIC "${TIFF_INCLUDE_DIRS}")
+    target_link_libraries(readtiff PUBLIC ftw_general m ftw_tiff tiff)
 
-add_executable(readtiff "${PROJECT_SOURCE_DIR}/utils/readtiff.c")
-target_include_directories(readtiff PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_include_directories(readtiff PUBLIC "${TIFF_INCLUDE_DIRS}")
-target_link_libraries(readtiff PUBLIC ftw_general m ftw_tiff tiff)
-# /TIFF
+    add_executable(fvi2tiff "${PROJECT_SOURCE_DIR}/utils/fvi2tiff.c")
+    target_include_directories(fvi2tiff PUBLIC "${PROJECT_SOURCE_DIR}/include")
+    target_include_directories(fvi2tiff PUBLIC "${TIFF_INCLUDE_DIRS}")
+    target_link_libraries(fvi2tiff PUBLIC ftw_general m ftw_tiff tiff)
+endif()
 
 add_executable(expr_add "${PROJECT_SOURCE_DIR}/utils/expr_add.c")
 target_include_directories(expr_add PUBLIC "${PROJECT_SOURCE_DIR}/include")
@@ -185,13 +188,15 @@ add_executable(replicate_cav "${PROJECT_SOURCE_DIR}/utils/replicate_cav.c")
 target_include_directories(replicate_cav PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(replicate_cav PUBLIC ftw_general m pthread)
 
-add_executable(sgfg2fvi "${PROJECT_SOURCE_DIR}/utils/sgfg2fvi.c")
-target_include_directories(sgfg2fvi PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(sgfg2fvi PUBLIC ftw_general m ftw_cuda)
+if (BUILD_CUDA_COMPONENTS)
+    add_executable(sgfg2fvi "${PROJECT_SOURCE_DIR}/utils/sgfg2fvi.c")
+    target_include_directories(sgfg2fvi PUBLIC "${PROJECT_SOURCE_DIR}/include")
+    target_link_libraries(sgfg2fvi PUBLIC ftw_general m ftw_cuda)
 
-add_executable(gfg2fvi "${PROJECT_SOURCE_DIR}/utils/gfg2fvi.c")
-target_include_directories(gfg2fvi PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(gfg2fvi PUBLIC ftw_general m ftw_cuda)
+    add_executable(gfg2fvi "${PROJECT_SOURCE_DIR}/utils/gfg2fvi.c")
+    target_include_directories(gfg2fvi PUBLIC "${PROJECT_SOURCE_DIR}/include")
+    target_link_libraries(gfg2fvi PUBLIC ftw_general m ftw_cuda)
+endif()
 
 #add_executable(fvi2tiff "${PROJECT_SOURCE_DIR}/utils/fvi2tiff.c")
 #target_include_directories(fvi2tiff PUBLIC "${PROJECT_SOURCE_DIR}/include")
@@ -236,18 +241,28 @@ install(TARGETS
         gfgc2pov
         fvi2pov
         cav2pov
-#        stack_tiffs
         expr_add
         expr_multiply
         dwf
         sqrt
         stream2slice
         truncate
-#        fvi2tiff 
         stream_multiply 
         replicate_gfg 
         replicate_cav 
-        sgfg2fvi
-        gfg2fvi
         vacuumms
         DESTINATION bin)
+
+if (BUILD_TIFF_UTILS)
+    install(TARGETS
+            stack_tiffs
+            fvi2tiff
+            DESTINATION bin)
+endif()
+
+if (BUILD_CUDA_COMPONENTS)
+    install(TARGETS
+            sgfg2fvi
+            gfg2fvi
+            DESTINATION bin)
+endif()

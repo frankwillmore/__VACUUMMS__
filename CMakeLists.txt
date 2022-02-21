@@ -18,6 +18,12 @@ if (BUILD_TIFF_UTILS)
     set_target_properties(tiff PROPERTIES IMPORTED_LOCATION ${TIFF_LIBRARIES})
 endif()
 
+if (BUILD_CUDA_COMPONENTS)
+    find_package(CUDA)
+    add_library(cuda SHARED IMPORTED)
+    set_target_properties(cuda PROPERTIES IMPORTED_LOCATION ${CUDA_LIBRARIES})
+endif()
+
 add_subdirectory(libraries)
 message("added subdirectory lbiraries")
 list(APPEND EXTRA_lIBS ftw_general )

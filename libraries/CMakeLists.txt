@@ -39,7 +39,6 @@ target_include_directories(ftw_pov PUBLIC
 # optional libs
 
 if (BUILD_TIFF_UTILS)
-
     add_library(ftw_tiff SHARED
         ${PROJECT_SOURCE_DIR}/libraries/ftw_tiff/ftw_makeTIFF.c
     )
@@ -60,7 +59,6 @@ endif() # BUILD_TIFF_UTILS
 
 
 if (BUILD_CUDA_COMPONENTS)
-   find_package(CUDA)
    cuda_add_library(ftw_cuda SHARED
       ${PROJECT_SOURCE_DIR}/libraries/ftw_cuda/ftw_cuda_utils.cu
       ${PROJECT_SOURCE_DIR}/libraries/ftw_cuda/ftw_gfg2fvi.cu
