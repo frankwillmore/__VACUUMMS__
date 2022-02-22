@@ -244,6 +244,7 @@ install(TARGETS
         expr_add
         expr_multiply
         dwf
+        recip
         sqrt
         stream2slice
         truncate
@@ -255,14 +256,15 @@ install(TARGETS
 
 if (BUILD_TIFF_UTILS)
     install(TARGETS
-            stack_tiffs
             fvi2tiff
+            readtiff
+            stack_tiffs
             DESTINATION bin)
 endif()
 
 if (BUILD_CUDA_COMPONENTS)
     install(TARGETS
-            sgfg2fvi
             gfg2fvi
+            sgfg2fvi
             DESTINATION bin)
 endif()
