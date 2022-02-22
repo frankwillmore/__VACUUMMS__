@@ -61,19 +61,26 @@
 ### Installation
 
 Get spack:
+
 `$ git clone https://github.com/spack/spack`
 
 Install:
+
 `$ spack install vacuumms target=x86_64`
 
 Load into the user environment:
+
 `$ spack load vacuumms target=x86_64`
 
 See individual commands for usage info, e.g.:
 
 `$ ddx -usage`
 
-## User Guide
-[User Guide](https://github.com/frankwillmore/VACUUMMS/blob/master/USER_GUIDE.md)
+## User and Developer Guides
+
+[Applications User Guide](https://github.com/frankwillmore/VACUUMMS/blob/master/APPLICATION_USER_GUIDE.md)
+
+[Utilities User Guide](https://github.com/frankwillmore/VACUUMMS/blob/master/UTILITIES_USER_GUIDE.md)
+
 
 [Developer Guide](DEVELOPER_GUIDE.md)
