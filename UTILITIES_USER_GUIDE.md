@@ -1,23 +1,19 @@
 # Utilities User Guide
 
-The utils included are typically quick text-processing utilities that perform simple manipulations such as smoothing data, sorting/histogramming, translating one format to another, etc.
+The utilities included are typically quick text-processing utilities that perform simple manipulations such as smoothing data, sorting/histogramming, translating one format to another, etc.  These utilities are UNIX-based, are designed to be used in conjunction with the standard UNIX utilities sed, awk, and grep to build elegant pipelines for the processing of data streams.  A basic understanding of these standard UNIX utilities will enable the user to perform analyses of data from xyz, car, psf, and other common formats.
+
+DISCLAIMER:  These are experimental codes; it is recommended you verify any operations against a known solution.  Please direct any questions, concerns, fixes, etc. to willmore@tacc.utexas.edu.
 
 ## Utils
 
+(need entries for: )
 readtiff
 recip
 replicate_cav
 sgfg2fvi
 vacuumms
 
-ABOUT:  These utilities are UNIX-based, are designed to be used in conjunction with the standard UNIX utilities sed, awk, and grep to build elegant pipelines for the processing of data streams.  A basic understanding of these standard UNIX utilities will enable the user to perform analyses of data from xyz, car, psf, and other common formats.
-Most [not all] utils will give a decent description of how to use by invoking:
-
-	name_of_util -usage
-
-DISCLAIMER:  These are experimental codes; it is recommended you verify any operations against a known solution.  Please direct any questions, concerns, fixes, etc. to willmore@tacc.utexas.edu.
-
-REDUCING OPERATORS:  These operate on a list of values and return a single value
+##REDUCING OPERATORS:  These operate on a list of values and return a single value
 
 avg		calculates average value
 sum		calculates sum 
@@ -26,7 +22,7 @@ min		returns minimum value
 std		returns standard deviation (provide mean on command line)
 miss		Finds the missing number in a series of values
 
-SCALAR OPERATORS:  These utils operate on a stream of values (one per line) to generate:
+##SCALAR OPERATORS:  These utils operate on a stream of values (one per line) to generate:
 
 loge		the natural logs
 log10 		the logs base 10
@@ -38,12 +34,12 @@ expr_add	the input values plus the quantity specified on the command line
 expr_multiply	the input values multiplied by the quantity specified on the command line
 stream_multiply like expr_multiply, but accepts multiple quantities on the command line
 
-TRANSFORMS:  Function or distribution in, function out
+##TRANSFORMS:  Function or distribution in, function out
 
 dst2hst		Transforms a distribution to a histogram
 wdst2hst	Transforms a weighted distribution to a histogram
 
-TABULATED FUNCTION OPERATORS:
+##TABULATED FUNCTION OPERATORS:
 
 add		Adds a list of tabulated functions.
 		In:  list of files (two fields, separated by tabs) on the command line
@@ -52,7 +48,7 @@ normalize	In:  Tabulated function
 		Out: Normalized function
 sew		Accepts a list of tabulated functions, sews them together columnwise to generate a single output
 
-MISCELLANEOUS:
+##MISCELLANEOUS:
 
 uniq		In:  List of cavities in .cav format
 		Out: List of unique cavities in .cav format
@@ -73,7 +69,7 @@ nsplit		Not working...
 ck		Not working...
 clustercat	In:  individual Clusters of cavities
 
-FORMAT CONVERTERS:  Operate on lists, typically of (x, y, z) positions
+##FORMAT CONVERTERS:  Operate on lists, typically of (x, y, z) positions
 
 stream2slice	slices a data stream into files with the specified number of lines
 fvi2tiff	generates a 3D TIFF from fvi data
