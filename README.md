@@ -72,9 +72,9 @@ See individual commands for usage info, e.g.:
 
 [IO Formats](IO_FORMATS.md)
 
-[Applications User Guide](https://github.com/frankwillmore/VACUUMMS/blob/documentation/APPLICATIONS_USER_GUIDE.md)
+[Applications User Guide](APPLICATIONS_USER_GUIDE.md)
 
-[Utilities User Guide](https://github.com/frankwillmore/VACUUMMS/blob/documentation/UTILITIES_USER_GUIDE.md)
+[Utilities User Guide](UTILITIES_USER_GUIDE.md)
 
 [Developer Guide](DEVELOPER_GUIDE.md)
 

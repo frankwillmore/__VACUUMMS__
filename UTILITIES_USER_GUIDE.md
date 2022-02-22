@@ -1,115 +1,89 @@
-# User Guide
+# Utilities User Guide
 
-General notes:
-
-These are the notes.
-
-## IO formats
-
-In general, VACUUMMS I/O uses non-binary representation of data. Human-readable text is sifted, stripped, sorted, etc. using POSIX pipes, records, and tab-separated columns. The most common formats are:
-
-.cfg - 'configuration' or a simple set of x,y,z coordinates, ostensibly for a homogenous fluid, e.g. monodisperse hard-spheres or Lennard-Jones particles. E.g., for centers arranged in a FCC crystal:
-
-    0.000000    0.000000    0.000000
-    0.707107    0.707107    0.000000
-    0.000000    0.707107    0.707107
-    0.707107    0.000000    0.707107
-    0.000000    0.000000    1.414214
-    0.707107    0.707107    1.414214
-    0.000000    0.707107    2.121320
-    0.707107    0.000000    2.121320
-    0.000000    0.000000    2.828427
-    0.707107    0.707107    2.828427
-
-.gfg - 'generalized configuration' extends the .cfg format by appending columns for Lennard-Jones sigma and epsilon values:
-
-    0.000000    0.000000    0.000000    1.000   1.000
-    0.707107    0.707107    0.000000    1.000   1.000
-    0.000000    0.707107    0.707107    1.000   1.000
-    0.707107    0.000000    0.707107    1.000   1.000
-    0.000000    0.000000    1.414214    1.000   1.000
-    0.707107    0.707107    1.414214    1.000   1.000
-    0.000000    0.707107    2.121320    1.000   1.000
-    0.707107    0.000000    2.121320    1.000   1.000
-    0.000000    0.000000    2.828427    1.000   1.000
-    0.707107    0.707107    2.828427    1.000   1.000
-
-This five-column .gfg format is the most commonly used VACUUMMS input format and the starting point for working in VACUUMMS. Pre-processing your data to get it to this format will take some effort, but once rendered in this format, VACUUMMS is most elegant. 
-
-.cav - Cavities generated using the CESA algorithm (implemented in ddx/pddx) as x,y,z,d (cavity diameter)
- 
-.cls - Clusters of cavities, with the first column containing the cluster number as primary key 
-
-.fvi - Free volume index. A set of x,y,z coordinates plus the value of the Widom insertion probability at the specified point. This is intended to represent a (rather bulky) tabulated scalar field.
-
-.tif[f] - 3-D TIFF standard format. FVI data is typically packed into a 3-D tiff for examination with a standard viewer.
-
-.hst - Histogram, essentially a tabulated function. 
-
-.vis - A primitive visualization format, to be consumed directly for crude realtime X11 output, but more broadly intended for conversion to .pov (ray-tracing format)
-
-.pov - POVRay Scene Definition Language, components of which can be generated on a layer-by-layer basis before being composited to render an image. 
-
-## Applications
-
-These are used to either generate new or analyze existing molecular structures.
-
-### ddx / pddx Cavity Energetic Sizing Algorithm (CESA)
-Locates, then sizes cavities according to provided configuration and parameters. pddx is a thread-parallel version of ddx and requires pthreads to run. 
-
-#### Options
-
-    -box [ 6.0 6.0 6.0 ]           box dimensions 
-    -seed [ 1 ]                    PRNG seed
-    -randomize                     re-seed PRNG
-    -characteristic_length [ 1.0 ] approximate length scale, e.g. typical atomic radius
-    -characteristic_energy [ 1.0 ] approximate dimensionless energy scale
-    -precision_parameter [ 0.001 ] delta value for precision of locating stationary points
-    -n_steps [ 1000 ]              maximum number of steps to attempt before accepting convergence
-                                   (roughly reciprocal of precision parameter)
-    -show_steps                    list # of steps taken as final column
-    -verlet_cutoff [ 100.0 ]       Square of radius used in determining inclusion in Verlet list
-    -n [ 1 ]                       Number of samples to run
-    -volume_sampling               Only use points whose trajectory originated within radius of final ghost particle
-    -include_center_energy 
-    -min_diameter [ 0.0 ]          Only include cavities whose diameter is at least this much.
-
-### ljx
-Lennard-Jones fluid.
-
-#### Options
-
-    [-v]                            verbose
-    [-ng]                           no X11 graphics
-    [-no_side]                      don't show side
-    -T [1]                          temperature
-    -fixed_perturbation_length []   
-    -particle_scale []
-    -N                              number of particles
-    -relaxation_allowance
-    -box                            box dimensions (triplet)
-    -fg_color [] 
-    -bg_color [] 
-    -min_color
-    -rng_seed []                    initialize random number generator with given seed
-    -randomize                      initialize random number generator with random seed
-    -end_mcs []                     how many Monte Carlo steps to run
-    -energy_report_frequency []
-    -configuration_threshold []
-    -configuration_frequency [] 
-    -input_file_name                load configuration from a file
-    -target_acceptance_ratio []     [0..1) fraction of MC moves to accept
-    -psi_shift                      truncated and shifted potential, shift value
-    -cutoff_sq                      square of Verlet cutoff radius
-
-### hs
-
-#### Options
-
-## Libraries
-
-The libraries here typically used to provide functionality which has been factored from the provided executables.
+The utils included are typically quick text-processing utilities that perform simple manipulations such as smoothing data, sorting/histogramming, translating one format to another, etc.
 
 ## Utils
 
-The utils included are typically quick text-processing utilities that perform simple manipulations such as smoothing data, sorting/histogramming, translating one format to another, etc.
+readtiff
+recip
+replicate_cav
+sgfg2fvi
+vacuumms
+
+ABOUT:  These utilities are UNIX-based, are designed to be used in conjunction with the standard UNIX utilities sed, awk, and grep to build elegant pipelines for the processing of data streams.  A basic understanding of these standard UNIX utilities will enable the user to perform analyses of data from xyz, car, psf, and other common formats.
+Most [not all] utils will give a decent description of how to use by invoking:
+
+	name_of_util -usage
+
+DISCLAIMER:  These are experimental codes; it is recommended you verify any operations against a known solution.  Please direct any questions, concerns, fixes, etc. to willmore@tacc.utexas.edu.
+
+REDUCING OPERATORS:  These operate on a list of values and return a single value
+
+avg		calculates average value
+sum		calculates sum 
+max		returns maximum value
+min		returns minimum value
+std		returns standard deviation (provide mean on command line)
+miss		Finds the missing number in a series of values
+
+SCALAR OPERATORS:  These utils operate on a stream of values (one per line) to generate:
+
+loge		the natural logs
+log10 		the logs base 10
+exp		the exponentials
+sqrt		the square roots
+sq		the squares
+pow		the input values raised to the power specified on the command line
+expr_add	the input values plus the quantity specified on the command line
+expr_multiply	the input values multiplied by the quantity specified on the command line
+stream_multiply like expr_multiply, but accepts multiple quantities on the command line
+
+TRANSFORMS:  Function or distribution in, function out
+
+dst2hst		Transforms a distribution to a histogram
+wdst2hst	Transforms a weighted distribution to a histogram
+
+TABULATED FUNCTION OPERATORS:
+
+add		Adds a list of tabulated functions.
+		In:  list of files (two fields, separated by tabs) on the command line
+		Out: A tabulated function the sum of the input functions.
+normalize	In:  Tabulated function
+		Out: Normalized function
+sew		Accepts a list of tabulated functions, sews them together columnwise to generate a single output
+
+MISCELLANEOUS:
+
+uniq		In:  List of cavities in .cav format
+		Out: List of unique cavities in .cav format
+a2b  		In:  2 files of .cfg format, same number of lines
+		Out: a list of distances from pt A (1st file) to pt B (2nd file)
+dwf		For estimating Debye-Waller factor... generates a list of squares of distances from first to second
+smooth		In:  A tabulated function
+		Out: Smoothed version of function
+cram		In:  A .gfg format list of atoms, plus box dimensions (at command line)
+		Out: A .gfg format list of atoms, wrapped for the periodic boundary condition.
+povheader	Writes a povray header, according to params specified on command line
+stack_tiffs	Takes a stack of 2D tiff images and converts them to a single 3D tiff
+replicate_gfg	Takes a 3D configuration and copies it into the 26 surrounding periodic boxes.
+ftw_cuda	Checks to see if a CUDA-capable device is present
+truncate	Capture a subset of gfg data by specifying two corners of a bounding box.
+
+nsplit		Not working...
+ck		Not working...
+clustercat	In:  individual Clusters of cavities
+
+FORMAT CONVERTERS:  Operate on lists, typically of (x, y, z) positions
+
+stream2slice	slices a data stream into files with the specified number of lines
+fvi2tiff	generates a 3D TIFF from fvi data
+cfg2gfg		adds columns (default values of 1 for sigma and epsilon)
+gfg2pov		generates povray format from gfg
+gfgc2pov	generates povray format from gfgc
+fvi2pov		generates povray format from fvi data
+cav2pov		generates povray format from cavity list
+vis2pov		generates povray format from vis
+cav2vis		generates vis format from cav
+cfg2vis		generates vis format from cfg
+gfg2fvi		A utility for generating free volume index/FVI data from configuration/gfg; requires GPU and CUDA utils
+
