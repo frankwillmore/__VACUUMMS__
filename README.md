@@ -29,7 +29,9 @@
   Please reference the following publication/doi in citing this work:
 
   A toolkit for the analysis and visualization of free volume in materials
+
   Frank T Willmore
+
   Proceedings of the 1st Conference of the Extreme Science and Engineering 
     Discovery Environment: Bridging from the eXtreme to the campus and beyond
   Article No. 30 
@@ -68,7 +70,7 @@ See individual commands for usage info, e.g.:
 
 ## USER AND DEVELOPER GUIDES
 
-[Applications User Guide](https://github.com/frankwillmore/VACUUMMS/blob/master/APPLICATION_USER_GUIDE.md)
+[Applications User Guide](https://github.com/frankwillmore/VACUUMMS/blob/master/APPLICATIONS_USER_GUIDE.md)
 
 [Utilities User Guide](https://github.com/frankwillmore/VACUUMMS/blob/master/UTILITIES_USER_GUIDE.md)
 
