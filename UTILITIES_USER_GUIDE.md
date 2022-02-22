@@ -2,12 +2,9 @@
 
 The utilities included are typically quick text-processing utilities that perform simple manipulations such as smoothing data, sorting/histogramming, translating one format to another, etc.  These utilities are UNIX-based, are designed to be used in conjunction with the standard UNIX utilities sed, awk, and grep to build elegant pipelines for the processing of data streams.  A basic understanding of these standard UNIX utilities will enable the user to perform analyses of data from xyz, car, psf, and other common formats.
 
-DISCLAIMER:  These are experimental codes; it is recommended you verify any operations against a known solution.  Please direct any questions, concerns, fixes, etc. to willmore@tacc.utexas.edu.
-
 ## Utils
 
 (need entries for: )
-readtiff
 recip
 replicate_cav
 sgfg2fvi

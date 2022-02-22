@@ -7,6 +7,7 @@ Coming soon!
 - re-work command line options for POSIX style
 - re-name all *ftw_* prefixes to *vacuumms_* 
 - re-name uniq to something without a name collision, e.g. vuniq
+- display build options as output when running vacuumms executable
 
 ## Developer stuff
 
