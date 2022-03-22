@@ -51,9 +51,9 @@ add_executable(cfg2gfg "${PROJECT_SOURCE_DIR}/utils/cfg2gfg.c")
 target_include_directories(cfg2gfg PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(cfg2gfg PUBLIC ftw_general m )
 
-add_executable(nsplit "${PROJECT_SOURCE_DIR}/utils/nsplit.c")
-target_include_directories(nsplit PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(nsplit PUBLIC ftw_general m )
+#add_executable(nsplit "${PROJECT_SOURCE_DIR}/utils/nsplit.c")
+#target_include_directories(nsplit PUBLIC "${PROJECT_SOURCE_DIR}/include")
+#target_link_libraries(nsplit PUBLIC ftw_general m )
 
 add_executable(cram "${PROJECT_SOURCE_DIR}/utils/cram.c")
 target_include_directories(cram PUBLIC "${PROJECT_SOURCE_DIR}/include")
@@ -221,7 +221,7 @@ install(TARGETS
         smooth 
         normalize 
         cfg2gfg 
-        nsplit
+        #        nsplit
         cram
         loge
         log10
