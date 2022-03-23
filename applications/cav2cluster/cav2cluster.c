@@ -28,10 +28,10 @@ int main(int argc, char* argv[])
   setCommandLineParameters(argc, argv);
   if (getFlagParam("-usage"))
   {
-    printf("center     \t-box [ 10 10 10 ]\n");
-    printf("           \t In:  .cav\n");
-    printf("           \t Out: .cluster \n"); 
-    printf("           \t Ouput format is:  (\"%%d\t%%lf\t%%lf\t%%lf\t%%lf\\n\", cluster_number, x, y, z, d)\n");
+    printf("cav2cluster     \t-box [ 10 10 10 ]\n");
+    printf("                \t In:  .cav\n");
+    printf("                \t Out: .cluster \n"); 
+    printf("                \t Ouput format is:  (\"%%d\t%%lf\t%%lf\t%%lf\t%%lf\\n\", cluster_number, x, y, z, d)\n");
     printf("\n");
     exit(0);
   }

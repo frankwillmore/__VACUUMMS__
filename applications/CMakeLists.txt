@@ -41,7 +41,7 @@ add_executable(ddx "${PROJECT_SOURCE_DIR}/applications/ddx/ddx.c" "${PROJECT_SOU
 target_include_directories(ddx PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(ddx PUBLIC ftw_general m)
 
-add_executable(pddx "${PROJECT_SOURCE_DIR}/applications/ddx/ddx.c" "${PROJECT_SOURCE_DIR}/applications/ddx/io_setup.c" )
+add_executable(pddx "${PROJECT_SOURCE_DIR}/applications/ddx/pddx.c" "${PROJECT_SOURCE_DIR}/applications/ddx/io_setup.c" )
 target_include_directories(pddx PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(pddx PUBLIC ftw_general m pthread)
 
