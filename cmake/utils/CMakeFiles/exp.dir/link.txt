@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/exp.dir/exp.c.o -o exp  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm 

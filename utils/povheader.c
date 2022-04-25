@@ -12,7 +12,7 @@ int number_of_molecules = 0;
 double box_x=10, box_y=10, box_z=10;
 double ambient_light = 3.0;
 
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
 //  int i=0;
 //  char line[256];

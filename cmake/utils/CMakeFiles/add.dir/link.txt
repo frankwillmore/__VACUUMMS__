@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/add.dir/add.c.o -o add  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm 

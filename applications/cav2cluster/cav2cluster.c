@@ -11,6 +11,7 @@
 #define MAX_CAVITIES 131072
 
 #include <ftw_std.h>
+#include <ftw_param.h>
 #include "cav2cluster.h"
 
 double box_x, box_y, box_z;

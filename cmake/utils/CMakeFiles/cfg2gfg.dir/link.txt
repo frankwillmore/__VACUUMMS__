@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/cfg2gfg.dir/cfg2gfg.c.o -o cfg2gfg  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm 

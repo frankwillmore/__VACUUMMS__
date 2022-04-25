@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/pddx.dir/ddx/pddx.c.o CMakeFiles/pddx.dir/ddx/io_setup.c.o -o pddx  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm -lpthread 

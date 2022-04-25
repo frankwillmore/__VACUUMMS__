@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
       old_in_cluster_number = in_cluster_number;
     }
 
-    printf("%ld\t%s\t%s\t%s\t%s\n", out_cluster_number, xs, ys, zs, ds);
+    printf("%d\t%s\t%s\t%s\t%s\n", out_cluster_number, xs, ys, zs, ds);
 
   }
     fclose(instream[i]);

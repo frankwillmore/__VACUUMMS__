@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/stream_multiply.dir/stream_multiply.c.o -o stream_multiply  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm -lpthread 

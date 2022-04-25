@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/cfg2vis.dir/cfg2vis.c.o -o cfg2vis  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm 

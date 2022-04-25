@@ -64,6 +64,18 @@ add_executable(rog
 target_include_directories(rog PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(rog PUBLIC ftw_general m pthread)
 
+add_executable(cv 
+    "${PROJECT_SOURCE_DIR}/applications/sv/cv.c" 
+)
+target_include_directories(cv PUBLIC "${PROJECT_SOURCE_DIR}/include")
+target_link_libraries(cv PUBLIC ftw_general m )
+
+add_executable(csa 
+    "${PROJECT_SOURCE_DIR}/applications/sv/csa.c" 
+)
+target_include_directories(csa PUBLIC "${PROJECT_SOURCE_DIR}/include")
+target_link_libraries(csa PUBLIC ftw_general m )
+
 add_executable(cav2cluster 
     "${PROJECT_SOURCE_DIR}/applications/cav2cluster/cav2cluster.c" 
 )
@@ -112,5 +124,7 @@ install(TARGETS
         cav2cluster
         sdhs
         end2end
+        cv
+        csa
         vis
         DESTINATION bin)

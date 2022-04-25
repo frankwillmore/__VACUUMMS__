@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/wdst2hst.dir/wdst2hst.c.o -o wdst2hst  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm -lpthread 
