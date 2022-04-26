@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.10)
 option(BUILD_SHARED_LIBS "shared libs " ON)
 option(BUILD_STATIC_LIBS "static libs " OFF)
 
+## Now the executables...
+
 add_executable(rattle "${PROJECT_SOURCE_DIR}/applications/rattle/rattle.c")
 target_include_directories(rattle PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(rattle PUBLIC ftw_general m pthread)
@@ -14,7 +16,10 @@ add_executable(ljx
     "${PROJECT_SOURCE_DIR}/applications/ljx/energy.c"
     "${PROJECT_SOURCE_DIR}/applications/ljx/graphics.c"
 )
-target_include_directories(ljx PUBLIC "${PROJECT_SOURCE_DIR}/include")
+target_include_directories(ljx PUBLIC 
+    "${PROJECT_SOURCE_DIR}/include"
+    "${X11_INCLUDE_DIR}"
+)
 target_link_libraries(ljx PUBLIC ftw_general m pthread X11)
 
 
@@ -23,7 +28,10 @@ add_executable(hs
     "${PROJECT_SOURCE_DIR}/applications/hs/io_setup.c"
     "${PROJECT_SOURCE_DIR}/applications/hs/graphics.c"
 )
-target_include_directories(hs PUBLIC "${PROJECT_SOURCE_DIR}/include")
+target_include_directories(hs PUBLIC 
+    "${PROJECT_SOURCE_DIR}/include"
+    "${X11_INCLUDE_DIR}"
+)
 target_link_libraries(hs PUBLIC ftw_general m pthread X11)
 
 add_executable(center "${PROJECT_SOURCE_DIR}/applications/center/center.c")
@@ -41,7 +49,8 @@ add_executable(ddx "${PROJECT_SOURCE_DIR}/applications/ddx/ddx.c" "${PROJECT_SOU
 target_include_directories(ddx PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(ddx PUBLIC ftw_general m)
 
-add_executable(pddx "${PROJECT_SOURCE_DIR}/applications/ddx/pddx.c" "${PROJECT_SOURCE_DIR}/applications/ddx/io_setup.c" )
+#add_executable(pddx "${PROJECT_SOURCE_DIR}/applications/ddx/pddx.c" "${PROJECT_SOURCE_DIR}/applications/ddx/io_setup.c" )
+add_executable(pddx "${PROJECT_SOURCE_DIR}/applications/ddx/pddx.c" )
 target_include_directories(pddx PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(pddx PUBLIC ftw_general m pthread)
 
@@ -87,7 +96,10 @@ add_executable(sdhs
     "${PROJECT_SOURCE_DIR}/applications/sdhs/io_setup.c" 
     "${PROJECT_SOURCE_DIR}/applications/sdhs/graphics.c" 
 )
-target_include_directories(sdhs PUBLIC "${PROJECT_SOURCE_DIR}/include")
+target_include_directories(sdhs PUBLIC 
+    "${PROJECT_SOURCE_DIR}/include"
+    "${X11_INCLUDE_DIR}"
+)
 target_link_libraries(sdhs PUBLIC ftw_general m X11 )
 
 add_executable(end2end 
@@ -102,7 +114,10 @@ add_executable(vis
     "${PROJECT_SOURCE_DIR}/applications/vis/io_setup.c" 
     "${PROJECT_SOURCE_DIR}/applications/vis/graphics.c" 
 )
-target_include_directories(vis PUBLIC "${PROJECT_SOURCE_DIR}/include")
+target_include_directories(vis PUBLIC 
+    "${PROJECT_SOURCE_DIR}/include"
+    "${X11_INCLUDE_DIR}"
+)
 target_link_libraries(vis PUBLIC ftw_general m pthread X11)
 
 

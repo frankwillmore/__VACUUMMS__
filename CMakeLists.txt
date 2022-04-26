@@ -11,6 +11,12 @@ option(BUILD_TIFF_UTILS "some utils require libtiff" OFF)
 message("got value for BUILD_CUDA_COMPONENTS=${BUILD_CUDA_COMPONENTS}")
 message("got value for BUILD_TIFF_UTILS=${BUILD_TIFF_UTILS}")
 
+# Find X11. Usually installed to system area, but when it's not, need to find it.
+find_package(X11)
+message("X11_INCLUDE_DIR set to ${X11_INCLUDE_DIR}")
+add_library(X11 SHARED IMPORTED)
+set_target_properties(X11 PROPERTIES IMPORTED_LOCATION ${X11_LIBRARIES})
+
 # Import the tiff library. This will make it available for linking. 
 if (BUILD_TIFF_UTILS)
     find_package(TIFF)
