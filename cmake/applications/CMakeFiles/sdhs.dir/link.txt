@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/sdhs.dir/sdhs/sdhs_main.c.o CMakeFiles/sdhs.dir/sdhs/io_setup.c.o CMakeFiles/sdhs.dir/sdhs/graphics.c.o -o sdhs  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm -lX11 

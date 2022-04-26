@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/center.dir/center/center.c.o -o center  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm -lpthread 

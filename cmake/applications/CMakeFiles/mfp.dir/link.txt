@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/mfp.dir/mfp/mfp.c.o CMakeFiles/mfp.dir/mfp/io_setup.c.o -o mfp  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm -lpthread 

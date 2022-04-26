@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/cram.dir/cram.c.o -o cram  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm 
