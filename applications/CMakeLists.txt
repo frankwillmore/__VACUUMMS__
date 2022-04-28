@@ -21,7 +21,6 @@ target_include_directories(ljx PUBLIC
     "${X11_INCLUDE_DIR}"
 )
 target_link_libraries(ljx PUBLIC ftw_general m pthread X11)
-#target_link_libraries(ljx PUBLIC ftw_general m pthread X11 SM Xext ICE)
 
 add_executable(hs 
     "${PROJECT_SOURCE_DIR}/applications/hs/hs_main.c"

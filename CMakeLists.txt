@@ -22,13 +22,16 @@ message("X11_Xext_LIB set to ${X11_Xext_LIB}")
 message("X11_ICE_LIB set to ${X11_ICE_LIB}")
 message("X11_LIBRARIES set to ${X11_LIBRARIES}")
 
-#FTW
+# FTW: This was done in an attempt to make the package buildable with non-system install
+#      of X11, but have abandoned this effort for now. CMake standalone build will work
+#      on a system with an X11 install to /usr.
+#
+#      Spack front-ended install will work on systems with or without a system X11.
+
 #list(PREPEND X11_LIBRARIES ${X11_ICE_LIB})
 #message("X11_LIBRARIES now set to ${X11_LIBRARIES}")
-
 #list(PREPEND X11_INCLUDE_DIR ${X11_ICE_INCLUDE_PATH})
 #message("X11_INCLUDE_DIR now set to ${X11_INCLUDE_DIR}")
-
 #add_library(X11 SHARED IMPORTED)
 #set_target_properties(X11 PROPERTIES IMPORTED_LOCATION "${X11_LIBRARIES}")
 #add_library(SM SHARED IMPORTED)
@@ -37,7 +40,6 @@ message("X11_LIBRARIES set to ${X11_LIBRARIES}")
 #set_target_properties(ICE PROPERTIES IMPORTED_LOCATION "${X11_ICE_INCLUDE_PATH}")
 #add_library(Xext SHARED IMPORTED)
 #set_target_properties(Xext PROPERTIES IMPORTED_LOCATION "${X11_Xext_LIB}")
-
 
 # Import the tiff library. This will make it available for linking. 
 if (BUILD_TIFF_UTILS)
