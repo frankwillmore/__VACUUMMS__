@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/dst2hst.dir/dst2hst.c.o -o dst2hst  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm 

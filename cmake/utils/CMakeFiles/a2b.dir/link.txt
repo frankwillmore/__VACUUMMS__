@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/a2b.dir/a2b.c.o -o a2b  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm 

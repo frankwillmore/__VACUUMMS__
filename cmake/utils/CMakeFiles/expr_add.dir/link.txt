@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/expr_add.dir/expr_add.c.o -o expr_add  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm 

@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/hs.dir/hs/hs_main.c.o CMakeFiles/hs.dir/hs/io_setup.c.o CMakeFiles/hs.dir/hs/graphics.c.o -o hs  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm -lpthread -lX11 

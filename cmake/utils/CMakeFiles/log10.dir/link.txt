@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/log10.dir/log10.c.o -o log10  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm 

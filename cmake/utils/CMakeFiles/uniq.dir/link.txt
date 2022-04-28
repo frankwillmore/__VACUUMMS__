@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/uniq.dir/uniq.c.o -o uniq  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm 
