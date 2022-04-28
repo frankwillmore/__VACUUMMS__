@@ -75,7 +75,8 @@ int main(int argc, char **argv)
     exit(0);
   }
 
-  readConfiguration(stdin);
+/*  readConfiguration(stdin); */
+  readConfiguration();
 
 printf("FTW: read config number_of_molecules=%d\n", number_of_molecules);
 
@@ -382,7 +383,7 @@ void expandTestParticle(Trajectory *p_traj)
   p_traj->diameter = diameter;
 }
 
-/**/
+/*
 void readConfiguration(FILE *instream)
 {
   char line[80];
@@ -412,4 +413,4 @@ void readConfiguration(FILE *instream)
  
   fclose(stdin);
 }
-/**/
+*/
