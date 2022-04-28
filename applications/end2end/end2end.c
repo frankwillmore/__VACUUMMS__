@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <ftw_std.h>
+#include <ftw_param.h>
 #include "end2end.h"
 
 // Reads a centered cluster and determines the end-to-end distance (span) of it.

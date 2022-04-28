@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/rog.dir/rog/rog.c.o -o rog  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm -lpthread 

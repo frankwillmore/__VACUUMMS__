@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/min.dir/min.c.o -o min  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm -lpthread 

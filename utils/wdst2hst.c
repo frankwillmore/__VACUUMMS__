@@ -9,6 +9,7 @@
 #include <math.h>
 
 #include <ftw_std.h>
+#include <ftw_param.h>
 
 FILE *instream;
 double width=1;

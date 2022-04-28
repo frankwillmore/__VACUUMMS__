@@ -77,6 +77,8 @@ int main(int argc, char **argv)
 
   readConfiguration(stdin);
 
+printf("FTW: read config number_of_molecules=%d\n", number_of_molecules);
+
   // make and verify all the threads and resources
   assert(passvals = (int *)malloc(sizeof(int) *n_samples));
   assert(threads = (pthread_t*)malloc(sizeof(pthread_t) * n_samples));
@@ -144,6 +146,7 @@ void *ThreadMain(void *passval) {
       if (include_center_energy) printf("\t%lf", calculateEnergy(p_traj, p_traj->diameter));
       if (show_steps) printf("\t%d", p_traj->attempts);
       printf("\n");
+      fflush(stdout);
       pthread_mutex_unlock(&mutex);
     }
   }
@@ -160,6 +163,7 @@ void generateTestPoint(Trajectory *p_traj)
   p_traj->test_y = p_traj->test_y0 = prnd(&(p_traj->rng)) * box_y;
   p_traj->test_z = p_traj->test_z0 = prnd(&(p_traj->rng)) * box_z;
 
+//printf("FTW: test point %lf, %lf, %lf\n", p_traj->test_x, p_traj->test_y, p_traj->test_z);
   makeVerletList(p_traj);
 }
 
@@ -209,6 +213,7 @@ void makeVerletList(Trajectory *p_traj)
       }
     }
   }
+//printf("FTW: Verlet close molecules: %d\n", p_traj->close_molecules);
 }
 
 void findEnergyMinimum(Trajectory *p_traj)
@@ -377,6 +382,7 @@ void expandTestParticle(Trajectory *p_traj)
   p_traj->diameter = diameter;
 }
 
+/**/
 void readConfiguration(FILE *instream)
 {
   char line[80];
@@ -406,3 +412,4 @@ void readConfiguration(FILE *instream)
  
   fclose(stdin);
 }
+/**/

@@ -12,7 +12,7 @@ double box_x, box_y, box_z;
 
 // IN:	input stream of gfg from stdin
 // OUT: output stream of replicas
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
   int i, j, k;
   int mirror_depth;

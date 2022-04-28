@@ -34,7 +34,7 @@ void readConfiguration()
     y[number_of_molecules] = strtod(ys, NULL);
     z[number_of_molecules] = strtod(zs, NULL);
     sigma[number_of_molecules] = strtod(sigmas, NULL);
-    epsilon[number_of_molecules++] = strtod(epsilons, NULL);
+    epsilon[number_of_molecules] = strtod(epsilons, NULL);
     number_of_molecules++;
   }
  

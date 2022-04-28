@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/cav2pov.dir/cav2pov.c.o -o cav2pov  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so ../libraries/libftw_pov.so -lm -lpthread 
