@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/avg.dir/avg.c.o -o avg 

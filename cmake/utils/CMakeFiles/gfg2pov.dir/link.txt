@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/gfg2pov.dir/gfg2pov.c.o -o gfg2pov  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so ../libraries/libftw_pov.so -lm -lpthread 

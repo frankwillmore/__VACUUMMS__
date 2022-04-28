@@ -1,0 +1,1 @@
+/usr/bin/cc -fPIC -shared -Wl,-soname,libftw_pov.so -o libftw_pov.so CMakeFiles/ftw_pov.dir/ftw_pov/ftw_povheader.c.o 
