@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/replicate_gfg.dir/replicate_gfg.c.o -o replicate_gfg  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm -lpthread 

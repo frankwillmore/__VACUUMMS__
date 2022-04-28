@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/ddx.dir/ddx/ddx.c.o CMakeFiles/ddx.dir/ddx/io_setup.c.o -o ddx  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm 

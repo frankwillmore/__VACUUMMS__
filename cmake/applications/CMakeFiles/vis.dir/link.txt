@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/vis.dir/vis/vis.c.o CMakeFiles/vis.dir/vis/command_line_parser.c.o CMakeFiles/vis.dir/vis/io_setup.c.o CMakeFiles/vis.dir/vis/graphics.c.o -o vis  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm -lpthread -lX11 

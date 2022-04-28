@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/clustercat.dir/clustercat.c.o -o clustercat  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm 

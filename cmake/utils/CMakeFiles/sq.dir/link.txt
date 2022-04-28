@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/sq.dir/sq.c.o -o sq  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm 
