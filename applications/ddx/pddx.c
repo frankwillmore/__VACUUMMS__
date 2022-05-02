@@ -14,11 +14,12 @@
 
 #include "pddx.h"
 
-pthread_t 		*threads;	// the threads
-int			*passvals;	// values passed to each thread
+pthread_t* 		threads;	// the threads
+void**			passvals;	// values passed to each thread
 sem_t			semaphore;	// semaphore to restrict number of threads running
 sem_t			completion_semaphore;	// semaphore to count # of completed threads
 pthread_mutex_t 	mutex;
+int                     thread_idx; 
 
 // Accessible to all threads
 double 	x[MAX_NUM_MOLECULES];
@@ -75,13 +76,12 @@ int main(int argc, char **argv)
     exit(0);
   }
 
-/*  readConfiguration(stdin); */
   readConfiguration();
 
 printf("FTW: read config number_of_molecules=%d\n", number_of_molecules);
 
   // make and verify all the threads and resources
-  assert(passvals = (int *)malloc(sizeof(int) *n_samples));
+  assert(passvals = (void **)malloc(sizeof(void*) * n_samples));
   assert(threads = (pthread_t*)malloc(sizeof(pthread_t) * n_samples));
 
   // set stack size for threads
@@ -97,26 +97,30 @@ printf("FTW: read config number_of_molecules=%d\n", number_of_molecules);
   assert(0 == sem_init(&completion_semaphore, 0, 0));
   int complete=0;
 
-  int i; for (i=0; i<n_samples; i++) {
-    passvals[i] = i; // need to pass pointer, not value...
+  /* This is the loop where all threads are started, wait and run */
+  for (thread_idx=0; thread_idx<n_samples; thread_idx++) {
+    /* Since the only value passed is an integer, we just cast to and pass as void* */
+    passvals[thread_idx] = (void*)(long)thread_idx; 
     sem_wait(&semaphore); // thread waits to become eligible
     int rc;
-    rc = pthread_create(&threads[i], &thread_attr, ThreadMain, (void *)&passvals[i]);
+    rc = pthread_create(&threads[thread_idx], &thread_attr, ThreadMain, passvals[thread_idx]);
     assert(rc == 0);
   }
- 
+
   //  spinlock to wait for completion
   while(complete < n_samples) sem_getvalue(&completion_semaphore, &complete);
   
   free(threads);
+  free(passvals);
 
   return 0;
 } // end main()
 
-void *ThreadMain(void *passval) { 
+void *ThreadMain(void* passval) { 
   Trajectory *p_traj = (Trajectory *)malloc(sizeof(Trajectory));
   assert(p_traj);
-  p_traj->thread_id = *(int *)passval; 
+  /* passval is just an int wrapped as void*, need to cast down to int */
+  p_traj->thread_id = (int)(long)passval; 
   MersenneInitialize(&(p_traj->rng), seed + p_traj->thread_id);
 
   generateTestPoint(p_traj);
@@ -383,34 +387,3 @@ void expandTestParticle(Trajectory *p_traj)
   p_traj->diameter = diameter;
 }
 
-/*
-void readConfiguration(FILE *instream)
-{
-  char line[80];
-  char *xs, *ys, *zs;
-  char *sigmas, *epsilons;
-
-  number_of_molecules = 0;
-
-  while (1)
-  {
-    fgets(line, 80, stdin);
-    if (feof(stdin)) break;
-
-    xs = strtok(line, "\t");
-    ys = strtok(NULL, "\t");
-    zs = strtok(NULL, "\t");
-    sigmas = strtok(NULL, "\t");
-    epsilons = strtok(NULL, "\n");
-
-    x[number_of_molecules] = strtod(xs, NULL);
-    y[number_of_molecules] = strtod(ys, NULL);
-    z[number_of_molecules] = strtod(zs, NULL);
-    sigma[number_of_molecules] = strtod(sigmas, NULL);
-    epsilon[number_of_molecules] = strtod(epsilons, NULL);
-    number_of_molecules++;
-  }
- 
-  fclose(stdin);
-}
-*/
