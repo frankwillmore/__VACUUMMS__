@@ -106,14 +106,16 @@ printf("thread_idx = %d\n", thread_idx);
     passvals[thread_idx] = NULL;
     sem_wait(&semaphore); // thread waits to become eligible
     int rc;
-    rc = pthread_create(&threads[thread_idx], &thread_attr, ThreadMain, passvals[thread_idx]);
+    rc = pthread_create(&threads[thread_idx], &thread_attr, &ThreadMain, passvals[thread_idx]);
     assert(rc == 0);
   }
 
   //  spinlock to wait for completion
   while(complete < n_samples) sem_getvalue(&completion_semaphore, &complete);
   
+printf("Freeing threads.\n");
   free(threads);
+printf("Freeing passvals.\n");
   free(passvals);
 
   return 0;
