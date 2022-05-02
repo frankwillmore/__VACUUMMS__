@@ -101,6 +101,7 @@ printf("FTW: read config number_of_molecules=%d\n", number_of_molecules);
   for (thread_idx=0; thread_idx<n_samples; thread_idx++) {
     /* Since the only value passed is an integer, we just cast to and pass as void* */
 //    passvals[thread_idx] = (void*)(long)thread_idx; 
+printf("thread_idx = %d\n", thread_idx);
     passvals[thread_idx] = NULL;
     sem_wait(&semaphore); // thread waits to become eligible
     int rc;
