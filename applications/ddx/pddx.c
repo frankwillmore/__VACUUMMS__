@@ -82,6 +82,7 @@ printf("FTW: read config number_of_molecules=%d\n", number_of_molecules);
 
   // make and verify all the threads and resources
   assert(passvals = (void **)malloc(sizeof(void*) * n_samples));
+printf("passvalsi@1 = %ld\n", passvals);
   assert(threads = (pthread_t*)malloc(sizeof(pthread_t) * n_samples));
 
   // set stack size for threads
@@ -103,6 +104,7 @@ printf("n_samples = %d\n", n_samples);
     /* Since the only value passed is an integer, we just cast to and pass as void* */
 //    passvals[thread_idx] = (void*)(long)thread_idx; 
 printf("thread_idx = %d\n", thread_idx);
+printf("passvals = %ld\n", passvals);
     passvals[thread_idx] = NULL;
     sem_wait(&semaphore); // thread waits to become eligible
     int rc;
