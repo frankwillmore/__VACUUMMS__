@@ -79,11 +79,15 @@ int main(int argc, char **argv)
   readConfiguration();
 
 printf("FTW: read config number_of_molecules=%d\n", number_of_molecules);
+assert(0);
 
   // make and verify all the threads and resources
-  assert(passvals = (void **)malloc(sizeof(void*) * n_samples));
+  passvals = (void **)malloc(sizeof(void*) * n_samples);
+  assert(passvals);
 printf("passvalsi@1 = %ld\n", passvals);
-  assert(threads = (pthread_t*)malloc(sizeof(pthread_t) * n_samples));
+  threads = (pthread_t*)malloc(sizeof(pthread_t) * n_samples);
+  assert(threads);
+printf("threads@1 = %ld\n", threads);
 
   // set stack size for threads
   size_t stacksize = (size_t)2048;
