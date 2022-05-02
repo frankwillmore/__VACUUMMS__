@@ -97,6 +97,7 @@ printf("FTW: read config number_of_molecules=%d\n", number_of_molecules);
   assert(0 == sem_init(&completion_semaphore, 0, 0));
   int complete=0;
 
+printf("n_samples = %d\n", n_samples);
   /* This is the loop where all threads are started, wait and run */
   for (thread_idx=0; thread_idx<n_samples; thread_idx++) {
     /* Since the only value passed is an integer, we just cast to and pass as void* */
