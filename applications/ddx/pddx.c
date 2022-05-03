@@ -79,7 +79,6 @@ int main(int argc, char **argv)
   readConfiguration();
 
 printf("FTW: read config number_of_molecules=%d\n", number_of_molecules);
-assert(0);
 
   // make and verify all the threads and resources
   passvals = (void **)malloc(sizeof(void*) * n_samples);
@@ -98,8 +97,11 @@ printf("threads@1 = %ld\n", threads);
   pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_DETACHED);
 
   // initialize the semaphores
-  assert(0 == sem_init(&semaphore, 0, n_threads));
-  assert(0 == sem_init(&completion_semaphore, 0, 0));
+  int status;
+  status = sem_init(&semaphore, 0, n_threads);
+  assert(status);
+  sem_init(&completion_semaphore, 0, 0);
+  assert(status);
   int complete=0;
 
 printf("n_samples = %d\n", n_samples);
