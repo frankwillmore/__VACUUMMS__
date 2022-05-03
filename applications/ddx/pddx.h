@@ -35,7 +35,7 @@ void generateTestPoint(Trajectory*);
 void findEnergyMinimum(Trajectory*);
 void makeVerletList(Trajectory*);
 void expandTestParticle(Trajectory*);
-void readConfiguration(FILE *instream);
+void readConfiguration();
 void* ThreadMain(void *threadID);
 
 
