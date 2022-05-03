@@ -78,15 +78,11 @@ int main(int argc, char **argv)
 
   readConfiguration();
 
-printf("FTW: read config number_of_molecules=%d\n", number_of_molecules);
-
   // make and verify all the threads and resources
   passvals = (void **)malloc(sizeof(void*) * n_samples);
   assert(passvals);
-printf("passvalsi@1 = %ld\n", passvals);
   threads = (pthread_t*)malloc(sizeof(pthread_t) * n_samples);
   assert(threads);
-printf("threads@1 = %ld\n", threads);
 
   // set stack size for threads
   size_t stacksize = (size_t)2048;
@@ -99,19 +95,15 @@ printf("threads@1 = %ld\n", threads);
   // initialize the semaphores
   int status;
   status = sem_init(&semaphore, 0, n_threads);
-  assert(status);
+  assert(status == 0);
   sem_init(&completion_semaphore, 0, 0);
-  assert(status);
+  assert(status == 0);
   int complete=0;
 
-printf("n_samples = %d\n", n_samples);
   /* This is the loop where all threads are started, wait and run */
   for (thread_idx=0; thread_idx<n_samples; thread_idx++) {
     /* Since the only value passed is an integer, we just cast to and pass as void* */
-//    passvals[thread_idx] = (void*)(long)thread_idx; 
-printf("thread_idx = %d\n", thread_idx);
-printf("passvals = %ld\n", passvals);
-    passvals[thread_idx] = NULL;
+    passvals[thread_idx] = (void*)(long)thread_idx; 
     sem_wait(&semaphore); // thread waits to become eligible
     int rc;
     rc = pthread_create(&threads[thread_idx], &thread_attr, &ThreadMain, passvals[thread_idx]);
@@ -121,9 +113,7 @@ printf("passvals = %ld\n", passvals);
   //  spinlock to wait for completion
   while(complete < n_samples) sem_getvalue(&completion_semaphore, &complete);
   
-printf("Freeing threads.\n");
   free(threads);
-printf("Freeing passvals.\n");
   free(passvals);
 
   return 0;
@@ -132,13 +122,14 @@ printf("Freeing passvals.\n");
 void *ThreadMain(void* passval) { 
   Trajectory *p_traj = (Trajectory *)malloc(sizeof(Trajectory));
   assert(p_traj);
-  /* passval is just an int wrapped as void*, need to cast down to int */
+  /* passval is just an int wrapped as void*, need to cast down to int via long to match type size */
   p_traj->thread_id = (int)(long)passval; 
   MersenneInitialize(&(p_traj->rng), seed + p_traj->thread_id);
 
   generateTestPoint(p_traj);
 
-  // guarantee insertion point not be located in a valley whose bottom is > 0 energy... otherwise cannot size with real value
+  /* guarantee insertion point not be located in a valley whose bottom is > 0 energy... 
+   * otherwise cavity cannot be sized with real value */
   while (calculateEnergy(p_traj, 0.0) > 0) generateTestPoint(p_traj);
    
   // now find energy minimum point
@@ -181,7 +172,7 @@ void generateTestPoint(Trajectory *p_traj)
   p_traj->test_y = p_traj->test_y0 = prnd(&(p_traj->rng)) * box_y;
   p_traj->test_z = p_traj->test_z0 = prnd(&(p_traj->rng)) * box_z;
 
-//printf("FTW: test point %lf, %lf, %lf\n", p_traj->test_x, p_traj->test_y, p_traj->test_z);
+  /* printf("FTW: test point %lf, %lf, %lf\n", p_traj->test_x, p_traj->test_y, p_traj->test_z); */
   makeVerletList(p_traj);
 }
 
