@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/csd.dir/csd/csd.c.o CMakeFiles/csd.dir/csd/command_line_parser.c.o -o csd  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm -lpthread 

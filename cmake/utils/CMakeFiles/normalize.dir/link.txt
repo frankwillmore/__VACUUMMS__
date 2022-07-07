@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/normalize.dir/normalize.c.o -o normalize  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm 

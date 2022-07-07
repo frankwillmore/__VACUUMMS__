@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/fvi2pov.dir/fvi2pov.c.o -o fvi2pov  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so ../libraries/libftw_pov.so -lm -lpthread 

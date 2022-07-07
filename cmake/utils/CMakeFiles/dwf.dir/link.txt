@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/dwf.dir/dwf.c.o -o dwf  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm 
