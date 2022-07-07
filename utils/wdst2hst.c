@@ -19,6 +19,8 @@ int normalize=0;
 
 double all_bins[1024];
 
+int verbose;
+
 int main(int argc, char *argv[])
 {
   char line[80];
