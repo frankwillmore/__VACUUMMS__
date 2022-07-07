@@ -28,6 +28,8 @@ double sorface_area[MAX_CAVITIES];
 double sample_x, sample_y, sample_z, sample_phi, sample_theta;
 double total_surface_area=0;
 
+int verbose;
+
 int main(int argc, char* argv[])
 {
   double surface_area;
