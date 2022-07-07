@@ -29,8 +29,6 @@ int *x_rank;
 extern char *display_name_1;
 extern char *display_name_2;
 
-int change_flag;
-
 void checkForWindowEvent()
 {
   int rstat;
