@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/sqrt.dir/sqrt.c.o -o sqrt  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm 

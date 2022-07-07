@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/recip.dir/recip.c.o -o recip  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm 

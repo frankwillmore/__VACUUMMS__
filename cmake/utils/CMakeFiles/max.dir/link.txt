@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/max.dir/max.c.o -o max  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm -lpthread 

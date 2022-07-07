@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/expr_multiply.dir/expr_multiply.c.o -o expr_multiply  -Wl,-rpath,/home/willmore/vacuumms/cmake/libraries: ../libraries/libftw_general.so -lm 
