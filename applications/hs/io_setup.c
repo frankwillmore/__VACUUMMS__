@@ -39,6 +39,8 @@ char *results_path;
 
 time_t now;
 
+int verbose;
+
 void setFCCInitialCondition()
 {
   double root2 = 1.414213562373;
