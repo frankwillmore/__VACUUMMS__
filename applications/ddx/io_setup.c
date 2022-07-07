@@ -11,6 +11,8 @@ extern int number_of_molecules;
 extern double x[], y[], z[];
 extern double sigma[], epsilon[];
 
+extern int verbose;
+
 void readConfiguration()
 {
   char line[80];

@@ -20,6 +20,8 @@ FILE *instream;
 int number_of_cavities=0;
 double x[MAX_CAVITIES], y[MAX_CAVITIES], z[MAX_CAVITIES], d[MAX_CAVITIES];
 
+int verbose;
+
 int main(int argc, char* argv[])
 {
   int i,j;

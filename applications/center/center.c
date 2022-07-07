@@ -23,6 +23,8 @@ double x[MAX_CAVITIES], y[MAX_CAVITIES], z[MAX_CAVITIES], r[MAX_CAVITIES];
 
 double shift_resolution = .1;
 
+int verbose;
+
 int main(int argc, char* argv[])
 {
   instream=stdin;

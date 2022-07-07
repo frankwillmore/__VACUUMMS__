@@ -42,6 +42,8 @@ double 	characteristic_length = 1.0;
 double 	characteristic_energy = 1.0;
 int 	seed = 1;
 
+int verbose;
+
 int main(int argc, char **argv)
 {
   setCommandLineParameters(argc, argv);
