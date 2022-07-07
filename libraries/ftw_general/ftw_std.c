@@ -1,5 +1,7 @@
 #include "ftw_std.h"
 
+int verbose;
+
 double getDoubleParameter(char *param, char *value)
 {
   V printf("%s=%s\n", param, value);
