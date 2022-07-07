@@ -39,7 +39,7 @@ char *results_path;
 
 time_t now;
 
-int verbose;
+extern int verbose;
 
 void setFCCInitialCondition()
 {
