@@ -6,9 +6,6 @@ option(BUILD_STATIC_LIBS "static libs " OFF)
 add_library(ftw_general SHARED
       ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_prng.c
       ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_cav_parser.c
-      ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_cav_parser.c
-      ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_rng2.c
-      ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_cav_parser.c
       ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_rng2.c
       ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_command_line_parser.c  
       ${PROJECT_SOURCE_DIR}/libraries/ftw_general/ftw_rng.c
