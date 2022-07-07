@@ -35,6 +35,8 @@ char *results_path;
 
 time_t now;
 
+int verbose;
+
 void setInitialConditions()
 {
   int i, j, k;

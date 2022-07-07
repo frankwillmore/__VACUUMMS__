@@ -61,6 +61,8 @@ int x_laps[MAX_NUMBER_MOLECULES], y_laps[MAX_NUMBER_MOLECULES], z_laps[MAX_NUMBE
 
 int mirror_depth = 1;
 
+int verbose;
+
 int main(int argc, char *argv[])
 {
   int i;
