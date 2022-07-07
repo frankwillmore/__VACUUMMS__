@@ -7,6 +7,8 @@ double epsilon=1.0;
 
 FILE *instream;
 
+int verbose;
+
 int main(int argc, char *argv[])
 {
   int i=0;
