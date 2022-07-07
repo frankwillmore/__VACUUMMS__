@@ -5,8 +5,10 @@
 
 #include <stdlib.h>
 
-int command_line_argc;
-char **command_line_argv;
+/* FTW: symbols below moved to the source file */
+/* int command_line_argc;
+/* char **command_line_argv;
+ */
 
 void setCommandLineParameters(int argc, char **argv);
 
