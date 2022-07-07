@@ -33,7 +33,7 @@ FILE *log_file;
 FILE *output_file;
 FILE *input_file;
 
-char hostname[50];
+extern char hostname[50];
 char *log_path;
 char *results_path;
 
