@@ -10,7 +10,7 @@
 #define DEFAULT_SEED 12345
 #endif
 
-int ra[256], nd;
+int ra2[256], nd2;
 
 int RNG_IS_INITIALIZED=0;
 
@@ -45,18 +45,18 @@ void initializeRandomNumberGenerator2(int seed)
     e+=dubee*trune;
     if (e>=1) e+= dubee;
   }
-  for (nd=0;nd<=255; nd++)
+  for (nd2=0;nd2<=255; nd2++)
   {
     e=16807*e;
     trune=e;
     e+=dubee*trune;
     if (e>=1) e+=dubee;
-    ra[nd]=(thirtyone)*e;
+    ra2[nd2]=(thirtyone)*e;
   }
   for (i=0; i<=10000; i++)
   {
-    nd=(nd+1)&255;
-    ra[nd]=(ra[(nd-103)&255])^(ra[(nd-250)&255]);
+    nd2=(nd2+1)&255;
+    ra2[nd2]=(ra2[(nd2-103)&255])^(ra2[(nd2-250)&255]);
   }
 } /*end randinit*/
 
@@ -67,9 +67,9 @@ double rnd2()
     printf("call to rnd() without initializing generator\n");
     exit(1);
   }
-  nd=(nd+1)&255;
-  ra[nd]=(ra[(nd-103)&255]^ra[(nd-250)&255]);
-  return ra[nd]/thirtyone;
+  nd2=(nd2+1)&255;
+  ra2[nd2]=(ra2[(nd2-103)&255]^ra2[(nd2-250)&255]);
+  return ra2[nd2]/thirtyone;
 } 
 
 int rnd2Int()
@@ -79,9 +79,9 @@ int rnd2Int()
     printf("call to rnd() without initializing generator\n");
     exit(1);
   }
-  nd=(nd+1)&255;
-  nd=(nd+1)&255;
-  ra[nd]=(ra[(nd-103)&255]^ra[(nd-250)&255]);
-  return ra[nd];
+  nd2=(nd2+1)&255;
+  nd2=(nd2+1)&255;
+  ra2[nd2]=(ra2[(nd2-103)&255]^ra2[(nd2-250)&255]);
+  return ra2[nd2];
 }
 
