@@ -4,6 +4,9 @@
 
 #include <ftw_param.h>
 
+int command_line_argc;
+char **command_line_argv;
+
 void setCommandLineParameters(int argc, char **argv)
 {
   command_line_argc = argc;
