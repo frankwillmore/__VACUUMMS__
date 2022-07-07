@@ -29,13 +29,13 @@ FILE *log_file;
 FILE *output_file;
 FILE *input_file;
 
-char hostname[50];
+extern char hostname[50];
 char *log_path;
 char *results_path;
 
 time_t now;
 
-int verbose;
+extern int verbose;
 
 void setInitialConditions()
 {
