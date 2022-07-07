@@ -29,6 +29,8 @@ int number_of_points=0;
 double cm_x, cm_y, cm_z;
 double rog=0;
 
+int verbose;
+
 int main(int argc, char* argv[])
 {
   int i,j;
