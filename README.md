@@ -58,11 +58,11 @@ Get spack:
 
 Install:
 
-`$ spack install vacuumms target=x86_64`
+`$ spack install vacuumms`
 
 Load into the user environment:
 
-`$ spack load vacuumms target=x86_64`
+`$ spack load vacuumms`
 
 See individual commands for usage info, e.g.:
 
