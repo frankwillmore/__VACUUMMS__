@@ -20,6 +20,8 @@ double sfactor=1;
 int number_of_molecules = 0;
 FILE *instream;
 
+int verbose;
+
 int main(int argc, char *argv[])
 {
   int i=0;

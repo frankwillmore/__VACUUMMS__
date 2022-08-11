@@ -49,6 +49,8 @@ int attempts;
 
 FILE *instream;
 
+int verbose;
+
 int main(int argc, char *argv[])
 {
   double sq_distance_from_initial_pt;

@@ -8,7 +8,9 @@
 #include <stdio.h>
 #include <math.h>
 
-int verbose;
+/* moved symbol to source file
+/* int verbose;
+ */
 
 #ifndef V
 #define V if (verbose)

@@ -29,6 +29,8 @@ FILE *input_file;
 
 time_t now;
 
+extern int verbose;
+
 void setInitialConditions()
 {
   int i;
