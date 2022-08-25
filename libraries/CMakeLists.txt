@@ -65,13 +65,13 @@ endif() # BUILD_TIFF_UTILS
 
 
 if (BUILD_CUDA_COMPONENTS)
-   cuda_add_library(ftw_cuda SHARED
-      ${PROJECT_SOURCE_DIR}/libraries/ftw_cuda/ftw_cuda_utils.cu
-      ${PROJECT_SOURCE_DIR}/libraries/ftw_cuda/ftw_gfg2fvi.cu
-   )
-   target_include_directories(ftw_cuda PUBLIC
-      "${PROJECT_SOURCE_DIR}/include"
-   )
+    cuda_add_library(ftw_cuda SHARED
+        ${PROJECT_SOURCE_DIR}/libraries/ftw_cuda/ftw_cuda_utils.cu
+        ${PROJECT_SOURCE_DIR}/libraries/ftw_cuda/ftw_gfg2fvi.cu
+    )
+    target_include_directories(ftw_cuda PUBLIC
+       "${PROJECT_SOURCE_DIR}/include"
+    )
 endif()
 
 install(TARGETS ftw_general ftw_pov
