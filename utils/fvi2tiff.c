@@ -31,6 +31,8 @@ int main(int argc, char *argv[])
   int x_dim, y_dim, z_dim;
   double _dim_x=256, _dim_y=256, _dim_z=256; // to capture command line args as double, to then convert to int 
   double fvi;
+  int alpha = 255;
+  int green = 1, red = 0, blue = 0;
   double _box_x, _box_y, _box_z;
   char *outfile_name = "outfile.tif";
 
@@ -44,38 +46,41 @@ int main(int argc, char *argv[])
 
   if (getFlagParam("-usage"))
   {
-    printf("usage:  fvi2tif       -box lll mmm nnn \n");
+    printf("usage:  fvi2tif       -box x.xx y.yy z.zz \n");
     printf("                      -dims [256] [256] [256] \n"); 
+    printf("                      -alpha [255] \n"); 
     printf("                      -o [outfile.tif] \n"); 
-    printf("                      < file.fvi\n");
+    printf("                      < file.fvi\n\n");
+    printf("        Note that it is expected that the spacing of points be uniform, continuous, \n");
+    printf("        and compliant with the box size and resolution dims as specified on the\n");
+    printf("        command line. No input validation is performed.\n\n");
+    printf("        By default, all FVI information is written to the green channel only.\n");
+    printf("        To specify an alternate color channel configuration, add: \n");
+    printf("                       [+red] [+blue] [-green] \n\n");
     exit(0);
   }
+
+  red = getFlagParam("+red");
+  blue = getFlagParam("+blue");
+  if (getFlagParam("-green")) green = 0;
+
+  getIntParam("-alpha", &alpha);
+  fprintf(stderr, "Using alpha value of %d\n", alpha);
+
   getStringParam("-o", &outfile_name);
-  printf("using %s outfile...\n", outfile_name);
+  fprintf(stderr, "Writing TIFF data to %s outfile...\n", outfile_name);
 
+  // This is recorded but not used. Eventually it will be added to the TIFF file for scale
   getVectorParam("-box", &_box_x, &_box_y, &_box_z);
-// WTF? what was I doing here? 
-//  x_dim = floor(_box_x);
-//  y_dim = floor(_box_y);
-//  z_dim = floor(_box_z);
 
-  // There's no get for integer triplet, so taking floor
+  // There's no get() for integer triplet, so taking double and then floor()
   getVectorParam("-dims", &_dim_x, &_dim_y, &_dim_z);
   x_dim = floor(_dim_x);
   y_dim = floor(_dim_y);
   z_dim = floor(_dim_z);
 
-fprintf(stderr, "Got dims of %dx%dx%d.\n", x_dim, y_dim, z_dim);
-fprintf(stderr, "The box size has slices of thickness: %lfx%lfx%lf.\n", _box_x/x_dim, _box_y/y_dim, _box_z/z_dim);
-
-//    else if (!strcmp(argv[i], "-o")) outfile_name = argv[++i];
-//    else if (!strcmp(argv[i], "-box")) {
-//      x_dim = atoi(argv[++i]);
-//      y_dim = atoi(argv[++i]);
-//      z_dim = atoi(argv[++i]);
-//      printf("xyz = %d\t%d\t%d\n", x_dim, y_dim, z_dim );
-//    }
-//  }
+  fprintf(stderr, "Got dims of %dx%dx%d.\n", x_dim, y_dim, z_dim);
+  fprintf(stderr, "The expected thickness of slices is: %lfx%lfx%lf.\n", _box_x/x_dim, _box_y/y_dim, _box_z/z_dim);
 
   image = (char*)malloc(x_dim * y_dim * z_dim * sampleperpixel);
 
@@ -86,7 +91,7 @@ fprintf(stderr, "The box size has slices of thickness: %lfx%lfx%lf.\n", _box_x/x
     fgets(line, 80, instream);
     if (feof(instream)) break;
 
-// These are read but never used
+    // These are read but never used
     xs = strtok(line, "\t");
     ys = strtok(NULL, "\t");
     zs = strtok(NULL, "\t");
@@ -95,20 +100,15 @@ fprintf(stderr, "The box size has slices of thickness: %lfx%lfx%lf.\n", _box_x/x
     fvi = strtod(fvis, NULL);
 
     int voxel = sampleperpixel * (i + j*x_dim + k*x_dim*y_dim);
-//    char fvid = (char)floor(fvi*256);
     unsigned int fvid = floor(fvi*256);
-//printf("%c", fvid);
-    image[0 + voxel] = 0;	// RED
-    image[1 + voxel] = fvid;	// GREEN
-    image[2 + voxel] = 0;	// BLUE
-//    image[3 + voxel] = 255;	
-//    image[3 + voxel] = 0;	// ALPHA
-    image[3 + voxel] = 255;	// ALPHA
+    if (red) image[0 + voxel] = fvid;
+    else image[0 + voxel] = 0;
+    if (green) image[1 + voxel] = fvid;
+    else image[1 + voxel] = 0;
+    if (blue) image[2 + voxel] = fvid;
+    else image[2 + voxel] = 0;
 
-// For debugging, this should just have the right vals, assuming they sliced correctly
-// fprintf(stderr, "writing value of %s for voxel at %d, %d, %d\n", fvis, i, j, k);
-fprintf(stderr, "writing value of %d for voxel at %d, %d, %d\n", fvid, i, j, k);
-
+    image[3 + voxel] = alpha;
   }
 
   makeTIFF(outfile_name, x_dim, y_dim, z_dim, image, sampleperpixel);
