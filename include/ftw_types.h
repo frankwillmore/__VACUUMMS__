@@ -1,5 +1,7 @@
 /* ftw_types.h */
 
+#include <vacuumms/limits.h>
+
 
 #ifndef FTW_TYPES
 #define FTW_TYPES
@@ -75,9 +77,19 @@ struct CommandLineOptions
 typedef ftw_Configuration ftw_GFG;
 
 /*  Adding the following definition because CUDA doesn't handle deep copies */
+// struct GFG65536
+// {
+//   ftw_Atom atom[65536];
+//   float box_x;
+//   float box_y;
+//   float box_z;
+//   int n_atoms;
+// };
+
+/* Could it really be as easy as just making this number bigger? */
 struct GFG65536
 {
-  ftw_Atom atom[65536];
+  ftw_Atom atom[VACUUMMS_MAX_NUMBER_OF_MOLECULES * 27];
   float box_x;
   float box_y;
   float box_z;
