@@ -3,5 +3,6 @@
 *.o
 *.so
 build
+cmake
 package.py
 
