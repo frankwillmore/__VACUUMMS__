@@ -13,6 +13,8 @@
 #include <ftw_param.h>
 #include <string.h>
 
+#include <vacuumms/limits.h>
+
 #include <ftw_types.h>
 
 // return value is pointer to configuration
