@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 
   if (getFlagParam("-usage"))
   {
-    printf("usage:  fvi2tif       -box x.xx y.yy z.zz \n");
+    printf("usage:  fvi2tiff      -box x.xx y.yy z.zz \n");
     printf("                      -dims [256] [256] [256] \n"); 
     printf("                      -alpha [255] \n"); 
     printf("                      -o [outfile.tif] \n"); 
@@ -79,10 +79,21 @@ int main(int argc, char *argv[])
   y_dim = floor(_dim_y);
   z_dim = floor(_dim_z);
 
-  fprintf(stderr, "Got dims of %dx%dx%d.\n", x_dim, y_dim, z_dim);
+  fprintf(stderr, "Got dims of %dx%dx%d, sampleperpixel of %d.\n", x_dim, y_dim, z_dim, sampleperpixel);
   fprintf(stderr, "The expected thickness of slices is: %lfx%lfx%lf.\n", _box_x/x_dim, _box_y/y_dim, _box_z/z_dim);
 
-  image = (char*)malloc(x_dim * y_dim * z_dim * sampleperpixel);
+  // This was a fun bug. For dims of 1024, this works out to 2^32, and therefore zero as an int.
+  // So malloc(0) returns a valid pointer, but can't write to the memory. 
+  // Added the cast to long to fix 32-bit arithmetic issue.
+  long block = (long)x_dim * (long)y_dim * (long)z_dim * (long)sampleperpixel;
+  fprintf(stderr, "Allocating block of %ld for TIFF...\n", block);
+  image = (char*)malloc(block);
+  if (image==NULL) 
+  {
+      fprintf(stderr, "Couldn't allocate memory.");
+      exit(137);
+  }
+  fprintf(stderr, "Allocated image memory, %ld bytes.\n", block);
 
   for (k=0; k<z_dim; k++)
   for (j=0; j<y_dim; j++)
@@ -95,11 +106,12 @@ int main(int argc, char *argv[])
     xs = strtok(line, "\t");
     ys = strtok(NULL, "\t");
     zs = strtok(NULL, "\t");
-    fvis = strtok(NULL, "\n");
 
+    fvis = strtok(NULL, "\n");
     fvi = strtod(fvis, NULL);
 
-    int voxel = sampleperpixel * (i + j*x_dim + k*x_dim*y_dim);
+    // int voxel = sampleperpixel * (i + j*x_dim + k*x_dim*y_dim);
+    long voxel = (long)sampleperpixel * ((long)i + (long)j*x_dim + (long)k*x_dim*y_dim);
     unsigned int fvid = floor(fvi*256);
     if (red) image[0 + voxel] = fvid;
     else image[0 + voxel] = 0;
