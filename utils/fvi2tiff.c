@@ -57,6 +57,9 @@ int main(int argc, char *argv[])
     printf("        By default, all FVI information is written to the green channel only.\n");
     printf("        To specify an alternate color channel configuration, add: \n");
     printf("                       [+red] [+blue] [-green] \n\n");
+    printf("        A dimension size of 1024^3 will gennerate a TIFF that is beyond libtiff's\n");
+    printf("        capacity. If working with this resolution, trim the x dimension, back to 1000.\n");
+    printf("        since this is the leading dimension, it will stop reading the FVI file..\n\n");
     exit(0);
   }
 
@@ -95,9 +98,9 @@ int main(int argc, char *argv[])
   }
   fprintf(stderr, "Allocated image memory, %ld bytes.\n", block);
 
-  for (k=0; k<z_dim; k++)
-  for (j=0; j<y_dim; j++)
   for (i=0; i<x_dim; i++)
+  for (j=0; j<y_dim; j++)
+  for (k=0; k<z_dim; k++)
   {
     fgets(line, 80, instream);
     if (feof(instream)) break;
@@ -111,7 +114,8 @@ int main(int argc, char *argv[])
     fvi = strtod(fvis, NULL);
 
     // int voxel = sampleperpixel * (i + j*x_dim + k*x_dim*y_dim);
-    long voxel = (long)sampleperpixel * ((long)i + (long)j*x_dim + (long)k*x_dim*y_dim);
+//    long voxel = (long)sampleperpixel * ((long)i + (long)j*x_dim + (long)k*x_dim*y_dim);
+    long voxel = (long)sampleperpixel * ((long)(i*y_dim*z_dim) + (long)(j*z_dim) + (long)k);
     unsigned int fvid = floor(fvi*256);
     if (red) image[0 + voxel] = fvid;
     else image[0 + voxel] = 0;
@@ -123,6 +127,12 @@ int main(int argc, char *argv[])
     image[3 + voxel] = alpha;
   }
 
-  makeTIFF(outfile_name, x_dim, y_dim, z_dim, image, sampleperpixel);
+
+// int makeTIFF(char *filename, int height, int width, int depth, char *image, int sampleperpixel)
+// Tried each combo below, settled on the last.
+// 1)  makeTIFF(outfile_name, x_dim, y_dim, z_dim, image, sampleperpixel);
+// 2)  makeTIFF(outfile_name, y_dim, x_dim, z_dim, image, sampleperpixel);
+// 3)  Swap the z and x dims here because of how these are defined in TIFF world
+  makeTIFF(outfile_name, z_dim, y_dim, x_dim, image, sampleperpixel);
 }
 
