@@ -16,7 +16,10 @@
 
 ## Free Volume Index (rendered from VACUUMMS-generated TIFF as input to Paraview)
 ![FVI-xray](images/xray.png)
-![FVI-blue-green-orange](images/xray.png)
+Paraview TIFFScalar mapping to xray preset
+
+![FVI-blue-green-orange](images/blue-green-orange.png)
+Paraview TIFFScalar mapping to blue-green-orange preset
 
 ## Cavity size distribution, count vs. volume
 ![count_vs_volume](images/count_vs_volume.png)
