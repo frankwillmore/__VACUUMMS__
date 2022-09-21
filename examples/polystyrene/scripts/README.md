@@ -24,8 +24,10 @@ Analyze the cavities and cavity clusters and extract statistics for size distrib
 
 Generate POVRay Scene Definition Language (SDL) to describe the image of atoms and cavities, then render the images using POVRay. 
 
-## TO DO:
+## run_gfg2fvi.sh
 
-- Run gfg2fvi (requires NVidia GPU system) to generate 3D tiffs mapping out the free volume index or intensity of the sample. 
+(requires NVidia GPU system) Generate discretized map of the free volume index FVI of the sample. 
 
+## run_fvi2tiff.sh
 
+Translate the discrete map of FVI to a TIFF file, to be used as input to Paraview, ML, etc. 
