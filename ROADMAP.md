@@ -18,6 +18,7 @@ Features planned and potential releases:
   - Use of limits.h more broadly; there's no reason to be arbitrarily limiting size of data structures based on sizes that were considered 'reasonable' ten years ago.
   - Replace static 
   - Need careful reworking of original int types to long. Maybe even declare a vacuumms_types.h? 
+  - Replace the hard-coded types used for storing configurations and Energy arrays with C++ Template classes 
 
 - Configurable include files, where sizes can be specified at configure time.
   - vacuumms.h header that includes version numbers, etc. and which is updated when cutting a release.
