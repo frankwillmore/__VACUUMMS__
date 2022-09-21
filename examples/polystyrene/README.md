@@ -14,6 +14,10 @@
 ## Sample plus cavities
 ![PS_plus_cav](images/PS_plus_cav.png)
 
+## Free Volume Index (rendered from VACUUMMS-generated TIFF as input to Paraview)
+![FVI-xray](images/xray.png)
+![FVI-blue-green-orange](images/xray.png)
+
 ## Cavity size distribution, count vs. volume
 ![count_vs_volume](images/count_vs_volume.png)
 
