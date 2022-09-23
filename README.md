@@ -78,9 +78,10 @@ See individual commands for usage info, e.g.:
 
 [Developer Guide](DEVELOPER_GUIDE.md)
 
+[Roadmap](ROADMAP.md)
+
+[Release Notes](RELEASE_NOTES.md)
+
 ## Examples:
 
 [Polystyrene](examples/polystyrene/README.md)
-
-
-
