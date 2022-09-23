@@ -81,3 +81,7 @@ See individual commands for usage info, e.g.:
 [Roadmap](ROADMAP.md)
 
 [Release Notes](RELEASE_NOTES.md)
+
+## Examples:
+
+[Polystyrene](examples/polystyrene/README.md)
