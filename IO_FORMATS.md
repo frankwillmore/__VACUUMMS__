@@ -15,7 +15,7 @@ In general, VACUUMMS I/O uses non-binary representation of data. Human-readable 
     0.000000    0.000000    2.828427
     0.707107    0.707107    2.828427
 
-.gfg - 'generalized configuration' extends the .cfg format by appending columns for Lennard-Jones sigma and epsilon values:
+.gfg - 'generalized configuration' extends the .cfg format by appending columns for Lennard-Jones sigma and epsilon values {x,y,z,sigma,epsilon}:
 
     0.000000    0.000000    0.000000    1.000   1.000
     0.707107    0.707107    0.000000    1.000   1.000
