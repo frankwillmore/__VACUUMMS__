@@ -56,6 +56,10 @@ Get spack:
 
 `$ git clone https://github.com/spack/spack`
 
+Activate spack:
+
+`$ . spack/share/spack/setup-env.sh`
+
 Install:
 
 `$ spack install vacuumms`
