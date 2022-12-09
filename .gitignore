@@ -5,4 +5,5 @@
 build
 cmake
 package.py
+__pycache__
 
