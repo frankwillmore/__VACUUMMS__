@@ -1,0 +1,5 @@
+# Square box with 3x repeating unit cells in each direction, 3*sqrt(2)
+# Unit cell is 4 atoms, so 3^3 repeats is 27, *4 = 108 ll. 
+box_x=4.242640687119285
+box_y=4.242640687119285
+box_z=4.242640687119285
