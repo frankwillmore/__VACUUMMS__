@@ -76,8 +76,9 @@ class gfg(VACUUMMS):
 
 def ddx(gfg, n_steps=1000000, verlet_cutoff=100.0, n=1, min_diameter=0.0):
 
-    ddx_arglist = ['ddx', '-box ', str(gfg.dims[0]), str(gfg.dims[1]), str(gfg.dims[2]) ]
-    ddx_arglist.append("-n_steps " + str(n_steps))
+    ddx_arglist = ['ddx', '-box', str(gfg.dims[0]), str(gfg.dims[1]), str(gfg.dims[2]) ]
+    ddx_arglist.append("-n_steps")
+    ddx_arglist.append(str(n_steps))
     print("FTW using ddx_arglist: " + str(ddx_arglist))
 
     tab = str("\t")
