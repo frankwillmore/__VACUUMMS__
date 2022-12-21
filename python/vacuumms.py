@@ -98,21 +98,64 @@ def pddx(gfg, n_steps=1000000, n_threads=1, verlet_cutoff=100.0, n_samples=1, mi
 #    d2h=subprocess.Popen("dst2hst", stdout=subprocess.PIPE, stdin=f)
 #    wc = subprocess.Popen(['wc', '-l'], stdin=subprocess.PIPE)
 
-    pddx_arglist = ['pddx', '-box ', str(gfg.dims[0]), str(gfg.dims[1]), str(gfg.dims[2]) ]
+    pddx_retval = []
+#    pddx_arglist = ['pddx', '-box ', str(gfg.dims[0]), str(gfg.dims[1]), str(gfg.dims[2]) ]
+    pddx_arglist = ['ddx', '-box ', str(gfg.dims[0]), str(gfg.dims[1]), str(gfg.dims[2]) ]
     pddx_arglist.append("-n_steps " + str(n_steps))
     print("FTW pddx_arglist: " + str(pddx_arglist))
 
     # open the process for pddx, write info, and capture output
-    cav = subprocess.Popen(pddx_arglist, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    for row in gfg.gfg_list:
-        (x, y, z, sigma, epsilon) = row
+    # cav = subprocess.Popen(pddx_arglist, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    with subprocess.Popen(pddx_arglist, stdin=subprocess.PIPE, stdout=subprocess.PIPE) as cav:
+        print(cav)
+        for row in gfg.gfg_list:
+            (x, y, z, sigma, epsilon) = row
 #        print(f"x={x} y={y} z={z} sigma={sigma} epsilon={epsilon}", file=cav.stdin)
-        cav.stdin.write(bytes((str(x)+"\t"+str(y)+"\t"+str(z)+"\t"+str(sigma)+"\t"+str(epsilon))
-#        cav.stdin.write(bytes("abc", 'utf-8'))
+            tab = str("\t")
+            newline = str("\n")
+            line = str(x)+tab+str(y)+tab+str(z)+tab+str(sigma)+tab+str(epsilon)+newline
+            print("FTW: " + line)
+#            print(bytes((str(x)+tab+str(y)+tab+str(z)+tab+str(sigma)+tab+str(epsilon))+newline, encoding='utf-8'))
+#            cav.stdin.write(bytes((str(x)+tab+str(y)+tab+str(z)+tab+str(sigma)+tab+str(epsilon))+newline, encoding='utf-8'))
+            cav.stdin.write(bytes(line, encoding='utf-8'))
 
-    # capture output
-    for line in cav.stdout:
-#        print(line.rstrip().decode('ASCII'))
-        print(line)
+        cav.stdin.close()
 
+        # capture output
+#        for line in cav.stdout:
+#            print(line.rstrip().decode('ASCII'))
+#            print(line)
 
+        # Create the cav object from stdout
+        print("building retval:")
+        for line in cav.stdout:
+            dsline = line.decode()
+            print("FTW dsline: " + dsline)
+#            print("FTW line: " + str(line))
+#rstrip() removes trailing space (e.g. newline)
+#            sline = str(line)
+#            rline = line.rstrip()
+#            dline = rline.decode('ASCII')
+#            print("FTW dline: " + dline)
+#            pddx_retval.append(dline)
+            pddx_retval.append(dsline)
+#            (x, y, z, d) = line.rstrip().decode('ASCII')
+#            (x, y, z, d) = dline.split("\t")
+#            print(f"{x}\t{y}\t{z}\t{d}")
+        print("FTW sending retval:")
+        print(pddx_retval[0])
+
+        cav.stdout.close()
+
+#        with open(input_file, "r", encoding="utf8") as gfg_file:
+#            reader = csv.reader(gfg_file, delimiter="\t")
+#            for row in reader:
+#                (x, y, z, sigma, epsilon) = row
+#                self.gfg_list.append(row);
+
+    return pddx_retval
+
+    # Build an object to return using the stream output
+#    return cav(input_file=cav.stdout, dims=gfg.dims)
+#class cav(VACUUMMS):
+#    def __init__(self, input_file, dims):

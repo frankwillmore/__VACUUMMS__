@@ -2,6 +2,7 @@
 .public
 *.o
 *.so
+*.swp
 build
 cmake
 package.py
