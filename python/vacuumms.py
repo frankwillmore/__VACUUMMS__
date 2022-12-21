@@ -11,14 +11,12 @@ import subprocess
 
 class VACUUMMS:
 
-    def __init__(self, dims):
+    def __init__(self, box):
         print("constructing VACUUMMS object")
-        self.dims = dims
+        self.box = box
 
     def dump(self):
-        print("box_x=" + str(self.dims[0])) 
-        print("box_y=" + str(self.dims[1])) 
-        print("box_z=" + str(self.dims[2])) 
+        print("# box: " + str(self.box)) 
 
 
 class cav_record():
@@ -27,8 +25,8 @@ class cav_record():
 
 class cav(VACUUMMS):
 
-    def __init__(self, input_source, dims):
-        super().__init__(dims)
+    def __init__(self, input_source, box):
+        super().__init__(box)
         print("constructing VACUUMMS::cav object")
         self.cav_list = []
 
@@ -36,7 +34,7 @@ class cav(VACUUMMS):
 
         if (str(type(input_source)) == "<class '_io.BufferedReader'>"):
             for line in input_source:
-                self.cav_list.append(cav_record(line.decode().split("\t")))
+                self.cav_list.append(cav_record(line.decode().rstrip().split("\t")))
 
         else: # otherwise treat input_source as a file
             with open(input_file, "r", encoding="utf8") as cav_file:
@@ -45,7 +43,7 @@ class cav(VACUUMMS):
                     self.cav_list.append(cav_record(row))
 
     def dump(self):
-        super().dump() # Dump PVT, dims, etc
+        super().dump() # Dump PVT, box, etc
         for record in self.cav_list:
             print(f"{record.x}\t{record.y}\t{record.z}\t{record.d}")
 
@@ -55,9 +53,9 @@ class gfg_record():
         (self.x, self.y, self.z, self.sigma, self.epsilon) = record
 
 class gfg(VACUUMMS):
-    def __init__(self, input_file, dims):
-        super().__init__(dims)
-        print("constructing VACUUMMS::gfg object from "+input_file + " with dims = " + str(dims))
+    def __init__(self, input_file, box):
+        super().__init__(box)
+        print("constructing VACUUMMS::gfg object from "+input_file + " with box = " + str(box))
         self.gfg_list = []
 
         with open(input_file, "r", encoding="utf8") as gfg_file:
@@ -66,7 +64,7 @@ class gfg(VACUUMMS):
                 self.gfg_list.append(gfg_record(row))
 
     def dump(self):
-        super().dump() # Dump PVT, dims, etc
+        super().dump() # Dump PVT, box, etc
         for record in self.gfg_list:
             print(f"{record.x}\t{record.y}\t{record.z}\t{record.sigma}\t{record.epsilon}")
 
@@ -74,12 +72,44 @@ class gfg(VACUUMMS):
 ## VACUUMMS methods
 
 
-def ddx(gfg, n_steps=1000000, verlet_cutoff=100.0, n=1, min_diameter=0.0):
+def ddx(gfg, 
+             box=[6.0, 6.0, 6.0],
+             seed=1,
+             randomize=False,
+             characteristic_length=1.0,
+             characteristic_energy=1.0,
+             precision_parameter=0.001,
+             n_steps=1000, 
+             show_steps=False,
+             verlet_cutoff=100.0,
+             n=1,
+             volume_sampling=False,
+             include_center_energy=False,
+             min_diameter=0.0):
 
-    ddx_arglist = ['ddx', '-box', str(gfg.dims[0]), str(gfg.dims[1]), str(gfg.dims[2]) ]
+    ddx_arglist = ['ddx', '-box', str(gfg.box[0]), str(gfg.box[1]), str(gfg.box[2]) ]
     ddx_arglist.append("-n_steps")
     ddx_arglist.append(str(n_steps))
-    print("FTW using ddx_arglist: " + str(ddx_arglist))
+    ddx_arglist.append("-seed")
+    ddx_arglist.append(str(seed))
+    if (randomize): ddx_arglist.append("-randomize")
+    ddx_arglist.append("-characteristic_length")
+    ddx_arglist.append(str(characteristic_length))
+    ddx_arglist.append("-characteristic_energy")
+    ddx_arglist.append(str(characteristic_energy))
+    ddx_arglist.append("-precision_parameter")
+    ddx_arglist.append(str(precision_parameter))
+    ddx_arglist.append("-n_steps")
+    ddx_arglist.append(str(n_steps))
+    if (show_steps): ddx_arglist.append("-show_steps")
+    ddx_arglist.append("-verlet_cutoff")
+    ddx_arglist.append(str(verlet_cutoff))
+    ddx_arglist.append("-n")
+    ddx_arglist.append(str(n))
+    if (volume_sampling): ddx_arglist.append("-volume_sampling")
+    if (include_center_energy): ddx_arglist.append("-include_center_energy")
+    ddx_arglist.append("-min_diameter")
+    ddx_arglist.append(str(min_diameter))
 
     tab = str("\t")
     newline = str("\n")
@@ -95,7 +125,7 @@ def ddx(gfg, n_steps=1000000, verlet_cutoff=100.0, n=1, min_diameter=0.0):
         process.stdin.close()
 
         # Capture the output stream to create cav object
-        ddx_retval = cav(process.stdout, gfg.dims)
+        ddx_retval = cav(process.stdout, gfg.box)
 
         process.stdout.close()
 
