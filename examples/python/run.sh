@@ -10,14 +10,12 @@ import vacuumms
 fcc = vacuumms.gfg(input_file="fcc.gfg", dims=[4.242640687119285, 4.242640687119285, 4.242640687119285])
 
 # check what was read
-#fcc.dump()
+fcc.dump()
 
-# start a process to run pddx, and return .cav object
-my_cavs=vacuumms.pddx(fcc)
+# start a process to run ddx, and return .cav object
+my_cavs=vacuumms.ddx(fcc)
 
 print("FTW got retval:")
 print(my_cavs)
-
-
 
 
