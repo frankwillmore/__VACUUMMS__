@@ -13,5 +13,9 @@ my_cavs=vacuumms.ddx(fcc, n=5)
 
 # Dump the result
 my_cavs.dump()
+#for line in my_cavs.cav_list:
+#    print(str(line))
+
+my_cavs.to_file("fcc.cav")
 
 

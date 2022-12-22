@@ -18,10 +18,21 @@ class VACUUMMS:
     def dump(self):
         print("# box: " + str(self.box)) 
 
+    # Placeholder in case we factor parts out 
+    def to_file(self, filename):
+        pass
+
+    # write contents as dataset to hdf5 formatted file
+    def to_hdf5(self, hdf5_filename, hdf5_path, hdf5_dataset_name):
+        pass
+
 
 class cav_record():
     def __init__(self, record):
         (self.x, self.y, self.z, self.d) = record
+    def __str__(self):
+        tab = "\t"
+        return str(self.x) + tab + str(self.y) + tab + str(self.z) + tab + str(self.d)
 
 class cav(VACUUMMS):
 
@@ -46,6 +57,12 @@ class cav(VACUUMMS):
         super().dump() # Dump PVT, box, etc
         for record in self.cav_list:
             print(f"{record.x}\t{record.y}\t{record.z}\t{record.d}")
+
+    # write contents to flat file (traditional)
+    def to_file(self, filename="/dev/null"):
+        with open(filename, "w") as file:
+            for record in self.cav_list:
+                print(f"{record.x}\t{record.y}\t{record.z}\t{record.d}", file=file)
 
 
 class gfg_record():
@@ -72,8 +89,7 @@ class gfg(VACUUMMS):
 ## VACUUMMS methods
 
 
-def ddx(gfg, 
-             box=[6.0, 6.0, 6.0],
+def ddx(gfg, box=[6.0, 6.0, 6.0],
              seed=1,
              randomize=False,
              characteristic_length=1.0,
