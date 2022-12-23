@@ -2,7 +2,7 @@
 
 ## vacuumms.py - python package
 
-This file contains all wrappers and definitions. Place the directory containing this file in PYTHONPATH, and import vacuumms to use it, and/or import specific functions as needed. The VACUUMMS executables need to be in the PATH of the environment for the running python process. 
+This file contains all wrappers and definitions. Place the directory containing this file in PYTHONPATH, and import vacuumms to use it, and/or import specific functions as needed. The VACUUMMS executables need to be in the PATH of the environment of the running python process. 
 
 ## Usage
 
