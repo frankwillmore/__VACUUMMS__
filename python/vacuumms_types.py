@@ -164,3 +164,79 @@ class fvi(VACUUMMS):
                 print(f"{record.x}\t{record.y}\t{record.z}\t{record.energy}", file=file)
 
 
+# It's a degenerate case, since each record contains only one value, but treat as others
+class dst_record():
+    def __init__(self, record):
+        (self.value) = record
+    def __str__(self):
+        return str(self.value)
+
+class dst(VACUUMMS):
+
+    def __init__(self, input_source, box):
+        super().__init__(box)
+        print("constructing VACUUMMS::dst object")
+
+        # Capture the output stream instead of a file to create the dst object
+
+        if (str(type(input_source)) == "<class '_io.BufferedReader'>"):
+            for line in input_source:
+                self.list.append(dst_record(line.decode().rstrip().split("\t")))
+
+        else: # otherwise treat input_source as a file
+            with open(input_file, "r", encoding="utf8") as dst_file:
+                reader = csv.reader(dst_file, delimiter="\t")
+                for row in reader:
+                    self.list.append(dst_record(row))
+
+    def dump(self):
+        super().dump() # Dump PVT, box, etc
+        for record in self.list:
+            print(f"{record.value}")
+
+    # write contents to flat file (traditional)
+    def to_file(self, filename=None):
+        if (filename == None): filename=str(self) + ".dst"
+        with open(filename, "w") as file:
+            for record in self.list:
+                print(f"{record.value}", file=file)
+
+
+class hst_record():
+    def __init__(self, record):
+        (self.value, self.frequency) = record
+    def __str__(self):
+        tab = "\t"
+        return str(self.value) + tab + str(self.frequency)
+
+class hst(VACUUMMS):
+
+    def __init__(self, input_source, box):
+        super().__init__(box)
+        print("constructing VACUUMMS::hst object")
+
+        # Capture the output stream instead of a file to create the hst object
+
+        if (str(type(input_source)) == "<class '_io.BufferedReader'>"):
+            for line in input_source:
+                self.list.append(hst_record(line.decode().rstrip().split("\t")))
+
+        else: # otherwise treat input_source as a file
+            with open(input_file, "r", encoding="utf8") as hst_file:
+                reader = csv.reader(hst_file, delimiter="\t")
+                for row in reader:
+                    self.list.append(hst_record(row))
+
+    def dump(self):
+        super().dump() # Dump PVT, box, etc
+        for record in self.list:
+            print(f"{record.value}\t{record.frequency}")
+
+    # write contents to flat file (traditional)
+    def to_file(self, filename=None):
+        if (filename == None): filename=str(self) + ".hst"
+        with open(filename, "w") as file:
+            for record in self.list:
+                print(f"{record.value}\t{record.frequency}", file=file)
+
+
