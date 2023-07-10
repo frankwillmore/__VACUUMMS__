@@ -2,6 +2,12 @@
 
 ---
 
+## 1.1.4: 
+
+- Increase system size limit from 65536 atoms to 131072 atoms (largest data structure is still <~ 16MB, so no memory issues anticipated)
+- add FCC example
+- Simplify some of the examples (polystyrene)
+
 ## 1.1.3: Fix TIFF issues
 
 - Large TIFF issue addressed (integer type was overflowing for a tiff sized at 4 x 1024 x 1024 x 1024, resulting in a malloc of size 0, which was successful, but useless)
