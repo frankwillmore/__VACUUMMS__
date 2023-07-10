@@ -23,3 +23,4 @@ Features planned and potential releases:
 - Configurable include files, where sizes can be specified at configure time.
   - vacuumms.h header that includes version numbers, etc. and which is updated when cutting a release.
 
+- Generalize to pluggable force field models.
