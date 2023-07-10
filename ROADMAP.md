@@ -24,3 +24,6 @@ Features planned and potential releases:
   - vacuumms.h header that includes version numbers, etc. and which is updated when cutting a release.
 
 - Generalize to pluggable force field models.
+
+- Tests:
+  - Add tests for verifying integrity of builds. CTest?
